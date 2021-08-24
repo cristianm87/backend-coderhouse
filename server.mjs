@@ -1,12 +1,19 @@
-import express from 'express';
+import express, { response } from 'express';
 import { Memoria } from './productos.mjs';
-
-const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+import path from 'path';
 
 const port = 8080;
+const app = express();
+const router = express.Router();
+const __dirname = path.resolve();
+const memoria = new Memoria();
+
+app.use(express.static(`${__dirname}/public`));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api', router);
+
+////
 
 const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
@@ -16,22 +23,24 @@ server.on('error', error => {
   console.log(error);
 });
 
-// Rutas URL
-const pathListar = '/api/productos/listar';
-const pathListarPorId = '/api/productos/listar/:id';
-const pathGuardar = '/api/productos/guardar';
+////
 
-const memoria = new Memoria();
+// Rutas URL
+const pathListar = '/productos/listar';
+const pathListarPorId = '/productos/listar/:id';
+const pathGuardar = '/productos/guardar';
+const pathUpdate = '/productos/actualizar/:id';
+const parhDelete = '/productos/borrar/:id';
 
 // Ejemplo de producto
 
-// memoria.addElement({
+// {
 //   title: 'Producto 1',
 //   precio: 5000,
 //   thumbnail: 'imagen.jpg',
-// });
+// };
 
-app.get(pathListar, (request, response) => {
+router.get(pathListar, (request, response) => {
   const result = memoria.getArray();
   if (result.length > 0) {
     response.status(200).send(JSON.stringify(result));
@@ -40,7 +49,7 @@ app.get(pathListar, (request, response) => {
   }
 });
 
-app.get(pathListarPorId, (request, response) => {
+router.get(pathListarPorId, (request, response) => {
   const { id } = request.params;
   const result = memoria.getElementById(id);
   if (result == null) {
@@ -49,12 +58,25 @@ app.get(pathListarPorId, (request, response) => {
   response.status(200).send(JSON.stringify(result));
 });
 
-app.post(pathGuardar, (request, response) => {
-  const producto = request.body;
-  if (producto.precio && producto.title && producto.thumbnail) {
-    memoria.addElement(producto);
-    response.status(200).send(producto);
+router.post(pathGuardar, (request, response) => {
+  const product = request.body;
+  if (product.price && product.title && product.thumbnail) {
+    memoria.addElement(product);
+    response.status(200).send(product);
   } else {
-    response.status(400).send({ error: 'Información imcompleta' });
+    response.status(400).send({ error: 'Información incompleta' });
   }
+});
+
+router.put(pathUpdate, (request, response) => {
+  let id = request.params.id;
+  const newProduct = request.body;
+  memoria.updateObject(newProduct, id);
+  response.send(newProduct);
+});
+
+router.delete(parhDelete, (request, response) => {
+  const deletedObject = memoria.getElementById(request.params.id);
+  memoria.deleteObject(request.params.id);
+  response.status(200).send(deletedObject);
 });
