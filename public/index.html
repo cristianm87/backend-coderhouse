@@ -5,20 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <h2>Ingrese un producto:</h2>
-    <form action="/api/productos/guardar" method="POST">
-      <label for="title">Titulo:</label>
-      <input type="text" name="title" /> <br />
-      <br />
-      <label for="price">Precio:</label>
-      <input type="text" name="price" /> <br />
-      <br />
-      <label for="thumbnail">Thumbnail</label>
-      <input type="text" name="thumbnail" /> <br />
-      <br />
-      <input type="submit" />
-    </form>
+    <div class="container">
+      <h1>Ingrese un producto:</h1>
+      <form action="/api/productos/guardar" method="POST" class="row g-3 mt-2">
+        <div class="col-auto">
+          <label for="title" class="form-label">Nombre</label>
+          <input type="text" name="title" class="form-control" />
+        </div>
+        <div class="col-auto">
+          <label for="price" class="form-label">Precio</label>
+          <input type="text" name="price" class="form-control" />
+        </div>
+        <div class="col-auto">
+          <label for="thumbnail" class="form-label">Foto Url</label>
+          <input type="text" name="thumbnail" class="form-control" />
+        </div>
+        <div class="row-1">
+          <button type="submit" class="btn btn-primary mb-3">Enviar</button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

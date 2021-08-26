@@ -1,6 +1,7 @@
 import express, { response } from 'express';
 import { Memoria } from './productos.mjs';
 import path from 'path';
+import handlebars from 'express-handlebars';
 
 const port = 8080;
 const app = express();
@@ -8,10 +9,39 @@ const router = express.Router();
 const __dirname = path.resolve();
 const memoria = new Memoria();
 
+// Rutas URL
+const pathVistaProductos = '/productos/vista';
+const pathListar = '/productos/listar';
+const pathListarPorId = '/productos/listar/:id';
+const pathGuardar = '/productos/guardar';
+const pathUpdate = '/productos/actualizar/:id';
+const parhDelete = '/productos/borrar/:id';
+//
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', router);
+
+////
+//configurar handlebars
+app.engine(
+  'hbs',
+  handlebars({
+    extname: '.hbs',
+    defaultLayout: 'index.hbs',
+    layoutsDir: __dirname + '/views/layouts/',
+    // partialsDir: __dirname + '/views/partials/',
+  })
+);
+
+app.set('view engine', 'hbs');
+app.set('views', './views');
+
+////
+
+router.get(pathVistaProductos, (request, response) => {
+  response.render('main.hbs', { productos: memoria.getArray() });
+});
 
 ////
 
@@ -24,13 +54,6 @@ server.on('error', error => {
 });
 
 ////
-
-// Rutas URL
-const pathListar = '/productos/listar';
-const pathListarPorId = '/productos/listar/:id';
-const pathGuardar = '/productos/guardar';
-const pathUpdate = '/productos/actualizar/:id';
-const parhDelete = '/productos/borrar/:id';
 
 // Ejemplo de producto
 
@@ -60,9 +83,10 @@ router.get(pathListarPorId, (request, response) => {
 
 router.post(pathGuardar, (request, response) => {
   const product = request.body;
+
   if (product.price && product.title && product.thumbnail) {
     memoria.addElement(product);
-    response.status(200).send(product);
+    response.redirect('/');
   } else {
     response.status(400).send({ error: 'Información incompleta' });
   }

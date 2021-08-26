@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "express": "^4.17.1"
+    "_comment": "DESINSTALAR ejs SI NO SE USA",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.3"
   }
 }
