@@ -1,7 +1,7 @@
 import express, { response } from 'express';
 import { Memoria } from './productos.mjs';
 import path from 'path';
-import handlebars from 'express-handlebars';
+// import handlebars from 'express-handlebars';
 
 const port = 8080;
 const app = express();
@@ -24,23 +24,24 @@ app.use('/api', router);
 
 ////
 //configurar handlebars
-app.engine(
-  'hbs',
-  handlebars({
-    extname: '.hbs',
-    defaultLayout: 'index.hbs',
-    layoutsDir: __dirname + '/views/layouts/',
-    // partialsDir: __dirname + '/views/partials/',
-  })
-);
+// app.engine(
+//   'hbs',
+//   handlebars({
+//     extname: '.hbs',
+//     defaultLayout: 'index.hbs',
+//     layoutsDir: __dirname + '/views/layouts/',
+//     // partialsDir: __dirname + '/views/partials/',
+//   })
+// );
 
-app.set('view engine', 'hbs');
-app.set('views', './views');
+app.set('view engine', 'pug');
+app.set('views', './views/layouts');
 
 ////
 
 router.get(pathVistaProductos, (request, response) => {
-  response.render('main.hbs', { productos: memoria.getArray() });
+  // response.render('main.hbs', { productos: memoria.getArray() });
+  response.render('index.pug', { productos: memoria.getArray() });
 });
 
 ////
