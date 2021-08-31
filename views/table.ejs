@@ -1,0 +1,27 @@
+<article>
+    <h1>Tabla</h1>
+    <% if(productos.length === 0) {%>
+        <h2>No hay productos</h2>
+    <%} else {%>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Foto Url</th>
+            </tr>
+            </thead>
+            <tbody>
+                <% productos.forEach(function(producto) { %>
+                    <tr>
+                        <th scope="row"><%= producto.id %></th>
+                        <td><%= producto.title %></td>
+                        <td><%= producto.price %></td>
+                        <td> <img src=<%= producto.thumbnail %> alt=<%= producto.thumbnail %> width="50px"</td>
+                    </tr>
+                <%})%>
+            </tbody>
+        </table>    
+    <% } %>    
+</section>

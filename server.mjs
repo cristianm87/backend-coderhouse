@@ -1,7 +1,6 @@
-import express, { response } from 'express';
+import express from 'express';
 import { Memoria } from './productos.mjs';
 import path from 'path';
-// import handlebars from 'express-handlebars';
 
 const port = 8080;
 const app = express();
@@ -16,35 +15,19 @@ const pathListarPorId = '/productos/listar/:id';
 const pathGuardar = '/productos/guardar';
 const pathUpdate = '/productos/actualizar/:id';
 const parhDelete = '/productos/borrar/:id';
-//
+
+////////
+
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', router);
 
-////
-//configurar handlebars
-// app.engine(
-//   'hbs',
-//   handlebars({
-//     extname: '.hbs',
-//     defaultLayout: 'index.hbs',
-//     layoutsDir: __dirname + '/views/layouts/',
-//     // partialsDir: __dirname + '/views/partials/',
-//   })
-// );
+//////// config EJS
 
-app.set('view engine', 'pug');
-app.set('views', './views/layouts');
+app.set('view engine', 'ejs');
 
-////
-
-router.get(pathVistaProductos, (request, response) => {
-  // response.render('main.hbs', { productos: memoria.getArray() });
-  response.render('index.pug', { productos: memoria.getArray() });
-});
-
-////
+////////
 
 const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
@@ -54,15 +37,20 @@ server.on('error', error => {
   console.log(error);
 });
 
-////
+////////
 
 // Ejemplo de producto
-
 // {
 //   title: 'Producto 1',
 //   precio: 5000,
-//   thumbnail: 'imagen.jpg',
+//   thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-and-school-8/48/Computer-512.png',
 // };
+
+////////
+
+router.get(pathVistaProductos, (request, response) => {
+  response.render('layouts/index.ejs', { productos: memoria.getArray() });
+});
 
 router.get(pathListar, (request, response) => {
   const result = memoria.getArray();
@@ -84,7 +72,6 @@ router.get(pathListarPorId, (request, response) => {
 
 router.post(pathGuardar, (request, response) => {
   const product = request.body;
-
   if (product.price && product.title && product.thumbnail) {
     memoria.addElement(product);
     response.redirect('/');
