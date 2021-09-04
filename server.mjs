@@ -1,8 +1,10 @@
 import express from 'express';
 import { Memoria } from './productos.mjs';
 import path from 'path';
+import handlebars from 'express-handlebars';
+import * as SocketIO from 'socket.io';
 
-const port = 8080;
+const PORT = 8080;
 const app = express();
 const router = express.Router();
 const __dirname = path.resolve();
@@ -23,19 +25,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', router);
 
-//////// config EJS
+//////// config Handlebars
 
-app.set('view engine', 'ejs');
+app.set('views', './views');
+app.set('view engine', 'hbs');
 
 ////////
 
-const server = app.listen(port, () => {
-  console.log(`Server listen on port ${port}`);
+app.engine(
+  'hbs',
+  handlebars({
+    extname: '.hbs',
+    defaultLayout: 'index.hbs',
+    layoutsDir: __dirname + '/views/layouts',
+    partialDir: __dirname + '/views/partials/',
+  })
+);
+
+////////
+
+const server = app.listen(PORT, () => {
+  console.log(`Server listen on port ${PORT}`);
 });
 
 server.on('error', error => {
   console.log(error);
 });
+
+////////
+
+const io = new SocketIO.Server(server);
 
 ////////
 
@@ -74,6 +93,7 @@ router.post(pathGuardar, (request, response) => {
   const product = request.body;
   if (product.price && product.title && product.thumbnail) {
     memoria.addElement(product);
+    io.sockets.emit('cargarProductos', memoria.getArray());
     response.redirect('/');
   } else {
     response.status(400).send({ error: 'Información incompleta' });
@@ -91,4 +111,11 @@ router.delete(parhDelete, (request, response) => {
   const deletedObject = memoria.getElementById(request.params.id);
   memoria.deleteObject(request.params.id);
   response.status(200).send(deletedObject);
+});
+
+///////////////
+
+io.on('connection', socket => {
+  socket.emit('cargarProductos', memoria.getArray());
+  console.log('Se conecto en el back');
 });
