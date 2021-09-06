@@ -3,5 +3,25 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
     "handlebars": "^4.7.7"
-  }
+  },
+  "name": "proyecto-final",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristianm87/backend-coderhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristianm87/backend-coderhouse/issues"
+  },
+  "homepage": "https://github.com/cristianm87/backend-coderhouse#readme",
+  "description": ""
 }

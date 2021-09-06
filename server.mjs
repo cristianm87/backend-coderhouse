@@ -3,12 +3,15 @@ import { Memoria } from './productos.mjs';
 import path from 'path';
 import handlebars from 'express-handlebars';
 import * as SocketIO from 'socket.io';
+import http from 'http';
 
 const PORT = 8080;
 const app = express();
 const router = express.Router();
 const __dirname = path.resolve();
 const memoria = new Memoria();
+const server = http.Server(app);
+const ioServer = new SocketIO.Server(server);
 
 // Rutas URL
 const pathVistaProductos = '/productos/vista';
@@ -44,17 +47,13 @@ app.engine(
 
 ////////
 
-const server = app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server listen on port ${PORT}`);
 });
 
 server.on('error', error => {
   console.log(error);
 });
-
-////////
-
-const io = new SocketIO.Server(server);
 
 ////////
 
@@ -93,7 +92,7 @@ router.post(pathGuardar, (request, response) => {
   const product = request.body;
   if (product.price && product.title && product.thumbnail) {
     memoria.addElement(product);
-    io.sockets.emit('cargarProductos', memoria.getArray());
+    ioServer.sockets.emit('cargarProductos', memoria.getArray());
     response.redirect('/');
   } else {
     response.status(400).send({ error: 'Información incompleta' });
@@ -115,7 +114,21 @@ router.delete(parhDelete, (request, response) => {
 
 ///////////////
 
-io.on('connection', socket => {
+ioServer.on('connection', socket => {
   socket.emit('cargarProductos', memoria.getArray());
   console.log('Se conecto en el back');
+});
+
+//////////////
+
+const messages = [];
+
+ioServer.on('connection', socket => {
+  console.log('Un cliente se ha conectado');
+  socket.emit('messages', messages);
+
+  socket.on('new-message', data => {
+    messages.push(data);
+    ioServer.sockets.emit('messages', messages);
+  });
 });

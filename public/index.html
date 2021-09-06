@@ -14,15 +14,12 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script src="socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
   </head>
   <body>
     <section>
       <div class="container">
-        <h1>Ingrese un producto:</h1>
-      </div>
-    </section>
-    <section>
-      <div class="container">
+        <h1 style="color: blue">Ingrese un producto:</h1>
         <form
           action="/api/productos/guardar"
           method="POST"
@@ -51,6 +48,40 @@
         <span id="tablaProductos"></span>
       </div>
     </section>
+    <section>
+      <div class="container">
+        <hr />
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <h4 style="color: blue">Centro de mensajes</h4>
+        <form onsubmit="return addMessage()">
+          <div class="form-row">
+            <div class="col-md-5 mb-2">
+              <input
+                class="form-control"
+                type="email"
+                id="email"
+                placeholder="Tu Email"
+                required
+              />
+              <hr />
+            </div>
+            <div id="messages"></div>
+            <div class="col-md-5 mt-2">
+              <input
+                class="form-control"
+                type="text"
+                id="texto"
+                placeholder="Cuéntanos algo..."
+              />
+            </div>
+          </div>
+          <input type="submit" value="Enviar" class="btn btn-primary mt-2" />
+        </form>
+      </div>
+    </section>
     <script>
       const socket = io();
       const hbsTemplate = Handlebars.compile(`
@@ -71,7 +102,7 @@
           {{/each}}
           </tbody> </table>
         {{else}}
-          <h3>No hay productos</h3>
+          <h3>(No hay productos)</h3>
         {{/if}}
         </div> `);
       socket.on('cargarProductos', data => {
