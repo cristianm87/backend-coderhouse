@@ -45,7 +45,7 @@
     </section>
     <section>
       <div class="container">
-        <span id="tablaProductos"></span>
+        <article id="tablaProductos"></article>
       </div>
     </section>
     <section>
@@ -85,26 +85,34 @@
     <script>
       const socket = io();
       const hbsTemplate = Handlebars.compile(`
-            <div> <h2>Vista Productos</h2>
-        {{#if productos}}
-          <table class="table "> <thead> <tr> <th>ID</th> <th>Titulo</th> <th>Price</th> <th>Thumbnail</th> </tr> </thead> <tbody>
-          {{#each productos}}
-            <tr> <td>
-            {{id}}
-            </td> <td>
-            {{title}}
-            </td> <td>
-              {{price}}
-              </td> <td>
-                <img src="{{thumbnail}}" width="50px"></img>
-                </td>
-              </tr>
-          {{/each}}
-          </tbody> </table>
-        {{else}}
-          <h3>(No hay productos)</h3>
-        {{/if}}
-        </div> `);
+            <div>
+              <h2>Vista Productos</h2>
+              {{#if productos}}
+                <table class="table "> 
+                  <thead> <tr> <th>ID</th> <th>Titulo</th> <th>Price</th> <th>Thumbnail</th> </tr> </thead> 
+                  <tbody>
+                    {{#each productos}}
+                      <tr> 
+                        <td>
+                          {{id}}
+                        </td>
+                        <td>
+                          {{title}}
+                        </td> 
+                        <td>
+                          {{price}}
+                        </td> 
+                        <td>
+                          <img src="{{thumbnail}}" width="50px"></img>
+                        </td>
+                      </tr>
+                    {{/each}}
+                  </tbody> 
+                </table>
+              {{else}}
+                <h3>(No hay productos)</h3>
+              {{/if}}
+            </div>`);
       socket.on('cargarProductos', data => {
         const html = hbsTemplate({ productos: data });
         document.getElementById('tablaProductos').innerHTML = html;

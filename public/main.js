@@ -37,7 +37,7 @@ function addMessage() {
     } <span style="color: brown">[${date()}]:<span/>`,
     text: inputTexto.value,
   };
-
+  inputEmail.value = '';
   inputTexto.value = '';
   sockett.emit('new-message', message);
   return false; // esto es para que no se actualice la pagina en cada submit
