@@ -1,5 +1,5 @@
 import express from 'express';
-import { Memoria } from './memoria.es6.mjs';
+import { Memoria } from './memoria.es6.js'; // cambiar ruta en caso de requerirlo
 import path from 'path';
 import handlebars from 'express-handlebars';
 import * as SocketIO from 'socket.io';

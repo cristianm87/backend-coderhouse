@@ -7,11 +7,11 @@
   },
   "name": "proyecto-final",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.es6.js",
   "scripts": {
     "ServerTStoJS5": "node_modules/.bin/tsc -w",
-    "ServerES6toJS5": "node_modules/.bin/babel server.es6.mjs -o server.js -w",
-    "start": "nodemon server.mjs",
+    "ServerES6toJS5": "node_modules/.bin/babel server.es6.js -o server.js -w",
+    "start": "nodemon ./dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -20,22 +20,30 @@
     <section>
       <div class="container">
         <h1 style="color: blue">Ingrese un producto:</h1>
-        <form
-          action="/api/productos/guardar"
-          method="POST"
-          class="row g-3 mt-2"
-        >
+        <form action="/productos/agregar" method="POST" class="row g-3 mt-2">
           <div class="col-auto">
-            <label for="title" class="form-label">Nombre</label>
-            <input type="text" name="title" class="form-control" />
+            <label for="name" class="form-label">Nombre *</label>
+            <input type="text" name="name" class="form-control" />
           </div>
           <div class="col-auto">
-            <label for="price" class="form-label">Precio</label>
-            <input type="text" name="price" class="form-control" />
+            <label for="description" class="form-label">Descripción *</label>
+            <input type="text" name="description" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="code" class="form-label">Codigo *</label>
+            <input type="text" name="code" class="form-control" />
           </div>
           <div class="col-auto">
             <label for="thumbnail" class="form-label">Foto Url</label>
             <input type="text" name="thumbnail" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="price" class="form-label">Precio</label>
+            <input type="number" name="price" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" name="stock" class="form-control" />
           </div>
           <div class="row-1">
             <button type="submit" class="btn btn-primary mb-3">Enviar</button>
@@ -78,7 +86,11 @@
               />
             </div>
           </div>
-          <input type="submit" value="Enviar" class="btn btn-primary mt-2" />
+          <input
+            type="submit"
+            value="Enviar"
+            class="btn btn-primary mt-2 mb-2"
+          />
         </form>
       </div>
     </section>
@@ -89,7 +101,7 @@
               <h2>Vista Productos</h2>
               {{#if productos}}
                 <table class="table "> 
-                  <thead> <tr> <th>ID</th> <th>Titulo</th> <th>Price</th> <th>Thumbnail</th> </tr> </thead> 
+                  <thead> <tr> <th>ID</th> <th>Timestamp</th> <th>Nombre</th> <th>Descripción</th> <th>Codigo</th>  <th>Foto(url)</th> <th>Precio</th> <th>Stock</th></tr> </thead> 
                   <tbody>
                     {{#each productos}}
                       <tr> 
@@ -97,14 +109,26 @@
                           {{id}}
                         </td>
                         <td>
-                          {{title}}
+                          {{timestamp}}
+                        </td>
+                        <td>
+                          {{name}}
                         </td> 
                         <td>
-                          {{price}}
-                        </td> 
+                          {{description}}
+                        </td>
+                        <td>
+                          {{code}}
+                        </td>
                         <td>
                           <img src="{{thumbnail}}" width="50px"></img>
                         </td>
+                        <td>
+                          {{price}}
+                        </td>  
+                        <td>
+                          {{stock}}
+                        </td>  
                       </tr>
                     {{/each}}
                   </tbody> 

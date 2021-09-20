@@ -1,15 +1,5 @@
-interface Producto {
-  array: [];
-  id: number;
-}
-
+import { Producto } from './producto';
 export class Memoria {
-  // private array: {
-  //   id: number;
-  //   title: string;
-  //   price: number;
-  //   thumbnail: string;
-  // }[];
   private array: Array<Producto>;
   private count: number;
 
@@ -25,7 +15,7 @@ export class Memoria {
     return result;
   }
   addElement(objeto: Producto) {
-    this.array.push({ ...objeto, id: this.count + 1 });
+    this.array.push({ ...objeto, id: this.count + 1, timestamp: new Date() });
     this.count++;
     return objeto;
   }

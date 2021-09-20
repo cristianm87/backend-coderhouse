@@ -25,7 +25,7 @@ var Memoria = /** @class */ (function () {
         return result;
     };
     Memoria.prototype.addElement = function (objeto) {
-        this.array.push(__assign(__assign({}, objeto), { id: this.count + 1 }));
+        this.array.push(__assign(__assign({}, objeto), { id: this.count + 1, timestamp: new Date() }));
         this.count++;
         return objeto;
     };
