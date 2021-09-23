@@ -39,11 +39,17 @@
           </div>
           <div class="col-auto">
             <label for="price" class="form-label">Precio</label>
-            <input type="number" name="price" class="form-control" />
+            <input
+              type="number"
+              name="price"
+              min="0"
+              step=".01"
+              class="form-control"
+            />
           </div>
           <div class="col-auto">
             <label for="stock" class="form-label">Stock</label>
-            <input type="number" name="stock" class="form-control" />
+            <input type="number" name="stock" min="0" class="form-control" />
           </div>
           <div class="row-1">
             <button type="submit" class="btn btn-primary mb-3">Enviar</button>

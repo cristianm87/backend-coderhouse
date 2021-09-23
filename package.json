@@ -3,7 +3,10 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
     "handlebars": "^4.7.7",
-    "socket.io": "^4.2.0"
+    "knex": "^0.95.11",
+    "mysql": "^2.18.1",
+    "socket.io": "^4.2.0",
+    "sqlite3": "^5.0.2"
   },
   "name": "proyecto-final",
   "version": "1.0.0",

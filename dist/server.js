@@ -29,6 +29,14 @@ var path_1 = __importDefault(require("path"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
 var SocketIO = __importStar(require("socket.io"));
 var http_1 = __importDefault(require("http"));
+// import knex
+var knex_1 = __importDefault(require("knex"));
+// SQLite3
+var SQLite3_1 = require("./options/SQLite3");
+var knex_msj = (0, knex_1.default)(SQLite3_1.options_sqlite3);
+// mariaDB
+var mariaDB_1 = require("./options/mariaDB");
+var knex_products = (0, knex_1.default)(mariaDB_1.options_mariaDB);
 var PORT = 8080 || process.env.PORT;
 var app = (0, express_1.default)();
 var routerProductos = express_1.default.Router();
@@ -43,10 +51,10 @@ var isAdmin = true;
 var pathVistaProductos = '/vista'; // Vista UI
 var pathListar = '/listar';
 var pathListarPorId = '/listar/:id';
-var parthAgregar = '/agregar';
+var pathAgregar = '/agregar';
 var pathAgregarPorId = '/agregar/:id_producto';
 var pathUpdate = '/actualizar/:id';
-var parhDelete = '/borrar/:id';
+var pathDelete = '/borrar/:id_producto';
 ////////
 app.use(express_1.default.static(__dirname + "/public"));
 app.use(express_1.default.json());
@@ -88,6 +96,7 @@ routerProductos.get(pathListar, function (req, res) {
     var result = memoria.getArray();
     if (result.length > 0) {
         res.status(200).send(JSON.stringify(result));
+        knex_listar();
     }
     else {
         res.status(404).send({ error: 'No hay productos cargados' });
@@ -101,12 +110,13 @@ routerProductos.get(pathListarPorId, function (req, res) {
     }
     res.status(200).send(JSON.stringify(result));
 });
-routerProductos.post(parthAgregar, function (req, res) {
+routerProductos.post(pathAgregar, function (req, res) {
     if (isAdmin) {
         var product = req.body;
         if (product.name && product.description && product.code) {
             memoria.addElement(product);
             ioServer.sockets.emit('cargarProductos', memoria.getArray());
+            productsRecord();
             res.redirect('/');
         }
         else {
@@ -116,7 +126,7 @@ routerProductos.post(parthAgregar, function (req, res) {
     else {
         res.send({
             error: -1,
-            descripcion: "ruta '" + parthAgregar + "' m\u00E9todo 'Guardar' no autorizada",
+            descripcion: "ruta '" + pathAgregar + "' m\u00E9todo 'Guardar' no autorizada",
         });
     }
 });
@@ -124,6 +134,8 @@ routerProductos.put(pathUpdate, function (req, res) {
     if (isAdmin) {
         var paramId = parseInt(req.params.id);
         var newProduct = req.body;
+        console.log('new product', newProduct);
+        knex_update(newProduct, paramId);
         memoria.updateObject(newProduct, paramId);
         res.send(newProduct);
     }
@@ -134,17 +146,18 @@ routerProductos.put(pathUpdate, function (req, res) {
         });
     }
 });
-routerProductos.delete(parhDelete, function (req, res) {
+routerProductos.delete(pathDelete, function (req, res) {
     if (isAdmin) {
         var paramId = parseInt(req.params.id_producto);
         var deletedObject = memoria.getElementById(paramId);
         memoria.deleteObject(paramId);
         res.status(200).send(deletedObject);
+        knex_delete(paramId);
     }
     else {
         res.send({
             error: -1,
-            descripcion: "ruta '" + parhDelete + "' m\u00E9todo 'Guardar' no autorizada",
+            descripcion: "ruta '" + pathDelete + "' m\u00E9todo 'Guardar' no autorizada",
         });
     }
 });
@@ -171,7 +184,7 @@ routerCarrito.post(pathAgregarPorId, function (req, res) {
     // res.send(producto);
     res.redirect('/');
 });
-routerCarrito.delete(parhDelete, function (req, res) {
+routerCarrito.delete(pathDelete, function (req, res) {
     var paramId = parseInt(req.params.id);
     var deletedObject = carrito.getProductoById(paramId);
     carrito.deleteProducto(paramId);
@@ -189,5 +202,106 @@ ioServer.on('connection', function (socket) {
     socket.on('new-message', function (data) {
         messages.push(data);
         ioServer.sockets.emit('messages', messages);
+        chatRecord();
     });
 });
+// Mensajes con SQLite3 y KNEX
+var tableName_msj = 'chatTable';
+var chatRecord = function () {
+    knex_msj.schema.hasTable(tableName_msj).then(function (exist) {
+        if (exist) {
+            knex_msj.schema.dropTable(tableName_msj).then(runChatRecord);
+            return;
+        }
+        runChatRecord();
+    });
+};
+var runChatRecord = function () {
+    knex_msj.schema
+        .createTable(tableName_msj, function (table) {
+        table.string('author');
+        table.string('text');
+    })
+        .then(function () {
+        knex_msj(tableName_msj)
+            .insert(messages) //insertar datos 'messages' en la tabla
+            .then(function () {
+            console.log('chat guardado en SQLite3');
+        })
+            .catch(function (error) {
+            console.log(error);
+            throw error;
+        })
+            .finally(function () { });
+    });
+};
+////////////////////////////// Productos con mariaDB y KNEX
+var tableName_products = 'productsTable';
+var productsRecord = function () {
+    // SI TABLA EXISTE O NO
+    knex_products.schema.hasTable(tableName_products).then(function (exist) {
+        if (exist) {
+            knex_products.schema.dropTable(tableName_products).then(productsPersist);
+            return;
+        }
+        productsPersist();
+    });
+};
+var productsPersist = function () {
+    // CREAR TABLA
+    knex_products.schema
+        .createTable(tableName_products, function (table) {
+        table.string('name', 25);
+        table.string('description', 50);
+        table.string('code', 12);
+        table.string('thumbnail', 50);
+        table.float('price');
+        table.integer('stock');
+        table.integer('id');
+        table.date('timestamp');
+    })
+        .then(function () {
+        console.log('tabla creada');
+        knex_products(tableName_products)
+            .insert(memoria.getArray())
+            .then(function () {
+            console.log('datos insertados');
+        });
+    });
+};
+var knex_listar = function () {
+    knex_products // mostrar datos de la tabla 'tableName'
+        .from(tableName_products)
+        .select('*')
+        .then(function (rows) {
+        for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
+            var row = rows_1[_i];
+            console.log(row['id'] + " " + row['timestamp'] + " " + row['name'] + " " + row['description'] + " " + row['code'] + " " + row['thumbnail'] + " " + row['price'] + "  " + row['stock'] + " ");
+        }
+    });
+};
+// UPDATE
+var knex_update = function (newProduct, paramId) {
+    knex_products
+        .from(tableName_products)
+        .where('id', paramId)
+        .update('name', newProduct.name)
+        .update('description', newProduct.description)
+        .update('code', newProduct.code)
+        .update('thumbnail', newProduct.thumbnail)
+        .update('price', newProduct.price)
+        .update('stock', newProduct.stock)
+        .then(function () {
+        console.log("Prodcuto con id " + paramId + " fue actualizado");
+    });
+};
+// DELETE
+var knex_delete = function (paramId) {
+    knex_products
+        .from(tableName_products)
+        .where('id', paramId)
+        .del()
+        .then(function () {
+        console.log("Producto con id " + paramId + " eliminado");
+    });
+};

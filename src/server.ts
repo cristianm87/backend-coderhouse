@@ -5,6 +5,14 @@ import path from 'path';
 import handlebars from 'express-handlebars';
 import * as SocketIO from 'socket.io';
 import http from 'http';
+// import knex
+import knex from 'knex';
+// SQLite3
+import { options_sqlite3 } from './options/SQLite3';
+const knex_msj = knex(options_sqlite3);
+// mariaDB
+import { options_mariaDB } from './options/mariaDB';
+const knex_products = knex(options_mariaDB);
 
 const PORT = 8080 || process.env.PORT;
 const app = express();
@@ -21,10 +29,10 @@ const isAdmin: boolean = true;
 const pathVistaProductos = '/vista'; // Vista UI
 const pathListar = '/listar';
 const pathListarPorId = '/listar/:id';
-const parthAgregar = '/agregar';
+const pathAgregar = '/agregar';
 const pathAgregarPorId = '/agregar/:id_producto';
 const pathUpdate = '/actualizar/:id';
-const parhDelete = '/borrar/:id';
+const pathDelete = '/borrar/:id_producto';
 
 ////////
 
@@ -84,6 +92,7 @@ routerProductos.get(pathListar, (req: Request, res: Response) => {
   const result = memoria.getArray();
   if (result.length > 0) {
     res.status(200).send(JSON.stringify(result));
+    knex_listar();
   } else {
     res.status(404).send({ error: 'No hay productos cargados' });
   }
@@ -98,12 +107,13 @@ routerProductos.get(pathListarPorId, (req: Request, res: Response) => {
   res.status(200).send(JSON.stringify(result));
 });
 
-routerProductos.post(parthAgregar, (req: Request, res: Response) => {
+routerProductos.post(pathAgregar, (req: Request, res: Response) => {
   if (isAdmin) {
     const product = req.body;
     if (product.name && product.description && product.code) {
       memoria.addElement(product);
       ioServer.sockets.emit('cargarProductos', memoria.getArray());
+      productsRecord();
       res.redirect('/');
     } else {
       res.status(400).send({ error: 'Información incompleta' });
@@ -111,7 +121,7 @@ routerProductos.post(parthAgregar, (req: Request, res: Response) => {
   } else {
     res.send({
       error: -1,
-      descripcion: `ruta '${parthAgregar}' método 'Guardar' no autorizada`,
+      descripcion: `ruta '${pathAgregar}' método 'Guardar' no autorizada`,
     });
   }
 });
@@ -120,6 +130,8 @@ routerProductos.put(pathUpdate, (req: Request, res: Response) => {
   if (isAdmin) {
     const paramId = parseInt(req.params.id);
     const newProduct = req.body;
+    console.log('new product', newProduct);
+    knex_update(newProduct, paramId);
     memoria.updateObject(newProduct, paramId);
     res.send(newProduct);
   } else {
@@ -130,16 +142,17 @@ routerProductos.put(pathUpdate, (req: Request, res: Response) => {
   }
 });
 
-routerProductos.delete(parhDelete, (req: Request, res: Response) => {
+routerProductos.delete(pathDelete, (req: Request, res: Response) => {
   if (isAdmin) {
     const paramId = parseInt(req.params.id_producto);
     const deletedObject = memoria.getElementById(paramId);
     memoria.deleteObject(paramId);
     res.status(200).send(deletedObject);
+    knex_delete(paramId);
   } else {
     res.send({
       error: -1,
-      descripcion: `ruta '${parhDelete}' método 'Guardar' no autorizada`,
+      descripcion: `ruta '${pathDelete}' método 'Guardar' no autorizada`,
     });
   }
 });
@@ -169,7 +182,7 @@ routerCarrito.post(pathAgregarPorId, (req: Request, res: Response) => {
   res.redirect('/');
 });
 
-routerCarrito.delete(parhDelete, (req: Request, res: Response) => {
+routerCarrito.delete(pathDelete, (req: Request, res: Response) => {
   const paramId = parseInt(req.params.id);
   const deletedObject = carrito.getProductoById(paramId);
   carrito.deleteProducto(paramId);
@@ -198,5 +211,120 @@ ioServer.on('connection', socket => {
   socket.on('new-message', data => {
     messages.push(data);
     ioServer.sockets.emit('messages', messages);
+    chatRecord();
   });
 });
+
+// Mensajes con SQLite3 y KNEX
+
+const tableName_msj = 'chatTable';
+
+const chatRecord = () => {
+  knex_msj.schema.hasTable(tableName_msj).then(exist => {
+    if (exist) {
+      knex_msj.schema.dropTable(tableName_msj).then(runChatRecord);
+      return;
+    }
+    runChatRecord();
+  });
+};
+
+const runChatRecord = () => {
+  knex_msj.schema
+    .createTable(tableName_msj, table => {
+      table.string('author');
+      table.string('text');
+    })
+    .then(() => {
+      knex_msj(tableName_msj)
+        .insert(messages) //insertar datos 'messages' en la tabla
+        .then(() => {
+          console.log('chat guardado en SQLite3');
+        })
+        .catch(error => {
+          console.log(error);
+          throw error;
+        })
+        .finally(() => {});
+    });
+};
+
+////////////////////////////// Productos con mariaDB y KNEX
+
+const tableName_products = 'productsTable';
+
+const productsRecord = () => {
+  // SI TABLA EXISTE O NO
+  knex_products.schema.hasTable(tableName_products).then(exist => {
+    if (exist) {
+      knex_products.schema.dropTable(tableName_products).then(productsPersist);
+      return;
+    }
+    productsPersist();
+  });
+};
+
+const productsPersist = () => {
+  // CREAR TABLA
+  knex_products.schema
+    .createTable(tableName_products, table => {
+      table.string('name', 25);
+      table.string('description', 50);
+      table.string('code', 12);
+      table.string('thumbnail', 50);
+      table.float('price');
+      table.integer('stock');
+      table.integer('id');
+      table.date('timestamp');
+    })
+    .then(() => {
+      console.log('tabla creada');
+      knex_products(tableName_products)
+        .insert(memoria.getArray())
+        .then(() => {
+          console.log('datos insertados');
+        });
+    });
+};
+
+const knex_listar = () => {
+  knex_products // mostrar datos de la tabla 'tableName'
+    .from(tableName_products)
+    .select('*')
+    .then(rows => {
+      for (const row of rows) {
+        console.log(
+          `${row['id']} ${row['timestamp']} ${row['name']} ${row['description']} ${row['code']} ${row['thumbnail']} ${row['price']}  ${row['stock']} `
+        );
+      }
+    });
+};
+
+// UPDATE
+
+const knex_update = (newProduct: any, paramId: number) => {
+  knex_products
+    .from(tableName_products)
+    .where('id', paramId)
+    .update('name', newProduct.name)
+    .update('description', newProduct.description)
+    .update('code', newProduct.code)
+    .update('thumbnail', newProduct.thumbnail)
+    .update('price', newProduct.price)
+    .update('stock', newProduct.stock)
+    .then(() => {
+      console.log(`Prodcuto con id ${paramId} fue actualizado`);
+    });
+};
+
+// DELETE
+
+const knex_delete = (paramId: number) => {
+  knex_products
+    .from(tableName_products)
+    .where('id', paramId)
+    .del()
+    .then(() => {
+      console.log(`Producto con id ${paramId} eliminado`);
+    });
+};
