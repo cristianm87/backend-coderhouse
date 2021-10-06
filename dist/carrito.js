@@ -18,15 +18,17 @@ var Carrito = /** @class */ (function () {
         return this.carrito;
     };
     Carrito.prototype.getProductoById = function (id) {
-        var producto = this.carrito.find(function (element) { return element.id === Number(id); });
+        var producto = this.carrito.find(function (element) { return element._id == id; });
         return producto;
     };
     Carrito.prototype.addProducto = function (producto) {
         this.carrito.push(producto);
     };
     Carrito.prototype.deleteProducto = function (id) {
-        var index = this.carrito.findIndex(function (element) { return element.id === Number(id); });
-        this.carrito.splice(index, 1);
+        var index = this.carrito.findIndex(function (element) { return element._id == id; });
+        if (index != -1) {
+            this.carrito.splice(index, 1);
+        }
     };
     Carrito.contador = 1;
     return Carrito;

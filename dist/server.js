@@ -18,6 +18,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,11 +67,17 @@ var SocketIO = __importStar(require("socket.io"));
 var http_1 = __importDefault(require("http"));
 // import knex
 var knex_1 = __importDefault(require("knex"));
-// SQLite3
+/////////////////
+// SQLite3 (borrar)
 var SQLite3_1 = require("./options/SQLite3");
 var knex_msj = (0, knex_1.default)(SQLite3_1.options_sqlite3);
+/////////////////
 // mariaDB
 var mariaDB_1 = require("./options/mariaDB");
+// Mongoose
+var mongoose_1 = __importDefault(require("mongoose"));
+var mensajes_1 = require("./models/mensajes");
+var productos_1 = require("./models/productos");
 var knex_products = (0, knex_1.default)(mariaDB_1.options_mariaDB);
 var PORT = 8080 || process.env.PORT;
 var app = (0, express_1.default)();
@@ -103,7 +145,7 @@ routerProductos.get(pathListar, function (req, res) {
     }
 });
 routerProductos.get(pathListarPorId, function (req, res) {
-    var paramId = parseInt(req.params.id);
+    var paramId = req.params.id;
     var result = memoria.getElementById(paramId);
     if (result == null) {
         res.status(404).send('Producto no encontrado');
@@ -114,9 +156,10 @@ routerProductos.post(pathAgregar, function (req, res) {
     if (isAdmin) {
         var product = req.body;
         if (product.name && product.description && product.code) {
-            memoria.addElement(product);
+            mongooseLocalProductosAdd(product);
+            // memoria.addElement(product);
             ioServer.sockets.emit('cargarProductos', memoria.getArray());
-            productsRecord();
+            // knex_productsRecord();
             res.redirect('/');
         }
         else {
@@ -132,11 +175,13 @@ routerProductos.post(pathAgregar, function (req, res) {
 });
 routerProductos.put(pathUpdate, function (req, res) {
     if (isAdmin) {
-        var paramId = parseInt(req.params.id);
+        var paramId = req.params.id;
         var newProduct = req.body;
         console.log('new product', newProduct);
-        knex_update(newProduct, paramId);
         memoria.updateObject(newProduct, paramId);
+        console.log('get array:', memoria.getArray());
+        mongooseLocalProductosUpdate(newProduct, paramId);
+        // knex_update(newProduct, paramId);
         res.send(newProduct);
     }
     else {
@@ -148,11 +193,13 @@ routerProductos.put(pathUpdate, function (req, res) {
 });
 routerProductos.delete(pathDelete, function (req, res) {
     if (isAdmin) {
-        var paramId = parseInt(req.params.id_producto);
+        var paramId = req.params.id_producto;
+        console.log('paramID', paramId);
         var deletedObject = memoria.getElementById(paramId);
         memoria.deleteObject(paramId);
+        mongooseLocalProductosDelete(paramId);
+        // knex_delete(paramId);
         res.status(200).send(deletedObject);
-        knex_delete(paramId);
     }
     else {
         res.send({
@@ -163,34 +210,30 @@ routerProductos.delete(pathDelete, function (req, res) {
 });
 //////// EndPoints Carrito
 routerCarrito.get(pathListar, function (req, res) {
-    var queryId = Number(req.query.id);
-    if (!isNaN(queryId)) {
-        var producto = carrito.getProductoById(queryId);
-        res.send({ productoEnCarrito: producto });
-    }
-    else {
-        var productos = carrito.getProductos();
-        res.send({
-            idCarrito: carrito.getId(),
-            timestampCarrito: carrito.getTimestamp(),
-            ProductosEnCarrito: productos,
-        });
-    }
+    var productos = carrito.getProductos();
+    res.send({
+        idCarrito: carrito.getId(),
+        timestampCarrito: carrito.getTimestamp(),
+        ProductosEnCarrito: productos,
+    });
 });
 routerCarrito.post(pathAgregarPorId, function (req, res) {
-    var paramId = parseInt(req.params.id_producto);
+    var paramId = req.params.id_producto;
+    console.log('agregar al carrito param id', paramId);
     var producto = memoria.getElementById(paramId);
     carrito.addProducto(producto);
-    // res.send(producto);
-    res.redirect('/');
+    res.send(producto);
+    // res.redirect('/');
 });
 routerCarrito.delete(pathDelete, function (req, res) {
-    var paramId = parseInt(req.params.id);
+    var paramId = req.params.id_producto;
     var deletedObject = carrito.getProductoById(paramId);
+    console.log('deleted object', deletedObject);
     carrito.deleteProducto(paramId);
     res.status(200).send(deletedObject);
 });
 /////////////// ioServer
+// esto esta en mongoose Local
 ioServer.on('connection', function (socket) {
     socket.emit('cargarProductos', memoria.getArray());
     console.log('Se conecto en el back');
@@ -200,11 +243,13 @@ ioServer.on('connection', function (socket) {
     console.log('Un cliente se ha conectado');
     socket.emit('messages', messages);
     socket.on('new-message', function (data) {
+        chatMongoose(data); //mongoose
         messages.push(data);
+        // chatRecord(); 'sqLite3'
         ioServer.sockets.emit('messages', messages);
-        chatRecord();
     });
 });
+//////////////
 // Mensajes con SQLite3 y KNEX
 var tableName_msj = 'chatTable';
 var chatRecord = function () {
@@ -237,7 +282,7 @@ var runChatRecord = function () {
 };
 ////////////////////////////// Productos con mariaDB y KNEX
 var tableName_products = 'productsTable';
-var productsRecord = function () {
+var knex_productsRecord = function () {
     // SI TABLA EXISTE O NO
     knex_products.schema.hasTable(tableName_products).then(function (exist) {
         if (exist) {
@@ -257,8 +302,8 @@ var productsPersist = function () {
         table.string('thumbnail', 50);
         table.float('price');
         table.integer('stock');
-        table.integer('id');
-        table.date('timestamp');
+        table.string('_id');
+        table.integer('__v');
     })
         .then(function () {
         console.log('tabla creada');
@@ -266,6 +311,9 @@ var productsPersist = function () {
             .insert(memoria.getArray())
             .then(function () {
             console.log('datos insertados');
+        })
+            .catch(function (error) {
+            console.log(error);
         });
     });
 };
@@ -276,7 +324,7 @@ var knex_listar = function () {
         .then(function (rows) {
         for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
             var row = rows_1[_i];
-            console.log(row['id'] + " " + row['timestamp'] + " " + row['name'] + " " + row['description'] + " " + row['code'] + " " + row['thumbnail'] + " " + row['price'] + "  " + row['stock'] + " ");
+            console.log(row['__v'] + " " + row['_id'] + " " + row['name'] + " " + row['description'] + " " + row['code'] + " " + row['thumbnail'] + " " + row['price'] + "  " + row['stock'] + " ");
         }
     });
 };
@@ -304,4 +352,171 @@ var knex_delete = function (paramId) {
         .then(function () {
         console.log("Producto con id " + paramId + " eliminado");
     });
+};
+////// MENSAJES CON MONGOOSE (MONGODB)
+var chatMongoose = function (messages) {
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var _a, _b, _c, _d, error_1;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    _e.trys.push([0, 4, 5, 6]);
+                    return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                case 1:
+                    _e.sent();
+                    console.log('Base de datos conectada');
+                    _b = (_a = console).log;
+                    return [4 /*yield*/, mensajes_1.modelMensajes.insertMany(messages)];
+                case 2:
+                    _b.apply(_a, [_e.sent()]);
+                    _d = (_c = console).log;
+                    return [4 /*yield*/, mensajes_1.modelMensajes.find()];
+                case 3:
+                    _d.apply(_c, [_e.sent()]);
+                    return [3 /*break*/, 6];
+                case 4:
+                    error_1 = _e.sent();
+                    console.log(error_1);
+                    return [3 /*break*/, 6];
+                case 5:
+                    mongoose_1.default.disconnect(function () {
+                        console.log('Base de datos desconectada');
+                    });
+                    return [7 /*endfinally*/];
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); })();
+};
+//////////////// PRODUCTOS CON MONGOOSE
+var mongooseLocalProductosAdd = function (producto) {
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, 4, 5]);
+                    return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, productos_1.modelProductos.insertMany(producto)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [3 /*break*/, 5];
+                case 4:
+                    mongoose_1.default.disconnect(function () {
+                        console.log('Base de datos desconectada');
+                        mongooseLocalProductosRead();
+                    });
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); })();
+};
+// lee la base de datos y la guarda en el array productos
+var mongooseLocalProductosRead = function () {
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var productos, _i, productos_2, producto, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, 4, 5]);
+                    return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, productos_1.modelProductos.find()];
+                case 2:
+                    productos = _a.sent();
+                    memoria.emptyArray();
+                    for (_i = 0, productos_2 = productos; _i < productos_2.length; _i++) {
+                        producto = productos_2[_i];
+                        memoria.addElement(producto);
+                    }
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_3 = _a.sent();
+                    console.log(error_3);
+                    return [3 /*break*/, 5];
+                case 4:
+                    mongoose_1.default.disconnect(function () {
+                        console.log('Base de datos desconectada');
+                    });
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); })();
+};
+mongooseLocalProductosRead();
+var mongooseLocalProductosDelete = function (id) {
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, 4, 5]);
+                    return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, productos_1.modelProductos.deleteOne({ _id: id })];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_4 = _a.sent();
+                    console.log(error_4);
+                    return [3 /*break*/, 5];
+                case 4:
+                    mongoose_1.default.disconnect(function () {
+                        console.log('Base de datos desconectada');
+                    });
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); })();
+};
+var mongooseLocalProductosUpdate = function (newProduct, id) {
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, 4, 5]);
+                    return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                case 1:
+                    _a.sent();
+                    console.log(newProduct);
+                    return [4 /*yield*/, productos_1.modelProductos.updateOne({ _id: id }, {
+                            $set: {
+                                name: newProduct.name,
+                                description: newProduct.description,
+                                code: newProduct.code,
+                                thumbnail: newProduct.thumbnail,
+                                price: newProduct.price,
+                                stock: newProduct.stock,
+                            },
+                        })];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_5 = _a.sent();
+                    console.log(error_5);
+                    return [3 /*break*/, 5];
+                case 4:
+                    mongoose_1.default.disconnect(function () {
+                        console.log('Base de datos desconectada');
+                        mongooseLocalProductosRead();
+                    });
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); })();
 };

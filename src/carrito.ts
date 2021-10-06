@@ -23,15 +23,17 @@ export class Carrito {
   public getProductos() {
     return this.carrito;
   }
-  public getProductoById(id: number) {
-    const producto = this.carrito.find(element => element.id === Number(id));
+  public getProductoById(id: string) {
+    const producto = this.carrito.find(element => element._id == id);
     return producto;
   }
   public addProducto(producto: Producto) {
     this.carrito.push(producto);
   }
-  public deleteProducto(id: number) {
-    let index = this.carrito.findIndex(element => element.id === Number(id));
-    this.carrito.splice(index, 1);
+  public deleteProducto(id: string) {
+    let index = this.carrito.findIndex(element => element._id == id);
+    if (index != -1) {
+      this.carrito.splice(index, 1);
+    }
   }
 }

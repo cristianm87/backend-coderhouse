@@ -1,27 +1,35 @@
+import { ObjectId } from 'mongoose';
+
 export class Producto {
-  public id: number;
+  public _id: string;
+
   public timestamp: Date;
   public nombre: string;
   public descripcion: string;
   public codigo: string;
   public thumbnail: string;
   public price: number;
+  public stock: number;
 
   constructor(
-    id: number,
+    _id: string,
+
     timestamp: Date,
     nombre: string,
     descripcion: string,
     codigo: string,
     thumbnail: string,
-    price: number
+    price: number,
+    stock: number
   ) {
-    this.id = id;
+    this._id = _id;
+
     this.timestamp = timestamp;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.codigo = codigo;
     this.thumbnail = thumbnail;
     this.price = price;
+    this.stock = stock;
   }
 }
