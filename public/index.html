@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proyecto Final</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <section>
+      <div class="container">
+        <h1 style="color: blue">Ingrese un producto:</h1>
+        <form action="/productos/agregar" method="POST" class="row g-3 mt-2">
+          <div class="col-auto">
+            <label for="name" class="form-label">Nombre *</label>
+            <input type="text" name="name" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="description" class="form-label">Descripción *</label>
+            <input type="text" name="description" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="code" class="form-label">Codigo *</label>
+            <input type="text" name="code" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="thumbnail" class="form-label">Foto Url</label>
+            <input type="text" name="thumbnail" class="form-control" />
+          </div>
+          <div class="col-auto">
+            <label for="price" class="form-label">Precio</label>
+            <input
+              type="number"
+              name="price"
+              min="0"
+              step=".01"
+              class="form-control"
+            />
+          </div>
+          <div class="col-auto">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" name="stock" min="0" class="form-control" />
+          </div>
+          <div class="row-1">
+            <button type="submit" class="btn btn-primary mb-3">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <article id="tablaProductos"></article>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <hr />
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <h4 style="color: blue">Centro de mensajes</h4>
+        <form onsubmit="return addMessage()">
+          <div class="form-row">
+            <div class="col-md-5 mb-2">
+              <input
+                class="form-control"
+                type="email"
+                id="email"
+                placeholder="Tu Email"
+                required
+              />
+              <hr />
+            </div>
+            <div id="messages"></div>
+            <div class="col-md-5 mt-2">
+              <input
+                class="form-control"
+                type="text"
+                id="texto"
+                placeholder="Cuéntanos algo..."
+              />
+            </div>
+          </div>
+          <input
+            type="submit"
+            value="Enviar"
+            class="btn btn-primary mt-2 mb-2"
+          />
+        </form>
+      </div>
+    </section>
+    <script>
+      const socket = io();
+      const hbsTemplate = Handlebars.compile(`
+            <div>
+              <h2>Vista Productos</h2>
+              {{#if productos}}
+                <table class="table "> 
+                  <thead> <tr> <th>ID</th> <th>Timestamp</th> <th>Nombre</th> <th>Descripción</th> <th>Codigo</th>  <th>Foto(url)</th> <th>Precio</th> <th>Stock</th></tr> </thead> 
+                  <tbody>
+                    {{#each productos}}
+                      <tr> 
+                        <td>
+                          {{_id}}
+                        </td>
+                        <td>
+                          {{timestamp}}
+                        </td>
+                        <td>
+                          {{name}}
+                        </td> 
+                        <td>
+                          {{description}}
+                        </td>
+                        <td>
+                          {{code}}
+                        </td>
+                        <td>
+                          <img src="{{thumbnail}}" width="50px"></img>
+                        </td>
+                        <td>
+                          {{price}}
+                        </td>  
+                        <td>
+                          {{stock}}
+                        </td>  
+                      </tr>
+                    {{/each}}
+                  </tbody> 
+                </table>
+              {{else}}
+                <h3>(No hay productos)</h3>
+              {{/if}}
+            </div>`);
+      socket.on('cargarProductos', data => {
+        const html = hbsTemplate({ productos: data });
+        document.getElementById('tablaProductos').innerHTML = html;
+      });
+    </script>
+  </body>
+</html>
