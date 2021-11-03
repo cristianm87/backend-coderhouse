@@ -1,0 +1,22 @@
+[
+	{
+		"name": "Nuevo nombre",
+		"description": "Nueva descripcion",
+		"code": "Nuevo codigo",
+		"thumbnail": "nuevaImagen.com",
+		"price": 5000,
+		"stock": 5,
+		"timestamp": "2021-10-24T03:09:40.181Z",
+		"_id": "2"
+	},
+	{
+		"name": "Producto ThunderClient",
+		"description": "short description",
+		"code": "asd2415",
+		"thumbnail": "image.jpg",
+		"price": 3000,
+		"stock": 10,
+		"timestamp": "2021-10-24T03:09:40.599Z",
+		"_id": "3"
+	}
+]
