@@ -2,13 +2,15 @@ import express, { Request, Response } from 'express';
 import { IDao } from './interfaces/daos/IDao';
 
 import path from 'path';
-import handlebars from 'express-handlebars';
 import * as SocketIO from 'socket.io';
-import http from 'http';
+import http, { request } from 'http';
 
 import { DaoFactory } from './daoFactory';
 import faker from 'faker';
 faker.locale = 'es';
+// import normalizr from 'normalizr';
+const normalizr = require('normalizr');
+const util = require('util');
 
 const PORT = 8080 || process.env.PORT;
 const app = express();
@@ -50,20 +52,10 @@ app.use('/productos', routerProductos);
 app.use('/carrito', routerCarrito);
 app.use('/mensajes', routerMensajes);
 
-//////// config Handlebars
+//////// config EJS
 
-// app.set('views', './views');
-// app.set('view engine', 'hbs');
-
-// app.engine(
-//   'hbs',
-//   handlebars({
-//     extname: '.hbs',
-//     defaultLayout: 'index.hbs',
-//     layoutsDir: __dirname + '/views/layouts',
-//     // partialDir: __dirname + '/views/partials',
-//   })
-// );
+app.set('views', __dirname + '/views/layouts');
+app.set('view engine', 'ejs');
 
 //////// DAO OPTIONS ////////
 const MEMORY = 0;
@@ -106,7 +98,7 @@ routerProductos.get(pathVistaTest, (req, res) => {
   if (cantidad == '0') {
     res.send('No hay productos');
   } else {
-    res.render('layouts/vista-test.ejs', {
+    res.render('vista-test', {
       productos: datos,
     });
   }
@@ -114,14 +106,11 @@ routerProductos.get(pathVistaTest, (req, res) => {
 
 // FILTRAR PRODUCTOS
 
-import { MongoDbDao } from './daos/MongoDbDao';
-const mongoDb = new MongoDbDao();
-
 // POR NOMBRE
 routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
   const filtrar = req.body.buscar;
   try {
-    await mongoDb.filterByName(filtrar);
+    await dao.filterByName(filtrar);
   } catch (error) {
     console.log(error);
   } finally {
@@ -134,7 +123,7 @@ routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
   const precioMin = req.body.min;
   const precioMax = req.body.max;
   try {
-    await mongoDb.filterByPrice(precioMin, precioMax);
+    await dao.filterByPrice(precioMin, precioMax);
   } catch (error) {
     console.log(error);
   } finally {
@@ -143,14 +132,14 @@ routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
 });
 
 routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
-  let productsFiltered = await mongoDb.getProductsFiltered();
+  let productsFiltered: any = await dao.getProductsFiltered();
   if (productsFiltered.length < 1) {
-    res.render('layouts/index.ejs', {
+    res.render('vista-productos', {
       productos: await dao.getProducts(),
     });
   } else {
-    res.render('layouts/index.ejs', {
-      productos: mongoDb.getProductsFiltered(),
+    res.render('vista-productos', {
+      productos: dao.getProductsFiltered(),
     });
   }
 
@@ -371,39 +360,23 @@ routerCarrito.delete(pathDelete, async (req: Request, res: Response) => {
 
 ///// SOCKETiO WEBCHAT
 
-interface Message {
-  author: {
-    id: string;
-    fecha: string;
-    nombre: string;
-    apellido: string;
-    edad: number;
-    alias: string;
-    avatar: string;
-  };
-  text: string;
-}
-
-const messages: Array<Message> = [];
-
 routerMensajes.post(
   pathGuardarMensajes,
   async (req: Request, res: Response) => {
-    const date = new Date().toLocaleString('es-AR');
-    const mensaje = {
+    const body = req.body;
+    // const date = new Date().toLocaleString('es-AR');
+    const mensaje: any = {
       author: {
-        id: req.body.email,
-        fecha: date,
-        nombre: req.body.firstname,
-        apellido: req.body.lastname,
-        edad: req.body.age,
-        alias: req.body.nickname,
-        avatar: req.body.avatar,
+        email: body.email,
+        nombre: body.firstname,
+        apellido: body.lastname,
+        edad: body.age,
+        alias: body.nickname,
+        avatar: body.avatar,
       },
-      text: req.body.text,
+      text: body.text,
     };
-
-    await messages.push(mensaje);
+    await dao.insertMessage(mensaje);
     res.redirect('/');
   }
 );
@@ -413,12 +386,21 @@ routerMensajes.post(
 ioServer.on('connection', async socket => {
   console.log('Un cliente se ha conectado');
   await initializeProducts();
-  console.log('messsages from ioseerver', messages);
-  await ioServer.sockets.emit('message-from-server', await messages);
+  await initializeMessages();
   // socket.on('message-from-client', async data => {
   //   await ioServer.sockets.emit('message-from-server', await messages);
   // });
 });
+
+const initializeMessages = async () => {
+  // console.log('dao.getMessages', await dao.getMessages());
+  try {
+    let mensajes = await dao.getMessages();
+    ioServer.sockets.emit('message-from-server', mensajes);
+  } catch (error) {
+    console.error('initializeMessages()', error);
+  }
+};
 
 ///// SOCKETiO PRODUCTOS
 
@@ -426,6 +408,64 @@ const initializeProducts = async () => {
   if (option === 0) {
     ioServer.sockets.emit('products-from-server', dao.getProductsSync());
   } else {
-    ioServer.sockets.emit('products-from-server', await dao.getProducts());
+    try {
+      await ioServer.sockets.emit(
+        'products-from-server',
+        await dao.getProducts()
+      );
+    } catch (error) {
+      console.error('initializeProducts()', error);
+    }
   }
 };
+
+// NORMALIZR
+
+const authorSchema = new normalizr.schema.Entity('author', undefined, {
+  idAttribute: 'email',
+});
+
+const messageSchema = new normalizr.schema.Entity('message', {
+  author: authorSchema,
+});
+
+const messagesSchema = new normalizr.schema.Entity('messages', {
+  messages: [messageSchema],
+});
+
+const getNormalizedMessages = async () => {
+  const messagesFromDb: any = await dao.getMessages();
+  const messages: any = [];
+
+  messagesFromDb.forEach(function (e: any, i: any) {
+    messages.push({
+      id: i + 1,
+      author: {
+        email: e.author.email,
+        nombre: e.author.nombre,
+        apellido: e.author.apellido,
+        edad: e.author.edad,
+        alias: e.author.alias,
+        avatar: e.author.avatar,
+      },
+      text: e.text,
+    });
+  });
+
+  const messagesData = {
+    id: 1,
+    messages: [],
+  };
+
+  messagesData.messages = messages;
+
+  const normalizedData = normalizr.normalize(messagesData, messagesSchema);
+
+  console.log('dataNormalizada', util.inspect(normalizedData, false, 12, true));
+
+  routerMensajes.get('/vista', (req: Request, res: Response) => {
+    res.status(200).send(normalizedData);
+  });
+};
+
+getNormalizedMessages();

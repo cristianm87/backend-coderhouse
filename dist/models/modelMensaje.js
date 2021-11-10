@@ -5,16 +5,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.modelMensaje = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
-var mensajesSchema = new mongoose_1.default.Schema({
-    author: {
+var personaSchema = new mongoose_1.default.Schema({
+    email: {
         type: String,
         require: true,
-        max: 100,
+        max: 50,
     },
-    text: {
+    nombre: {
         type: String,
         require: true,
-        max: 100,
+        max: 50,
+    },
+    apellido: {
+        type: String,
+        require: true,
+        max: 50,
+    },
+    edad: {
+        type: Number,
+        require: true,
+        max: 2,
+    },
+    fecha: {
+        type: String,
+        require: true,
+        max: 50,
+    },
+    avatar: {
+        type: String,
+        require: true,
+        max: 50,
     },
 });
-exports.modelMensaje = mongoose_1.default.model('mensajes', mensajesSchema);
+var authorSchema = new mongoose_1.default.Schema({
+    author: personaSchema,
+    text: String,
+});
+exports.modelMensaje = mongoose_1.default.model('mensajes', authorSchema);

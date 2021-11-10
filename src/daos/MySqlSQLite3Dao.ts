@@ -1,5 +1,6 @@
 import { IDao } from '../interfaces/daos/IDao';
 import { Producto } from '../producto';
+import { Mensaje } from '../mensaje';
 import knex from 'knex';
 
 const options_sqlite3 = {
@@ -23,6 +24,21 @@ export class MySqlSQLite3Dao implements IDao {
     this.cartId = MySqlSQLite3Dao.cartCount;
     MySqlSQLite3Dao.cartCount++;
     this.cartTimestamp = Date.now();
+  }
+  filterByName(filtro: any): void {
+    throw new Error('Method not implemented.');
+  }
+  filterByPrice(min: any, max: any): void {
+    throw new Error('Method not implemented.');
+  }
+  getProductsFiltered(): void {
+    throw new Error('Method not implemented.');
+  }
+  insertMessage(message: Mensaje): void {
+    throw new Error('Method not implemented.');
+  }
+  getMessages(): Promise<Mensaje[]> {
+    throw new Error('Method not implemented.');
   }
 
   // PRODUCTOS

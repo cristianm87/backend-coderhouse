@@ -146,6 +146,21 @@ var MySqlDao = /** @class */ (function () {
         MySqlDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MySqlDao.prototype.filterByName = function (filtro) {
+        throw new Error('Method not implemented.');
+    };
+    MySqlDao.prototype.filterByPrice = function (min, max) {
+        throw new Error('Method not implemented.');
+    };
+    MySqlDao.prototype.getProductsFiltered = function () {
+        throw new Error('Method not implemented.');
+    };
+    MySqlDao.prototype.insertMessage = function (message) {
+        throw new Error('Method not implemented.');
+    };
+    MySqlDao.prototype.getMessages = function () {
+        throw new Error('Method not implemented.');
+    };
     MySqlDao.prototype.insertProduct = function (product) {
         return __awaiter(this, void 0, void 0, function () {
             var knexEcommerce, error_3;

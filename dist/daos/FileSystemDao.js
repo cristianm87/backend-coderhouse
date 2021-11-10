@@ -60,6 +60,21 @@ var FileSystemDao = /** @class */ (function () {
         FileSystemDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    FileSystemDao.prototype.filterByName = function (filtro) {
+        throw new Error('Method not implemented.');
+    };
+    FileSystemDao.prototype.filterByPrice = function (min, max) {
+        throw new Error('Method not implemented.');
+    };
+    FileSystemDao.prototype.getProductsFiltered = function () {
+        throw new Error('Method not implemented.');
+    };
+    FileSystemDao.prototype.insertMessage = function (message) {
+        throw new Error('Method not implemented.');
+    };
+    FileSystemDao.prototype.getMessages = function () {
+        throw new Error('Method not implemented.');
+    };
     FileSystemDao.prototype.getNewId = function () {
         var maxId = Math.max.apply(Math, __spreadArray(__spreadArray([], this.productos.map(function (product) { return Number(product._id); }), false), [0], false));
         var newId = maxId + 1;

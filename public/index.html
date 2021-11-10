@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Proyecto Final</title>
+    <title>Ecommerce</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,8 +12,11 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script src="socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script src="ejs.min.js"></script>
+    <script type="module" src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <!-- PRODUCTOS -->
@@ -47,7 +50,7 @@
               type="number"
               name="price"
               min="0"
-              step=".01"
+              step=".10"
               class="form-control"
             />
           </div>
@@ -117,6 +120,7 @@
               <hr />
             </div>
             <div id="messages"></div>
+
             <div class="col-md-5 mt-2">
               <input
                 class="form-control"
@@ -135,65 +139,70 @@
       </div>
     </section>
     <script>
-      // SOCKETiO PRODUCTOS
+      // SOCKETiO MENSAJES
+      const responseAxios = {};
+      axios
+        .get('/mensajes/vista')
+        .then(response => {
+          console.log(response.data);
+          responseAxios = response.data;
+          // console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
-      const hbsTemplate = Handlebars.compile(`
-            <div>
-              <h2>Vista Productos</h2>
-              {{#if productos}}
-                <table class="table table-dark"> 
-                  <thead> <tr> <th>ID</th> <th>Timestamp</th> <th>Nombre</th> <th>Descripción</th> <th>Codigo</th>  <th>Foto(url)</th> <th>Precio</th> <th>Stock</th></tr> </thead> 
-                  <tbody>
-                    {{#each productos}}
-                      <tr> 
-                        <td>
-                          {{_id}}
-                        </td>
-                        <td>
-                          {{timestamp}}
-                        </td>
-                        <td>
-                          {{name}}
-                        </td> 
-                        <td>
-                          {{description}}
-                        </td>
-                        <td>
-                          {{code}}
-                        </td>
-                        <td>
-                          <img src="{{thumbnail}}" width="50px"></img>
-                        </td>
-                        <td>
-                          {{price}}
-                        </td>  
-                        <td>
-                          {{stock}}
-                        </td>  
-                      </tr>
-                    {{/each}}
-                  </tbody> 
-                </table>
-              {{else}}
-                <h3>(No hay productos)</h3>
-              {{/if}}
-            </div>`);
-      const socketProductos = io();
-      socketProductos.on('products-from-server', data => {
-        const html = hbsTemplate({ productos: data });
-        document.getElementById('tablaProductos').innerHTML = html;
+      // NORMALIZER
+
+      // const normalizr = require('normalizr');
+      // const util = require('util');
+
+      const authorSchema = new normalizr.schema.Entity('author', undefined, {
+        idAttribute: 'email',
       });
 
-      // SOCKETiO MENSAJES
+      const messageSchema = new normalizr.schema.Entity('messages', {
+        author: authorSchema,
+      });
+
+      const messagesSchema = new normalizr.schema.Entity('messages', {
+        messages: [messageSchema],
+      });
+
+      console.log('INFORMACION NORMALIZADA-------------');
+
+      // const inspectNormalizedData = util.inspect(responseAxios, false, 12, true);
+
+      // console.log(inspectNormalizedData);
+      console.log('--------------------');
+
+      console.log('INFORMACION DESNORMALIZADA-----------');
+
+      const denormalizedData = normalizr.denormalize(
+        responseAxios.result,
+        messagesSchema,
+        responseAxios.entities
+      );
+
+      // const inspectDenormalizedData = util.inspect(
+      //   denormalizedData,
+      //   false,
+      //   12,
+      //   true
+      // );
+
+      // console.log(inspectDenormalizedData);
+      console.log('--------------------');
+
       const socketMensajes = io();
       socketMensajes.on('message-from-server', data => {
         document.getElementById('messages').innerHTML = data
           .map(
             entry =>
               `<div>
-                <strong id="chatAuthor"">${entry.author.id}</strong> <span id="chatDate">[${entry.author.fecha}]</span>
-                <em id="chatText">${entry.text}</em> <img id="chatAvatar" src="${entry.author.avatar}"></img>
-              </div>`
+          <strong id="chatAuthor"">${entry.author.email}</strong> <span id="chatDate">[${entry.fecha}]</span>
+          <em id="chatText">${entry.text}</em> <img id="chatAvatar" src="${entry.author.avatar}"></img>
+        </div>`
           )
           .join(' ');
       });

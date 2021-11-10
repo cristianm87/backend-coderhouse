@@ -61,6 +61,21 @@ var FirebaseDao = /** @class */ (function () {
         FirebaseDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    FirebaseDao.prototype.filterByName = function (filtro) {
+        throw new Error('Method not implemented.');
+    };
+    FirebaseDao.prototype.filterByPrice = function (min, max) {
+        throw new Error('Method not implemented.');
+    };
+    FirebaseDao.prototype.getProductsFiltered = function () {
+        throw new Error('Method not implemented.');
+    };
+    FirebaseDao.prototype.insertMessage = function (message) {
+        throw new Error('Method not implemented.');
+    };
+    FirebaseDao.prototype.getMessages = function () {
+        throw new Error('Method not implemented.');
+    };
     FirebaseDao.prototype.insertProduct = function (product) {
         return __awaiter(this, void 0, void 0, function () {
             var firestoreAdmin, collection, error_1;

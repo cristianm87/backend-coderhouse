@@ -3,8 +3,8 @@ import { IDao } from '../interfaces/daos/IDao';
 import mongoose from 'mongoose';
 import { modelProductos } from '../models/modelProducto';
 import { modelCarrito } from '../models/modelCarrito';
-import { modelMensaje } from '../models/modelMensaje';
 import { Mensaje } from '../mensaje';
+import { modelMensaje } from '../models/modelMensaje';
 
 export class MongoDbDbaasDao implements IDao {
   products: Array<any>;
@@ -19,6 +19,21 @@ export class MongoDbDbaasDao implements IDao {
     this.cartId = MongoDbDbaasDao.cartCount;
     MongoDbDbaasDao.cartCount++;
     this.cartTimestamp = Date.now();
+  }
+  filterByName(filtro: any): void {
+    throw new Error('Method not implemented.');
+  }
+  filterByPrice(min: any, max: any): void {
+    throw new Error('Method not implemented.');
+  }
+  getProductsFiltered(): void {
+    throw new Error('Method not implemented.');
+  }
+  insertMessage(message: Mensaje): void {
+    throw new Error('Method not implemented.');
+  }
+  getMessages(): Promise<Mensaje[]> {
+    throw new Error('Method not implemented.');
   }
 
   // PRODUCTO

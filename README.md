@@ -1,14 +1,14 @@
 ### para transpilar con babel:
 
 ```
-npm run ServerES6toJS5 (not in use)
+npm run ES6toJS5 (not in use)
 
 ```
 
 ### con TS:
 
 ```
-npm run ServerTStoJS5
+npm run TStoJS5
 
 ```
 

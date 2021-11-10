@@ -65,6 +65,9 @@ var http_1 = __importDefault(require("http"));
 var daoFactory_1 = require("./daoFactory");
 var faker_1 = __importDefault(require("faker"));
 faker_1.default.locale = 'es';
+// import normalizr from 'normalizr';
+var normalizr = require('normalizr');
+var util = require('util');
 var PORT = 8080 || process.env.PORT;
 var app = (0, express_1.default)();
 var routerProductos = express_1.default.Router();
@@ -101,18 +104,9 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use('/productos', routerProductos);
 app.use('/carrito', routerCarrito);
 app.use('/mensajes', routerMensajes);
-//////// config Handlebars
-// app.set('views', './views');
-// app.set('view engine', 'hbs');
-// app.engine(
-//   'hbs',
-//   handlebars({
-//     extname: '.hbs',
-//     defaultLayout: 'index.hbs',
-//     layoutsDir: __dirname + '/views/layouts',
-//     // partialDir: __dirname + '/views/partials',
-//   })
-// );
+//////// config EJS
+app.set('views', __dirname + '/views/layouts');
+app.set('view engine', 'ejs');
 //////// DAO OPTIONS ////////
 var MEMORY = 0;
 var MONGODB = 1;
@@ -151,14 +145,12 @@ routerProductos.get(pathVistaTest, function (req, res) {
         res.send('No hay productos');
     }
     else {
-        res.render('layouts/vista-test.ejs', {
+        res.render('vista-test', {
             productos: datos,
         });
     }
 });
 // FILTRAR PRODUCTOS
-var MongoDbDao_1 = require("./daos/MongoDbDao");
-var mongoDb = new MongoDbDao_1.MongoDbDao();
 // POR NOMBRE
 routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var filtrar, error_1;
@@ -169,7 +161,7 @@ routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, 4, 5]);
-                return [4 /*yield*/, mongoDb.filterByName(filtrar)];
+                return [4 /*yield*/, dao.filterByName(filtrar)];
             case 2:
                 _a.sent();
                 return [3 /*break*/, 5];
@@ -195,7 +187,7 @@ routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, 4, 5]);
-                return [4 /*yield*/, mongoDb.filterByPrice(precioMin, precioMax)];
+                return [4 /*yield*/, dao.filterByPrice(precioMin, precioMax)];
             case 2:
                 _a.sent();
                 return [3 /*break*/, 5];
@@ -215,12 +207,12 @@ routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(v
     var _d;
     return __generator(this, function (_e) {
         switch (_e.label) {
-            case 0: return [4 /*yield*/, mongoDb.getProductsFiltered()];
+            case 0: return [4 /*yield*/, dao.getProductsFiltered()];
             case 1:
                 productsFiltered = _e.sent();
                 if (!(productsFiltered.length < 1)) return [3 /*break*/, 3];
                 _b = (_a = res).render;
-                _c = ['layouts/index.ejs'];
+                _c = ['vista-productos'];
                 _d = {};
                 return [4 /*yield*/, dao.getProducts()];
             case 2:
@@ -228,8 +220,8 @@ routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(v
                         _d)]));
                 return [3 /*break*/, 4];
             case 3:
-                res.render('layouts/index.ejs', {
-                    productos: mongoDb.getProductsFiltered(),
+                res.render('vista-productos', {
+                    productos: dao.getProductsFiltered(),
                 });
                 _e.label = 4;
             case 4: return [2 /*return*/];
@@ -548,26 +540,25 @@ routerCarrito.delete(pathDelete, function (req, res) { return __awaiter(void 0, 
         }
     });
 }); });
-var messages = [];
+///// SOCKETiO WEBCHAT
 routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var date, mensaje;
+    var body, mensaje;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                date = new Date().toLocaleString('es-AR');
+                body = req.body;
                 mensaje = {
                     author: {
-                        id: req.body.email,
-                        fecha: date,
-                        nombre: req.body.firstname,
-                        apellido: req.body.lastname,
-                        edad: req.body.age,
-                        alias: req.body.nickname,
-                        avatar: req.body.avatar,
+                        email: body.email,
+                        nombre: body.firstname,
+                        apellido: body.lastname,
+                        edad: body.age,
+                        alias: body.nickname,
+                        avatar: body.avatar,
                     },
-                    text: req.body.text,
+                    text: body.text,
                 };
-                return [4 /*yield*/, messages.push(mensaje)];
+                return [4 /*yield*/, dao.insertMessage(mensaje)];
             case 1:
                 _a.sent();
                 res.redirect('/');
@@ -577,42 +568,109 @@ routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(
 }); });
 //
 ioServer.on('connection', function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, _c;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 console.log('Un cliente se ha conectado');
                 return [4 /*yield*/, initializeProducts()];
             case 1:
-                _d.sent();
-                console.log('messsages from ioseerver', messages);
-                _b = (_a = ioServer.sockets).emit;
-                _c = ['message-from-server'];
-                return [4 /*yield*/, messages];
-            case 2: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.sent()]))];
-            case 3:
-                _d.sent();
+                _a.sent();
+                return [4 /*yield*/, initializeMessages()];
+            case 2:
+                _a.sent();
                 return [2 /*return*/];
         }
     });
 }); });
+var initializeMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var mensajes, error_10;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, dao.getMessages()];
+            case 1:
+                mensajes = _a.sent();
+                ioServer.sockets.emit('message-from-server', mensajes);
+                return [3 /*break*/, 3];
+            case 2:
+                error_10 = _a.sent();
+                console.error('initializeMessages()', error_10);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 ///// SOCKETiO PRODUCTOS
 var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, _c;
+    var _a, _b, _c, error_11;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
                 if (!(option === 0)) return [3 /*break*/, 1];
                 ioServer.sockets.emit('products-from-server', dao.getProductsSync());
-                return [3 /*break*/, 3];
+                return [3 /*break*/, 5];
             case 1:
+                _d.trys.push([1, 4, , 5]);
                 _b = (_a = ioServer.sockets).emit;
                 _c = ['products-from-server'];
                 return [4 /*yield*/, dao.getProducts()];
-            case 2:
-                _b.apply(_a, _c.concat([_d.sent()]));
-                _d.label = 3;
-            case 3: return [2 /*return*/];
+            case 2: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.sent()]))];
+            case 3:
+                _d.sent();
+                return [3 /*break*/, 5];
+            case 4:
+                error_11 = _d.sent();
+                console.error('initializeProducts()', error_11);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
+// NORMALIZR
+var authorSchema = new normalizr.schema.Entity('author', undefined, {
+    idAttribute: 'email',
+});
+var messageSchema = new normalizr.schema.Entity('message', {
+    author: authorSchema,
+});
+var messagesSchema = new normalizr.schema.Entity('messages', {
+    messages: [messageSchema],
+});
+var getNormalizedMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var messagesFromDb, messages, messagesData, normalizedData;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, dao.getMessages()];
+            case 1:
+                messagesFromDb = _a.sent();
+                messages = [];
+                messagesFromDb.forEach(function (e, i) {
+                    messages.push({
+                        id: i + 1,
+                        author: {
+                            email: e.author.email,
+                            nombre: e.author.nombre,
+                            apellido: e.author.apellido,
+                            edad: e.author.edad,
+                            alias: e.author.alias,
+                            avatar: e.author.avatar,
+                        },
+                        text: e.text,
+                    });
+                });
+                messagesData = {
+                    id: 1,
+                    messages: [],
+                };
+                messagesData.messages = messages;
+                normalizedData = normalizr.normalize(messagesData, messagesSchema);
+                console.log('dataNormalizada', util.inspect(normalizedData, false, 12, true));
+                routerMensajes.get('/vista', function (req, res) {
+                    res.status(200).send(normalizedData);
+                });
+                return [2 /*return*/];
+        }
+    });
+}); };
+getNormalizedMessages();

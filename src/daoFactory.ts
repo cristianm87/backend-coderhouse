@@ -33,7 +33,7 @@ export class DaoFactory {
         return new FirebaseDao();
         break;
       default:
-        return new MemoryDao();
+        return new MongoDbDao();
         break;
     }
   }

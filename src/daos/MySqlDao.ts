@@ -1,6 +1,7 @@
 import { IDao } from '../interfaces/daos/IDao';
 import { Producto } from '../producto';
 import knex from 'knex';
+import { Mensaje } from '../mensaje';
 
 const options_mariaDB = {
   client: 'mysql',
@@ -25,6 +26,21 @@ export class MySqlDao implements IDao {
     this.cartId = MySqlDao.cartCount;
     MySqlDao.cartCount++;
     this.cartTimestamp = Date.now();
+  }
+  filterByName(filtro: any): void {
+    throw new Error('Method not implemented.');
+  }
+  filterByPrice(min: any, max: any): void {
+    throw new Error('Method not implemented.');
+  }
+  getProductsFiltered(): void {
+    throw new Error('Method not implemented.');
+  }
+  insertMessage(message: Mensaje): void {
+    throw new Error('Method not implemented.');
+  }
+  getMessages(): Promise<Mensaje[]> {
+    throw new Error('Method not implemented.');
   }
 
   // PRODUCTOS

@@ -35,7 +35,7 @@ var DaoFactory = /** @class */ (function () {
                 return new FirebaseDao_1.FirebaseDao();
                 break;
             default:
-                return new MemoryDao_1.MemoryDao();
+                return new MongoDbDao_1.MongoDbDao();
                 break;
         }
     };

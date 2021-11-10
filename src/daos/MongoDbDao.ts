@@ -1,13 +1,15 @@
 import { Producto } from '../producto';
+import { Mensaje } from '../mensaje';
 import { IDao } from '../interfaces/daos/IDao';
 import mongoose from 'mongoose';
 import { modelProductos } from '../models/modelProducto';
 import { modelCarrito } from '../models/modelCarrito';
-
+import { modelMensaje } from '../models/modelMensaje';
 export class MongoDbDao implements IDao {
   products: Array<any>;
   carrito: Array<any>;
   productosFiltrados: Array<any>;
+  messages: Array<any>;
   private cartId: number;
   private static cartCount: number = 1;
   private cartTimestamp: Number;
@@ -16,10 +18,16 @@ export class MongoDbDao implements IDao {
     this.products = new Array<any>();
     this.carrito = new Array<any>();
     this.productosFiltrados = Array<any>();
+    this.messages = Array<Mensaje>();
     this.cartId = MongoDbDao.cartCount;
     MongoDbDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+
+  // mongoose.connect("mongodb://localhost:27017/test", {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  // });
 
   // PRODUCTO
 
@@ -37,7 +45,7 @@ export class MongoDbDao implements IDao {
       });
       console.log('Producto guardado!');
     } catch (error) {
-      console.log(error);
+      console.log('insertProduct()', error);
     } finally {
       await mongoose.disconnect(() => {});
     }
@@ -46,17 +54,13 @@ export class MongoDbDao implements IDao {
   async getProducts(): Promise<Array<Producto>> {
     try {
       await mongoose.connect('mongodb://localhost:27017/ecommerce');
-      const productsFromDb = await modelProductos.find();
-      this.products = [];
-      for (const product of productsFromDb) {
-        this.products.push(product);
-      }
+      this.products = await modelProductos.find();
     } catch (error) {
-      console.log(error);
+      console.error('getProducts()', error);
     } finally {
       await mongoose.disconnect(() => {});
 
-      return this.products;
+      return await this.products;
     }
   }
 
@@ -168,8 +172,6 @@ export class MongoDbDao implements IDao {
     return this.cartTimestamp;
   }
 
-  //
-
   // FILTRAR PRODUCTOS
 
   async filterByName(filtro: any) {
@@ -188,6 +190,37 @@ export class MongoDbDao implements IDao {
 
   getProductsFiltered() {
     return this.productosFiltrados;
+  }
+
+  // MENSAJES
+
+  async insertMessage(message: any) {
+    try {
+      await mongoose.connect('mongodb://localhost:27017/ecommerce');
+      await modelMensaje.insertMany(message);
+      console.log('Mensaje guardado!');
+    } catch (error) {
+      console.error('insertMessage()', error);
+    } finally {
+      await mongoose.disconnect(() => {});
+    }
+  }
+
+  async getMessages(): Promise<Array<Mensaje>> {
+    try {
+      await mongoose.connect('mongodb://localhost:27017/ecommerce');
+      const messagesFromDb = await modelMensaje.find();
+      // this.messages = messagesFromDb;
+      this.messages = [];
+      for (const mensaje of messagesFromDb) {
+        this.messages.push(mensaje);
+      }
+    } catch (error) {
+      console.error('getMessages()', error);
+    } finally {
+      await mongoose.disconnect(() => {});
+      return this.messages;
+    }
   }
 
   //

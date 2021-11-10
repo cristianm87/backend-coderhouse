@@ -43,15 +43,21 @@ exports.MongoDbDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var modelProducto_1 = require("../models/modelProducto");
 var modelCarrito_1 = require("../models/modelCarrito");
+var modelMensaje_1 = require("../models/modelMensaje");
 var MongoDbDao = /** @class */ (function () {
     function MongoDbDao() {
         this.products = new Array();
         this.carrito = new Array();
         this.productosFiltrados = Array();
+        this.messages = Array();
         this.cartId = MongoDbDao.cartCount;
         MongoDbDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    // mongoose.connect("mongodb://localhost:27017/test", {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    // });
     // PRODUCTO
     MongoDbDao.prototype.insertProduct = function (product) {
         return __awaiter(this, void 0, void 0, function () {
@@ -78,7 +84,7 @@ var MongoDbDao = /** @class */ (function () {
                         return [3 /*break*/, 6];
                     case 3:
                         error_1 = _a.sent();
-                        console.log(error_1);
+                        console.log('insertProduct()', error_1);
                         return [3 /*break*/, 6];
                     case 4: return [4 /*yield*/, mongoose_1.default.disconnect(function () { })];
                     case 5:
@@ -91,32 +97,29 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.getProducts = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var productsFromDb, _i, productsFromDb_1, product, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 3, 4, 6]);
+                        _b.trys.push([0, 3, 4, 7]);
                         return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
                     case 1:
-                        _a.sent();
+                        _b.sent();
+                        _a = this;
                         return [4 /*yield*/, modelProducto_1.modelProductos.find()];
                     case 2:
-                        productsFromDb = _a.sent();
-                        this.products = [];
-                        for (_i = 0, productsFromDb_1 = productsFromDb; _i < productsFromDb_1.length; _i++) {
-                            product = productsFromDb_1[_i];
-                            this.products.push(product);
-                        }
-                        return [3 /*break*/, 6];
+                        _a.products = _b.sent();
+                        return [3 /*break*/, 7];
                     case 3:
-                        error_2 = _a.sent();
-                        console.log(error_2);
-                        return [3 /*break*/, 6];
+                        error_2 = _b.sent();
+                        console.error('getProducts()', error_2);
+                        return [3 /*break*/, 7];
                     case 4: return [4 /*yield*/, mongoose_1.default.disconnect(function () { })];
                     case 5:
-                        _a.sent();
-                        return [2 /*return*/, this.products];
-                    case 6: return [2 /*return*/];
+                        _b.sent();
+                        return [4 /*yield*/, this.products];
+                    case 6: return [2 /*return*/, _b.sent()];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -244,7 +247,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.getCartProducts = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var productsFromDb, _i, productsFromDb_2, product, error_7;
+            var productsFromDb, _i, productsFromDb_1, product, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -256,8 +259,8 @@ var MongoDbDao = /** @class */ (function () {
                     case 2:
                         productsFromDb = _a.sent();
                         this.carrito = [];
-                        for (_i = 0, productsFromDb_2 = productsFromDb; _i < productsFromDb_2.length; _i++) {
-                            product = productsFromDb_2[_i];
+                        for (_i = 0, productsFromDb_1 = productsFromDb; _i < productsFromDb_1.length; _i++) {
+                            product = productsFromDb_1[_i];
                             this.carrito.push(product);
                         }
                         return [3 /*break*/, 6];
@@ -337,7 +340,6 @@ var MongoDbDao = /** @class */ (function () {
     MongoDbDao.prototype.getCartTimestamp = function () {
         return this.cartTimestamp;
     };
-    //
     // FILTRAR PRODUCTOS
     MongoDbDao.prototype.filterByName = function (filtro) {
         return __awaiter(this, void 0, void 0, function () {
@@ -369,6 +371,68 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.getProductsFiltered = function () {
         return this.productosFiltrados;
+    };
+    // MENSAJES
+    MongoDbDao.prototype.insertMessage = function (message) {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, 4, 6]);
+                        return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, modelMensaje_1.modelMensaje.insertMany(message)];
+                    case 2:
+                        _a.sent();
+                        console.log('Mensaje guardado!');
+                        return [3 /*break*/, 6];
+                    case 3:
+                        error_10 = _a.sent();
+                        console.error('insertMessage()', error_10);
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, mongoose_1.default.disconnect(function () { })];
+                    case 5:
+                        _a.sent();
+                        return [7 /*endfinally*/];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDbDao.prototype.getMessages = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var messagesFromDb, _i, messagesFromDb_1, mensaje, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, 4, 6]);
+                        return [4 /*yield*/, mongoose_1.default.connect('mongodb://localhost:27017/ecommerce')];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, modelMensaje_1.modelMensaje.find()];
+                    case 2:
+                        messagesFromDb = _a.sent();
+                        // this.messages = messagesFromDb;
+                        this.messages = [];
+                        for (_i = 0, messagesFromDb_1 = messagesFromDb; _i < messagesFromDb_1.length; _i++) {
+                            mensaje = messagesFromDb_1[_i];
+                            this.messages.push(mensaje);
+                        }
+                        return [3 /*break*/, 6];
+                    case 3:
+                        error_11 = _a.sent();
+                        console.error('getMessages()', error_11);
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, mongoose_1.default.disconnect(function () { })];
+                    case 5:
+                        _a.sent();
+                        return [2 /*return*/, this.messages];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
     };
     //
     MongoDbDao.prototype.getProductsCartAsync = function () {

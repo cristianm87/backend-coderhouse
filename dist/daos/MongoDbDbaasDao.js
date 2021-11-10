@@ -51,6 +51,21 @@ var MongoDbDbaasDao = /** @class */ (function () {
         MongoDbDbaasDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MongoDbDbaasDao.prototype.filterByName = function (filtro) {
+        throw new Error('Method not implemented.');
+    };
+    MongoDbDbaasDao.prototype.filterByPrice = function (min, max) {
+        throw new Error('Method not implemented.');
+    };
+    MongoDbDbaasDao.prototype.getProductsFiltered = function () {
+        throw new Error('Method not implemented.');
+    };
+    MongoDbDbaasDao.prototype.insertMessage = function (message) {
+        throw new Error('Method not implemented.');
+    };
+    MongoDbDbaasDao.prototype.getMessages = function () {
+        throw new Error('Method not implemented.');
+    };
     // PRODUCTO
     MongoDbDbaasDao.prototype.insertProduct = function (product) {
         return __awaiter(this, void 0, void 0, function () {

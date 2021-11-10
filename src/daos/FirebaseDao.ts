@@ -1,4 +1,5 @@
 import { IDao } from '../interfaces/daos/IDao';
+import { Mensaje } from '../mensaje';
 import { Producto } from '../producto';
 const firebaseAdmin = require('firebase-admin');
 
@@ -22,6 +23,21 @@ export class FirebaseDao implements IDao {
     this.cartId = FirebaseDao.cartCount;
     FirebaseDao.cartCount++;
     this.cartTimestamp = Date.now();
+  }
+  filterByName(filtro: any): void {
+    throw new Error('Method not implemented.');
+  }
+  filterByPrice(min: any, max: any): void {
+    throw new Error('Method not implemented.');
+  }
+  getProductsFiltered(): void {
+    throw new Error('Method not implemented.');
+  }
+  insertMessage(message: Mensaje): void {
+    throw new Error('Method not implemented.');
+  }
+  getMessages(): Promise<Mensaje[]> {
+    throw new Error('Method not implemented.');
   }
 
   async insertProduct(product: Producto) {

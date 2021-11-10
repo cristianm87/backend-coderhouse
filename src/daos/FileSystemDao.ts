@@ -1,7 +1,7 @@
 import { IDao } from '../interfaces/daos/IDao';
-import { Mensaje } from '../mensaje';
 import { Producto } from '../producto';
 import fs from 'fs';
+import { Mensaje } from '../mensaje';
 
 export class FileSystemDao implements IDao {
   productos: Array<Producto>;
@@ -15,6 +15,21 @@ export class FileSystemDao implements IDao {
     this.cartId = FileSystemDao.cartCount;
     FileSystemDao.cartCount++;
     this.cartTimestamp = Date.now();
+  }
+  filterByName(filtro: any): void {
+    throw new Error('Method not implemented.');
+  }
+  filterByPrice(min: any, max: any): void {
+    throw new Error('Method not implemented.');
+  }
+  getProductsFiltered(): void {
+    throw new Error('Method not implemented.');
+  }
+  insertMessage(message: Mensaje): void {
+    throw new Error('Method not implemented.');
+  }
+  getMessages(): Promise<Mensaje[]> {
+    throw new Error('Method not implemented.');
   }
 
   private pathProductos: string = './DbFileSystem/productos.txt';

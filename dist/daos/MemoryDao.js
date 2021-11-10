@@ -21,6 +21,21 @@ var MemoryDao = /** @class */ (function () {
         MemoryDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MemoryDao.prototype.filterByName = function (filtro) {
+        throw new Error('Method not implemented.');
+    };
+    MemoryDao.prototype.filterByPrice = function (min, max) {
+        throw new Error('Method not implemented.');
+    };
+    MemoryDao.prototype.getProductsFiltered = function () {
+        throw new Error('Method not implemented.');
+    };
+    MemoryDao.prototype.insertMessage = function (message) {
+        throw new Error('Method not implemented.');
+    };
+    MemoryDao.prototype.getMessages = function () {
+        throw new Error('Method not implemented.');
+    };
     // PRODUCTOS
     MemoryDao.prototype.getProductsSync = function () {
         return this.productos;

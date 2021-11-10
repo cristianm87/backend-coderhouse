@@ -1,16 +1,41 @@
 import mongoose from 'mongoose';
 
-const mensajesSchema = new mongoose.Schema({
-  author: {
+const personaSchema = new mongoose.Schema({
+  email: {
     type: String,
     require: true,
-    max: 100,
+    max: 50,
   },
-  text: {
+  nombre: {
     type: String,
     require: true,
-    max: 100,
+    max: 50,
+  },
+  apellido: {
+    type: String,
+    require: true,
+    max: 50,
+  },
+  edad: {
+    type: Number,
+    require: true,
+    max: 2,
+  },
+  fecha: {
+    type: String,
+    require: true,
+    max: 50,
+  },
+  avatar: {
+    type: String,
+    require: true,
+    max: 50,
   },
 });
 
-export const modelMensaje = mongoose.model('mensajes', mensajesSchema);
+const authorSchema = new mongoose.Schema({
+  author: personaSchema,
+  text: String,
+});
+
+export const modelMensaje = mongoose.model('mensajes', authorSchema);

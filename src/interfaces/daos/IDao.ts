@@ -1,5 +1,5 @@
 import { Producto } from '../../producto';
-
+import { Mensaje } from '../../mensaje';
 export interface IDao {
   insertProduct(product: Producto): void;
   getProducts(): Promise<Array<Producto>>;
@@ -16,4 +16,9 @@ export interface IDao {
   getCartId(): void;
   getCartTimestamp(): void;
   deleteProductCart(id: any): void;
+  filterByName(filtro: any): void;
+  filterByPrice(min: any, max: any): void;
+  getProductsFiltered(): void;
+  insertMessage(message: Mensaje): void;
+  getMessages(): Promise<Array<Mensaje>>;
 }
