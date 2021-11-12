@@ -383,24 +383,11 @@ routerMensajes.post(
 
 //
 
-ioServer.on('connection', async socket => {
+ioServer.on('connection', async _socket => {
   console.log('Un cliente se ha conectado');
   await initializeProducts();
-  await initializeMessages();
-  // socket.on('message-from-client', async data => {
-  //   await ioServer.sockets.emit('message-from-server', await messages);
-  // });
+  await initializeNormalizedMessages();
 });
-
-const initializeMessages = async () => {
-  // console.log('dao.getMessages', await dao.getMessages());
-  try {
-    let mensajes = await dao.getMessages();
-    ioServer.sockets.emit('message-from-server', mensajes);
-  } catch (error) {
-    console.error('initializeMessages()', error);
-  }
-};
 
 ///// SOCKETiO PRODUCTOS
 
@@ -419,23 +406,25 @@ const initializeProducts = async () => {
   }
 };
 
-// NORMALIZR
+// SOCKETiO MESSAGES
 
-const authorSchema = new normalizr.schema.Entity('author', undefined, {
-  idAttribute: 'email',
-});
-
-const messageSchema = new normalizr.schema.Entity('message', {
-  author: authorSchema,
-});
-
-const messagesSchema = new normalizr.schema.Entity('messages', {
-  messages: [messageSchema],
-});
-
-const getNormalizedMessages = async () => {
+const initializeNormalizedMessages = async () => {
   const messagesFromDb: any = await dao.getMessages();
   const messages: any = [];
+
+  // NORMALIZR
+
+  const authorSchema = new normalizr.schema.Entity('author', undefined, {
+    idAttribute: 'email',
+  });
+
+  const messageSchema = new normalizr.schema.Entity('message', {
+    author: authorSchema,
+  });
+
+  const messagesSchema = new normalizr.schema.Entity('messages', {
+    messages: [messageSchema],
+  });
 
   messagesFromDb.forEach(function (e: any, i: any) {
     messages.push({
@@ -461,11 +450,9 @@ const getNormalizedMessages = async () => {
 
   const normalizedData = normalizr.normalize(messagesData, messagesSchema);
 
-  console.log('dataNormalizada', util.inspect(normalizedData, false, 12, true));
-
-  routerMensajes.get('/vista', (req: Request, res: Response) => {
-    res.status(200).send(normalizedData);
-  });
+  try {
+    ioServer.sockets.emit('message-from-server', await normalizedData);
+  } catch (error) {
+    console.error('initializeMessages()', error);
+  }
 };
-
-getNormalizedMessages();

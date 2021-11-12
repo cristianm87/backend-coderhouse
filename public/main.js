@@ -1,4 +1,51 @@
-// SOCKETiO PRODUCTOS
+// SOCKETiO MESSAGES
+
+// NORMALIZER
+const authorSchema = new normalizr.schema.Entity('author', undefined, {
+  idAttribute: 'email',
+});
+
+const messageSchema = new normalizr.schema.Entity('message', {
+  author: authorSchema,
+});
+
+const messagesSchema = new normalizr.schema.Entity('messages', {
+  messages: [messageSchema],
+});
+
+const socketMensajes = io();
+socketMensajes.on('message-from-server', data => {
+  const denormalizedData = normalizr.denormalize(
+    data.result,
+    messagesSchema,
+    data.entities
+  );
+
+  const denormalizedDataLength = JSON.stringify(denormalizedData).length;
+  const normalizedDataLength = JSON.stringify(data).length;
+
+  if (denormalizedData.messages.length < 1) {
+    document.getElementById('compresion').innerHTML =
+      '(Sin mensajes para comprimir)';
+  } else {
+    document.getElementById('compresion').innerHTML = `(Compresión: ${(
+      (normalizedDataLength / denormalizedDataLength) *
+      100
+    ).toFixed(2)}%)`;
+  }
+
+  document.getElementById('messages').innerHTML = denormalizedData.messages
+    .map(
+      entry =>
+        `<div>
+          <strong id="chatAuthor"">${entry.author.email}</strong> <span id="chatDate">[${entry.fecha}]</span>
+          <em id="chatText">${entry.text}</em> <img id="chatAvatar" src="${entry.author.avatar}"></img>
+        </div>`
+    )
+    .join(' ');
+});
+
+// SOCKETiO PRODUCTS
 
 // pre compiled template?
 

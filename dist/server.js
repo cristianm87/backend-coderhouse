@@ -567,7 +567,7 @@ routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(
     });
 }); });
 //
-ioServer.on('connection', function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+ioServer.on('connection', function (_socket) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -575,35 +575,16 @@ ioServer.on('connection', function (socket) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, initializeProducts()];
             case 1:
                 _a.sent();
-                return [4 /*yield*/, initializeMessages()];
+                return [4 /*yield*/, initializeNormalizedMessages()];
             case 2:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); });
-var initializeMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var mensajes, error_10;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, dao.getMessages()];
-            case 1:
-                mensajes = _a.sent();
-                ioServer.sockets.emit('message-from-server', mensajes);
-                return [3 /*break*/, 3];
-            case 2:
-                error_10 = _a.sent();
-                console.error('initializeMessages()', error_10);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
 ///// SOCKETiO PRODUCTOS
 var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, _c, error_11;
+    var _a, _b, _c, error_10;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
@@ -620,31 +601,31 @@ var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, 
                 _d.sent();
                 return [3 /*break*/, 5];
             case 4:
-                error_11 = _d.sent();
-                console.error('initializeProducts()', error_11);
+                error_10 = _d.sent();
+                console.error('initializeProducts()', error_10);
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/];
         }
     });
 }); };
-// NORMALIZR
-var authorSchema = new normalizr.schema.Entity('author', undefined, {
-    idAttribute: 'email',
-});
-var messageSchema = new normalizr.schema.Entity('message', {
-    author: authorSchema,
-});
-var messagesSchema = new normalizr.schema.Entity('messages', {
-    messages: [messageSchema],
-});
-var getNormalizedMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var messagesFromDb, messages, messagesData, normalizedData;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+// SOCKETiO MESSAGES
+var initializeNormalizedMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var messagesFromDb, messages, authorSchema, messageSchema, messagesSchema, messagesData, normalizedData, _a, _b, _c, error_11;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0: return [4 /*yield*/, dao.getMessages()];
             case 1:
-                messagesFromDb = _a.sent();
+                messagesFromDb = _d.sent();
                 messages = [];
+                authorSchema = new normalizr.schema.Entity('author', undefined, {
+                    idAttribute: 'email',
+                });
+                messageSchema = new normalizr.schema.Entity('message', {
+                    author: authorSchema,
+                });
+                messagesSchema = new normalizr.schema.Entity('messages', {
+                    messages: [messageSchema],
+                });
                 messagesFromDb.forEach(function (e, i) {
                     messages.push({
                         id: i + 1,
@@ -665,12 +646,20 @@ var getNormalizedMessages = function () { return __awaiter(void 0, void 0, void 
                 };
                 messagesData.messages = messages;
                 normalizedData = normalizr.normalize(messagesData, messagesSchema);
-                console.log('dataNormalizada', util.inspect(normalizedData, false, 12, true));
-                routerMensajes.get('/vista', function (req, res) {
-                    res.status(200).send(normalizedData);
-                });
-                return [2 /*return*/];
+                _d.label = 2;
+            case 2:
+                _d.trys.push([2, 4, , 5]);
+                _b = (_a = ioServer.sockets).emit;
+                _c = ['message-from-server'];
+                return [4 /*yield*/, normalizedData];
+            case 3:
+                _b.apply(_a, _c.concat([_d.sent()]));
+                return [3 /*break*/, 5];
+            case 4:
+                error_11 = _d.sent();
+                console.error('initializeMessages()', error_11);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
-getNormalizedMessages();

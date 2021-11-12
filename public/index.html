@@ -15,8 +15,7 @@
     <script src="socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
     <script src="ejs.min.js"></script>
-    <script type="module" src="main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="main.js"></script>
   </head>
   <body>
     <!-- PRODUCTOS -->
@@ -83,6 +82,7 @@
     <section>
       <div class="container">
         <h4>Centro de mensajes</h4>
+        <h5 id="compresion"></h5>
         <form class="bg-dark p-3" action="/mensajes/guardar" method="POST">
           <div class="form-row">
             <div class="col-md-5 mb-2">
@@ -138,74 +138,5 @@
         </form>
       </div>
     </section>
-    <script>
-      // SOCKETiO MENSAJES
-      const responseAxios = {};
-      axios
-        .get('/mensajes/vista')
-        .then(response => {
-          console.log(response.data);
-          responseAxios = response.data;
-          // console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      // NORMALIZER
-
-      // const normalizr = require('normalizr');
-      // const util = require('util');
-
-      const authorSchema = new normalizr.schema.Entity('author', undefined, {
-        idAttribute: 'email',
-      });
-
-      const messageSchema = new normalizr.schema.Entity('messages', {
-        author: authorSchema,
-      });
-
-      const messagesSchema = new normalizr.schema.Entity('messages', {
-        messages: [messageSchema],
-      });
-
-      console.log('INFORMACION NORMALIZADA-------------');
-
-      // const inspectNormalizedData = util.inspect(responseAxios, false, 12, true);
-
-      // console.log(inspectNormalizedData);
-      console.log('--------------------');
-
-      console.log('INFORMACION DESNORMALIZADA-----------');
-
-      const denormalizedData = normalizr.denormalize(
-        responseAxios.result,
-        messagesSchema,
-        responseAxios.entities
-      );
-
-      // const inspectDenormalizedData = util.inspect(
-      //   denormalizedData,
-      //   false,
-      //   12,
-      //   true
-      // );
-
-      // console.log(inspectDenormalizedData);
-      console.log('--------------------');
-
-      const socketMensajes = io();
-      socketMensajes.on('message-from-server', data => {
-        document.getElementById('messages').innerHTML = data
-          .map(
-            entry =>
-              `<div>
-          <strong id="chatAuthor"">${entry.author.email}</strong> <span id="chatDate">[${entry.fecha}]</span>
-          <em id="chatText">${entry.text}</em> <img id="chatAvatar" src="${entry.author.avatar}"></img>
-        </div>`
-          )
-          .join(' ');
-      });
-    </script>
   </body>
 </html>
