@@ -33,7 +33,6 @@ socketMensajes.on('message-from-server', data => {
       100
     ).toFixed(2)}%)`;
   }
-
   document.getElementById('messages').innerHTML = denormalizedData.messages
     .map(
       entry =>

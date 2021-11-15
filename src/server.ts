@@ -4,7 +4,7 @@ import { IDao } from './interfaces/daos/IDao';
 import path from 'path';
 import * as SocketIO from 'socket.io';
 import http, { request } from 'http';
-
+import session from 'express-session';
 import { DaoFactory } from './daoFactory';
 import faker from 'faker';
 faker.locale = 'es';
@@ -24,7 +24,7 @@ const ioServer = new SocketIO.Server(server);
 const isAdmin: boolean = true;
 
 // Rutas (URL) Productos
-const pathVistaProductos = '/vista'; // Vista UI
+const pathVistaProductos = '/vista';
 const pathListar = '/listar';
 const pathListarPorId = '/listar/:id';
 const pathAgregar = '/agregar';
@@ -35,29 +35,37 @@ const pathVistaTest = '/vista-test';
 const pathBuscarNombre = '/filtrar-nombre';
 const pathBuscarPrecio = '/filtrar-precio';
 const pathGuardarMensajes = '/guardar';
-////////
+const pathLogin = '/login';
+const pathLogout = '/logout';
+const pathMain = '/';
+
+// Server listen
+
 server.listen(PORT, () => {
   console.log(`Server listen on port ${PORT}`);
 });
 
 server.on('error', error => {
-  console.log(error);
+  console.error('Server Error:', error);
 });
-////////
+
+// Middleware
 
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use('/productos', routerProductos);
 app.use('/carrito', routerCarrito);
 app.use('/mensajes', routerMensajes);
 
-//////// config EJS
+// Ejs Config
 
 app.set('views', __dirname + '/views/layouts');
 app.set('view engine', 'ejs');
 
-//////// DAO OPTIONS ////////
+/// DAO OPTIONS ///
+
 const MEMORY = 0;
 const MONGODB = 1;
 const MONGODBDBAAS = 2;
@@ -65,9 +73,9 @@ const MYSQL = 3;
 const MYSQLSQLITE3 = 4;
 const FILESYSTEM = 5;
 const FIREBASE = 6;
-///---////
+//
 let option = MONGODB;
-///---////
+//
 const daoFactory = new DaoFactory();
 const dao: IDao = daoFactory.getDao(option);
 
@@ -79,80 +87,6 @@ const dao: IDao = daoFactory.getDao(option);
 // };
 
 //////// ENDPOINTS PRODUCTOS
-
-// VISTA TEST (Faker)
-routerProductos.get(pathVistaTest, (req, res) => {
-  const datos = [];
-
-  const cantidad = req.query.cant || 10;
-  let id = 1;
-  for (let index = 0; index < cantidad; index++) {
-    datos.push({
-      id: id++,
-      nombre: faker.commerce.productName(),
-      precio: faker.commerce.price(),
-      foto: faker.image.image(),
-    });
-  }
-  console.log(cantidad);
-  if (cantidad == '0') {
-    res.send('No hay productos');
-  } else {
-    res.render('vista-test', {
-      productos: datos,
-    });
-  }
-});
-
-// FILTRAR PRODUCTOS
-
-// POR NOMBRE
-routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
-  const filtrar = req.body.buscar;
-  try {
-    await dao.filterByName(filtrar);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    res.redirect('/productos/vista');
-  }
-});
-
-// POR PRECIO
-routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
-  const precioMin = req.body.min;
-  const precioMax = req.body.max;
-  try {
-    await dao.filterByPrice(precioMin, precioMax);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    res.redirect('/productos/vista');
-  }
-});
-
-routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
-  let productsFiltered: any = await dao.getProductsFiltered();
-  if (productsFiltered.length < 1) {
-    res.render('vista-productos', {
-      productos: await dao.getProducts(),
-    });
-  } else {
-    res.render('vista-productos', {
-      productos: dao.getProductsFiltered(),
-    });
-  }
-
-  // if (option === 0) {
-  //   res.render('layouts/index.ejs', {
-  //     productos: dao.getProductsSync(),
-  //   });
-  // } else {
-  //   res.render('layouts/index.ejs', {
-  //     productos: await dao.getProducts(),
-  //   });
-  // }
-});
 
 routerProductos.get(pathListar, async (req: Request, res: Response) => {
   try {
@@ -289,6 +223,128 @@ routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
   }
 });
 
+// VISTA PRODUCTOS
+
+// Filtro por nombre
+routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
+  const filtrar = req.body.buscar;
+  try {
+    await dao.filterByName(filtrar);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    res.redirect('/productos/vista');
+  }
+});
+
+// Filtro por precio
+routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
+  const precioMin = req.body.min;
+  const precioMax = req.body.max;
+  try {
+    await dao.filterByPrice(precioMin, precioMax);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    res.redirect('/productos/vista');
+  }
+});
+
+routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
+  let productsFiltered: any = await dao.getProductsFiltered();
+  if (productsFiltered.length < 1) {
+    res.render('vista-productos', {
+      productos: await dao.getProducts(),
+    });
+  } else {
+    res.render('vista-productos', {
+      productos: dao.getProductsFiltered(),
+    });
+  }
+
+  // if (option === 0) {
+  //   res.render('layouts/index.ejs', {
+  //     productos: dao.getProductsSync(),
+  //   });
+  // } else {
+  //   res.render('layouts/index.ejs', {
+  //     productos: await dao.getProducts(),
+  //   });
+  // }
+});
+
+// VISTA TEST (Faker)
+
+routerProductos.get(pathVistaTest, (req, res) => {
+  const datos = [];
+
+  const cantidad = req.query.cant || 10;
+  let id = 1;
+  for (let index = 0; index < cantidad; index++) {
+    datos.push({
+      id: id++,
+      nombre: faker.commerce.productName(),
+      precio: faker.commerce.price(),
+      foto: faker.image.image(),
+    });
+  }
+  console.log(cantidad);
+  if (cantidad == '0') {
+    res.send('No hay productos');
+  } else {
+    res.render('vista-test', {
+      productos: datos,
+    });
+  }
+});
+
+// VISTA LOGIN (SESSION)
+const sessionHandler = session({
+  secret: 'secreto',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 10000 },
+});
+
+app.use(sessionHandler);
+
+declare module 'express-session' {
+  interface Session {
+    contador: number;
+    nombre: any;
+  }
+}
+
+app.get(pathMain, (req: Request, res: Response) => {
+  if (req.session.nombre == undefined) {
+    return res.render('vista-login');
+  } else {
+    return res.render('vista-main', {
+      nombre: req.session.nombre,
+    });
+  }
+});
+
+app.post(pathLogin, (req: Request, res: Response) => {
+  req.session.nombre = req.body.name;
+  res.status(200).redirect('/');
+});
+
+app.post(pathLogout, (req: Request, res: Response) => {
+  const { nombre } = req.session;
+  req.session.destroy(error => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ error: `Hubo un error en el logout: ${error.message}` });
+    }
+    res.render('vista-logout', { nombre: nombre });
+    setTimeout(() => {
+      res.render('vista-login');
+    }, 2000);
+  });
+});
+
 //////// ENDPOINTS CARRITO
 
 routerCarrito.get(pathListar, async (req: Request, res: Response) => {
@@ -358,30 +414,7 @@ routerCarrito.delete(pathDelete, async (req: Request, res: Response) => {
   console.log('cartProductById_FromDelete', productToDelete);
 });
 
-///// SOCKETiO WEBCHAT
-
-routerMensajes.post(
-  pathGuardarMensajes,
-  async (req: Request, res: Response) => {
-    const body = req.body;
-    // const date = new Date().toLocaleString('es-AR');
-    const mensaje: any = {
-      author: {
-        email: body.email,
-        nombre: body.firstname,
-        apellido: body.lastname,
-        edad: body.age,
-        alias: body.nickname,
-        avatar: body.avatar,
-      },
-      text: body.text,
-    };
-    await dao.insertMessage(mensaje);
-    res.redirect('/');
-  }
-);
-
-//
+// Socker IO
 
 ioServer.on('connection', async _socket => {
   console.log('Un cliente se ha conectado');
@@ -389,7 +422,7 @@ ioServer.on('connection', async _socket => {
   await initializeNormalizedMessages();
 });
 
-///// SOCKETiO PRODUCTOS
+// Socket IO Productos
 
 const initializeProducts = async () => {
   if (option === 0) {
@@ -406,13 +439,35 @@ const initializeProducts = async () => {
   }
 };
 
-// SOCKETiO MESSAGES
+// Socket IO Messages
+
+routerMensajes.post(
+  pathGuardarMensajes,
+  async (req: Request, res: Response) => {
+    const body = req.body;
+    const date = new Date().toLocaleString('es-AR');
+    const mensaje: any = {
+      author: {
+        email: body.email,
+        nombre: body.firstname,
+        apellido: body.lastname,
+        edad: body.age,
+        alias: body.nickname,
+        avatar: body.avatar,
+      },
+      fecha: date,
+      text: body.text,
+    };
+    await dao.insertMessage(mensaje);
+    res.redirect('/');
+  }
+);
+
+// Socket IO Messages Normalizr
 
 const initializeNormalizedMessages = async () => {
   const messagesFromDb: any = await dao.getMessages();
   const messages: any = [];
-
-  // NORMALIZR
 
   const authorSchema = new normalizr.schema.Entity('author', undefined, {
     idAttribute: 'email',
@@ -437,6 +492,7 @@ const initializeNormalizedMessages = async () => {
         alias: e.author.alias,
         avatar: e.author.avatar,
       },
+      fecha: e.fecha,
       text: e.text,
     });
   });

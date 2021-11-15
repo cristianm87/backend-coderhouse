@@ -62,6 +62,7 @@ var express_1 = __importDefault(require("express"));
 var path_1 = __importDefault(require("path"));
 var SocketIO = __importStar(require("socket.io"));
 var http_1 = __importDefault(require("http"));
+var express_session_1 = __importDefault(require("express-session"));
 var daoFactory_1 = require("./daoFactory");
 var faker_1 = __importDefault(require("faker"));
 faker_1.default.locale = 'es';
@@ -79,7 +80,7 @@ var ioServer = new SocketIO.Server(server);
 // AUTHORIZATION
 var isAdmin = true;
 // Rutas (URL) Productos
-var pathVistaProductos = '/vista'; // Vista UI
+var pathVistaProductos = '/vista';
 var pathListar = '/listar';
 var pathListarPorId = '/listar/:id';
 var pathAgregar = '/agregar';
@@ -90,24 +91,27 @@ var pathVistaTest = '/vista-test';
 var pathBuscarNombre = '/filtrar-nombre';
 var pathBuscarPrecio = '/filtrar-precio';
 var pathGuardarMensajes = '/guardar';
-////////
+var pathLogin = '/login';
+var pathLogout = '/logout';
+var pathMain = '/';
+// Server listen
 server.listen(PORT, function () {
     console.log("Server listen on port " + PORT);
 });
 server.on('error', function (error) {
-    console.log(error);
+    console.error('Server Error:', error);
 });
-////////
+// Middleware
 app.use(express_1.default.static(__dirname + "/public"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use('/productos', routerProductos);
 app.use('/carrito', routerCarrito);
 app.use('/mensajes', routerMensajes);
-//////// config EJS
+// Ejs Config
 app.set('views', __dirname + '/views/layouts');
 app.set('view engine', 'ejs');
-//////// DAO OPTIONS ////////
+/// DAO OPTIONS ///
 var MEMORY = 0;
 var MONGODB = 1;
 var MONGODBDBAAS = 2;
@@ -115,9 +119,9 @@ var MYSQL = 3;
 var MYSQLSQLITE3 = 4;
 var FILESYSTEM = 5;
 var FIREBASE = 6;
-///---////
+//
 var option = MONGODB;
-///---////
+//
 var daoFactory = new daoFactory_1.DaoFactory();
 var dao = daoFactory.getDao(option);
 // Ejemplo de producto
@@ -127,33 +131,220 @@ var dao = daoFactory.getDao(option);
 //   thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-and-school-8/48/Computer-512.png',
 // };
 //////// ENDPOINTS PRODUCTOS
-// VISTA TEST (Faker)
-routerProductos.get(pathVistaTest, function (req, res) {
-    var datos = [];
-    var cantidad = req.query.cant || 10;
-    var id = 1;
-    for (var index = 0; index < cantidad; index++) {
-        datos.push({
-            id: id++,
-            nombre: faker_1.default.commerce.productName(),
-            precio: faker_1.default.commerce.price(),
-            foto: faker_1.default.image.image(),
-        });
-    }
-    console.log(cantidad);
-    if (cantidad == '0') {
-        res.send('No hay productos');
-    }
-    else {
-        res.render('vista-test', {
-            productos: datos,
-        });
-    }
-});
-// FILTRAR PRODUCTOS
-// POR NOMBRE
+routerProductos.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var productos, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 4, , 5]);
+                productos = [];
+                if (!(option === 0)) return [3 /*break*/, 1];
+                productos = dao.getProductsSync();
+                return [3 /*break*/, 3];
+            case 1: return [4 /*yield*/, dao.getProducts()];
+            case 2:
+                productos = _a.sent();
+                _a.label = 3;
+            case 3:
+                if (productos.length < 1) {
+                    res.status(404).send('No hay productos para mostrar');
+                }
+                else {
+                    res.status(200).send(JSON.stringify(productos));
+                }
+                return [3 /*break*/, 5];
+            case 4:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
+routerProductos.get(pathListarPorId, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var paramId, productById, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                paramId = req.params.id;
+                productById = {};
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 5, , 6]);
+                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
+                productById = dao.getProductByIdSync(paramId);
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
+            case 3:
+                productById = _a.sent();
+                _a.label = 4;
+            case 4:
+                if (productById === undefined || Object.keys(productById).length === 0) {
+                    res.status(404).send('Producto no encontrado');
+                }
+                else {
+                    res.status(200).send(JSON.stringify(productById));
+                }
+                return [3 /*break*/, 6];
+            case 5:
+                error_2 = _a.sent();
+                console.log(error_2);
+                return [3 /*break*/, 6];
+            case 6:
+                console.log('ProductById_Server', productById);
+                return [2 /*return*/];
+        }
+    });
+}); });
+routerProductos.post(pathAgregar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!isAdmin) return [3 /*break*/, 9];
+                product = req.body;
+                if (!(product.name && product.description && product.code)) return [3 /*break*/, 7];
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, 4, 6]);
+                return [4 /*yield*/, dao.insertProduct(product)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 6];
+            case 3:
+                error_3 = _a.sent();
+                console.log(error_3);
+                return [3 /*break*/, 6];
+            case 4: return [4 /*yield*/, initializeProducts()];
+            case 5:
+                _a.sent();
+                res.redirect('/');
+                return [7 /*endfinally*/];
+            case 6: return [3 /*break*/, 8];
+            case 7:
+                res.status(400).send({ error: 'Información incompleta' });
+                _a.label = 8;
+            case 8: return [3 /*break*/, 10];
+            case 9:
+                res.status(403).send({
+                    error: -1,
+                    descripcion: "ruta '" + pathAgregar + "' m\u00E9todo 'Guardar' no autorizada",
+                });
+                _a.label = 10;
+            case 10: return [2 /*return*/];
+        }
+    });
+}); });
+routerProductos.put(pathUpdate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var paramId, newValues, productToUpdate, error_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!isAdmin) return [3 /*break*/, 12];
+                paramId = req.params.id;
+                newValues = req.body;
+                productToUpdate = {};
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 8, 9, 11]);
+                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
+                productToUpdate = dao.getProductByIdSync(paramId);
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
+            case 3:
+                productToUpdate = _a.sent();
+                _a.label = 4;
+            case 4:
+                if (!(productToUpdate === undefined ||
+                    Object.keys(productToUpdate).length === 0)) return [3 /*break*/, 5];
+                res.status(404).send('Producto no encontrado');
+                return [3 /*break*/, 7];
+            case 5: return [4 /*yield*/, dao.updateProduct(newValues, paramId)];
+            case 6:
+                _a.sent();
+                res.status(200).send(JSON.stringify({
+                    productoAactualizar: productToUpdate,
+                    valoresActualizados: newValues,
+                }));
+                _a.label = 7;
+            case 7: return [3 /*break*/, 11];
+            case 8:
+                error_4 = _a.sent();
+                console.log(error_4);
+                return [3 /*break*/, 11];
+            case 9: return [4 /*yield*/, initializeProducts()];
+            case 10:
+                _a.sent();
+                return [7 /*endfinally*/];
+            case 11:
+                console.log('productToUpdate', productToUpdate);
+                return [3 /*break*/, 13];
+            case 12:
+                res.status(403).send({
+                    error: -1,
+                    descripcion: "ruta '" + pathUpdate + "' m\u00E9todo 'Guardar' no autorizada",
+                });
+                _a.label = 13;
+            case 13: return [2 /*return*/];
+        }
+    });
+}); });
+routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var paramId, productToDelete, error_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!isAdmin) return [3 /*break*/, 12];
+                paramId = req.params.id;
+                productToDelete = {};
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 8, 9, 11]);
+                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
+                productToDelete = dao.getProductByIdSync(paramId);
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
+            case 3:
+                productToDelete = _a.sent();
+                _a.label = 4;
+            case 4:
+                if (!(productToDelete === undefined ||
+                    Object.keys(productToDelete).length === 0)) return [3 /*break*/, 5];
+                res.status(404).send('Producto no encontrado');
+                return [3 /*break*/, 7];
+            case 5: return [4 /*yield*/, dao.deleteProduct(paramId)];
+            case 6:
+                _a.sent();
+                res
+                    .status(200)
+                    .send(JSON.stringify({ productoEliminado: productToDelete }));
+                _a.label = 7;
+            case 7:
+                console.log('productToDelete Server', productToDelete);
+                return [3 /*break*/, 11];
+            case 8:
+                error_5 = _a.sent();
+                console.log(error_5);
+                return [3 /*break*/, 11];
+            case 9: return [4 /*yield*/, initializeProducts()];
+            case 10:
+                _a.sent();
+                return [7 /*endfinally*/];
+            case 11: return [3 /*break*/, 13];
+            case 12:
+                res.status(403).send({
+                    error: -1,
+                    descripcion: "ruta '" + pathDelete + "' m\u00E9todo 'Guardar' no autorizada",
+                });
+                _a.label = 13;
+            case 13: return [2 /*return*/];
+        }
+    });
+}); });
+// VISTA PRODUCTOS
+// Filtro por nombre
 routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var filtrar, error_1;
+    var filtrar, error_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -166,8 +357,8 @@ routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(vo
                 _a.sent();
                 return [3 /*break*/, 5];
             case 3:
-                error_1 = _a.sent();
-                console.log(error_1);
+                error_6 = _a.sent();
+                console.log(error_6);
                 return [3 /*break*/, 5];
             case 4:
                 res.redirect('/productos/vista');
@@ -176,9 +367,9 @@ routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(vo
         }
     });
 }); });
-// POR PRECIO
+// Filtro por precio
 routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var precioMin, precioMax, error_2;
+    var precioMin, precioMax, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -192,8 +383,8 @@ routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(vo
                 _a.sent();
                 return [3 /*break*/, 5];
             case 3:
-                error_2 = _a.sent();
-                console.log(error_2);
+                error_7 = _a.sent();
+                console.log(error_7);
                 return [3 /*break*/, 5];
             case 4:
                 res.redirect('/productos/vista');
@@ -228,216 +419,65 @@ routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(v
         }
     });
 }); });
-routerProductos.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var productos, error_3;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 4, , 5]);
-                productos = [];
-                if (!(option === 0)) return [3 /*break*/, 1];
-                productos = dao.getProductsSync();
-                return [3 /*break*/, 3];
-            case 1: return [4 /*yield*/, dao.getProducts()];
-            case 2:
-                productos = _a.sent();
-                _a.label = 3;
-            case 3:
-                if (productos.length < 1) {
-                    res.status(404).send('No hay productos para mostrar');
-                }
-                else {
-                    res.status(200).send(JSON.stringify(productos));
-                }
-                return [3 /*break*/, 5];
-            case 4:
-                error_3 = _a.sent();
-                console.log(error_3);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+// VISTA TEST (Faker)
+routerProductos.get(pathVistaTest, function (req, res) {
+    var datos = [];
+    var cantidad = req.query.cant || 10;
+    var id = 1;
+    for (var index = 0; index < cantidad; index++) {
+        datos.push({
+            id: id++,
+            nombre: faker_1.default.commerce.productName(),
+            precio: faker_1.default.commerce.price(),
+            foto: faker_1.default.image.image(),
+        });
+    }
+    console.log(cantidad);
+    if (cantidad == '0') {
+        res.send('No hay productos');
+    }
+    else {
+        res.render('vista-test', {
+            productos: datos,
+        });
+    }
+});
+// VISTA LOGIN (SESSION)
+var sessionHandler = (0, express_session_1.default)({
+    secret: 'secreto',
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 10000 },
+});
+app.use(sessionHandler);
+app.get(pathMain, function (req, res) {
+    if (req.session.nombre == undefined) {
+        return res.render('vista-login');
+    }
+    else {
+        return res.render('vista-main', {
+            nombre: req.session.nombre,
+        });
+    }
+});
+app.post(pathLogin, function (req, res) {
+    req.session.nombre = req.body.name;
+    res.status(200).redirect('/');
+});
+app.post(pathLogout, function (req, res) {
+    var nombre = req.session.nombre;
+    req.session.destroy(function (error) {
+        if (error) {
+            return res
+                .status(500)
+                .json({ error: "Hubo un error en el logout: " + error.message });
         }
+        res.render('vista-logout', { nombre: nombre });
+        setTimeout(function () {
+            res.render('vista-login');
+        }, 2000);
     });
-}); });
-routerProductos.get(pathListarPorId, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var paramId, productById, error_4;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                paramId = req.params.id;
-                productById = {};
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 5, , 6]);
-                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
-                productById = dao.getProductByIdSync(paramId);
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
-            case 3:
-                productById = _a.sent();
-                _a.label = 4;
-            case 4:
-                if (productById === undefined || Object.keys(productById).length === 0) {
-                    res.status(404).send('Producto no encontrado');
-                }
-                else {
-                    res.status(200).send(JSON.stringify(productById));
-                }
-                return [3 /*break*/, 6];
-            case 5:
-                error_4 = _a.sent();
-                console.log(error_4);
-                return [3 /*break*/, 6];
-            case 6:
-                console.log('ProductById_Server', productById);
-                return [2 /*return*/];
-        }
-    });
-}); });
-routerProductos.post(pathAgregar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, error_5;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!isAdmin) return [3 /*break*/, 9];
-                product = req.body;
-                if (!(product.name && product.description && product.code)) return [3 /*break*/, 7];
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, 4, 6]);
-                return [4 /*yield*/, dao.insertProduct(product)];
-            case 2:
-                _a.sent();
-                return [3 /*break*/, 6];
-            case 3:
-                error_5 = _a.sent();
-                console.log(error_5);
-                return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, initializeProducts()];
-            case 5:
-                _a.sent();
-                res.redirect('/');
-                return [7 /*endfinally*/];
-            case 6: return [3 /*break*/, 8];
-            case 7:
-                res.status(400).send({ error: 'Información incompleta' });
-                _a.label = 8;
-            case 8: return [3 /*break*/, 10];
-            case 9:
-                res.status(403).send({
-                    error: -1,
-                    descripcion: "ruta '" + pathAgregar + "' m\u00E9todo 'Guardar' no autorizada",
-                });
-                _a.label = 10;
-            case 10: return [2 /*return*/];
-        }
-    });
-}); });
-routerProductos.put(pathUpdate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var paramId, newValues, productToUpdate, error_6;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!isAdmin) return [3 /*break*/, 12];
-                paramId = req.params.id;
-                newValues = req.body;
-                productToUpdate = {};
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 8, 9, 11]);
-                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
-                productToUpdate = dao.getProductByIdSync(paramId);
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
-            case 3:
-                productToUpdate = _a.sent();
-                _a.label = 4;
-            case 4:
-                if (!(productToUpdate === undefined ||
-                    Object.keys(productToUpdate).length === 0)) return [3 /*break*/, 5];
-                res.status(404).send('Producto no encontrado');
-                return [3 /*break*/, 7];
-            case 5: return [4 /*yield*/, dao.updateProduct(newValues, paramId)];
-            case 6:
-                _a.sent();
-                res.status(200).send(JSON.stringify({
-                    productoAactualizar: productToUpdate,
-                    valoresActualizados: newValues,
-                }));
-                _a.label = 7;
-            case 7: return [3 /*break*/, 11];
-            case 8:
-                error_6 = _a.sent();
-                console.log(error_6);
-                return [3 /*break*/, 11];
-            case 9: return [4 /*yield*/, initializeProducts()];
-            case 10:
-                _a.sent();
-                return [7 /*endfinally*/];
-            case 11:
-                console.log('productToUpdate', productToUpdate);
-                return [3 /*break*/, 13];
-            case 12:
-                res.status(403).send({
-                    error: -1,
-                    descripcion: "ruta '" + pathUpdate + "' m\u00E9todo 'Guardar' no autorizada",
-                });
-                _a.label = 13;
-            case 13: return [2 /*return*/];
-        }
-    });
-}); });
-routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var paramId, productToDelete, error_7;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!isAdmin) return [3 /*break*/, 12];
-                paramId = req.params.id;
-                productToDelete = {};
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 8, 9, 11]);
-                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
-                productToDelete = dao.getProductByIdSync(paramId);
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
-            case 3:
-                productToDelete = _a.sent();
-                _a.label = 4;
-            case 4:
-                if (!(productToDelete === undefined ||
-                    Object.keys(productToDelete).length === 0)) return [3 /*break*/, 5];
-                res.status(404).send('Producto no encontrado');
-                return [3 /*break*/, 7];
-            case 5: return [4 /*yield*/, dao.deleteProduct(paramId)];
-            case 6:
-                _a.sent();
-                res
-                    .status(200)
-                    .send(JSON.stringify({ productoEliminado: productToDelete }));
-                _a.label = 7;
-            case 7:
-                console.log('productToDelete Server', productToDelete);
-                return [3 /*break*/, 11];
-            case 8:
-                error_7 = _a.sent();
-                console.log(error_7);
-                return [3 /*break*/, 11];
-            case 9: return [4 /*yield*/, initializeProducts()];
-            case 10:
-                _a.sent();
-                return [7 /*endfinally*/];
-            case 11: return [3 /*break*/, 13];
-            case 12:
-                res.status(403).send({
-                    error: -1,
-                    descripcion: "ruta '" + pathDelete + "' m\u00E9todo 'Guardar' no autorizada",
-                });
-                _a.label = 13;
-            case 13: return [2 /*return*/];
-        }
-    });
-}); });
+});
 //////// ENDPOINTS CARRITO
 routerCarrito.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var cartProducts, error_8;
@@ -540,33 +580,7 @@ routerCarrito.delete(pathDelete, function (req, res) { return __awaiter(void 0, 
         }
     });
 }); });
-///// SOCKETiO WEBCHAT
-routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var body, mensaje;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                body = req.body;
-                mensaje = {
-                    author: {
-                        email: body.email,
-                        nombre: body.firstname,
-                        apellido: body.lastname,
-                        edad: body.age,
-                        alias: body.nickname,
-                        avatar: body.avatar,
-                    },
-                    text: body.text,
-                };
-                return [4 /*yield*/, dao.insertMessage(mensaje)];
-            case 1:
-                _a.sent();
-                res.redirect('/');
-                return [2 /*return*/];
-        }
-    });
-}); });
-//
+// Socker IO
 ioServer.on('connection', function (_socket) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -582,7 +596,7 @@ ioServer.on('connection', function (_socket) { return __awaiter(void 0, void 0, 
         }
     });
 }); });
-///// SOCKETiO PRODUCTOS
+// Socket IO Productos
 var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
     var _a, _b, _c, error_10;
     return __generator(this, function (_d) {
@@ -608,7 +622,35 @@ var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); };
-// SOCKETiO MESSAGES
+// Socket IO Messages
+routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var body, date, mensaje;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                body = req.body;
+                date = new Date().toLocaleString('es-AR');
+                mensaje = {
+                    author: {
+                        email: body.email,
+                        nombre: body.firstname,
+                        apellido: body.lastname,
+                        edad: body.age,
+                        alias: body.nickname,
+                        avatar: body.avatar,
+                    },
+                    fecha: date,
+                    text: body.text,
+                };
+                return [4 /*yield*/, dao.insertMessage(mensaje)];
+            case 1:
+                _a.sent();
+                res.redirect('/');
+                return [2 /*return*/];
+        }
+    });
+}); });
+// Socket IO Messages Normalizr
 var initializeNormalizedMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
     var messagesFromDb, messages, authorSchema, messageSchema, messagesSchema, messagesData, normalizedData, _a, _b, _c, error_11;
     return __generator(this, function (_d) {
@@ -637,6 +679,7 @@ var initializeNormalizedMessages = function () { return __awaiter(void 0, void 0
                             alias: e.author.alias,
                             avatar: e.author.avatar,
                         },
+                        fecha: e.fecha,
                         text: e.text,
                     });
                 });

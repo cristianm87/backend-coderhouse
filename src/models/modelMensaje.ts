@@ -21,11 +21,6 @@ const personaSchema = new mongoose.Schema({
     require: true,
     max: 2,
   },
-  fecha: {
-    type: String,
-    require: true,
-    max: 50,
-  },
   avatar: {
     type: String,
     require: true,
@@ -36,6 +31,7 @@ const personaSchema = new mongoose.Schema({
 const authorSchema = new mongoose.Schema({
   author: personaSchema,
   text: String,
+  fecha: String,
 });
 
 export const modelMensaje = mongoose.model('mensajes', authorSchema);

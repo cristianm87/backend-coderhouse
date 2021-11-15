@@ -26,11 +26,6 @@ var personaSchema = new mongoose_1.default.Schema({
         require: true,
         max: 2,
     },
-    fecha: {
-        type: String,
-        require: true,
-        max: 50,
-    },
     avatar: {
         type: String,
         require: true,
@@ -40,5 +35,6 @@ var personaSchema = new mongoose_1.default.Schema({
 var authorSchema = new mongoose_1.default.Schema({
     author: personaSchema,
     text: String,
+    fecha: String,
 });
 exports.modelMensaje = mongoose_1.default.model('mensajes', authorSchema);
