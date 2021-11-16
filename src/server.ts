@@ -303,6 +303,7 @@ const sessionHandler = session({
   secret: 'secreto',
   resave: true,
   saveUninitialized: true,
+  rolling: true,
   cookie: { maxAge: 10000 },
 });
 

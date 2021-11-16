@@ -447,6 +447,7 @@ var sessionHandler = (0, express_session_1.default)({
     secret: 'secreto',
     resave: true,
     saveUninitialized: true,
+    rolling: true,
     cookie: { maxAge: 10000 },
 });
 app.use(sessionHandler);
