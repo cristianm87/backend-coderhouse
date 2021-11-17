@@ -146,6 +146,9 @@ var MySqlDao = /** @class */ (function () {
         MySqlDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MySqlDao.prototype.getMessagesSync = function () {
+        throw new Error('Method not implemented.');
+    };
     MySqlDao.prototype.filterByName = function (filtro) {
         throw new Error('Method not implemented.');
     };

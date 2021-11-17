@@ -16,6 +16,7 @@ var MemoryDao = /** @class */ (function () {
     function MemoryDao() {
         this.productos = new Array();
         this.carrito = new Array();
+        this.mensajes = new Array();
         this.count = 0;
         this.cartId = MemoryDao.cartCount;
         MemoryDao.cartCount++;
@@ -28,12 +29,6 @@ var MemoryDao = /** @class */ (function () {
         throw new Error('Method not implemented.');
     };
     MemoryDao.prototype.getProductsFiltered = function () {
-        throw new Error('Method not implemented.');
-    };
-    MemoryDao.prototype.insertMessage = function (message) {
-        throw new Error('Method not implemented.');
-    };
-    MemoryDao.prototype.getMessages = function () {
         throw new Error('Method not implemented.');
     };
     // PRODUCTOS
@@ -85,7 +80,18 @@ var MemoryDao = /** @class */ (function () {
             this.carrito.splice(index, 1);
         }
     };
-    //
+    // MENSAJES
+    MemoryDao.prototype.insertMessage = function (message) {
+        this.mensajes.push(message);
+        console.log('Mensaje agregado!');
+        return this.mensajes;
+    };
+    MemoryDao.prototype.getMessagesSync = function () {
+        return this.mensajes;
+    };
+    MemoryDao.prototype.getMessages = function () {
+        throw new Error('Method not implemented.');
+    };
     MemoryDao.prototype.getCartProductById = function (id) {
         throw new Error('Method not implemented.');
     };

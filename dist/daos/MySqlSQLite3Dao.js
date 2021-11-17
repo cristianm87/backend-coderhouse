@@ -144,6 +144,9 @@ var MySqlSQLite3Dao = /** @class */ (function () {
         MySqlSQLite3Dao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MySqlSQLite3Dao.prototype.getMessagesSync = function () {
+        throw new Error('Method not implemented.');
+    };
     MySqlSQLite3Dao.prototype.filterByName = function (filtro) {
         throw new Error('Method not implemented.');
     };

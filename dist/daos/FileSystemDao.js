@@ -60,6 +60,9 @@ var FileSystemDao = /** @class */ (function () {
         FileSystemDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    FileSystemDao.prototype.getMessagesSync = function () {
+        throw new Error('Method not implemented.');
+    };
     FileSystemDao.prototype.filterByName = function (filtro) {
         throw new Error('Method not implemented.');
     };

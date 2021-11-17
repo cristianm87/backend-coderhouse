@@ -21,4 +21,5 @@ export interface IDao {
   getProductsFiltered(): void;
   insertMessage(message: Mensaje): void;
   getMessages(): Promise<Array<Mensaje>>;
+  getMessagesSync(): Array<Mensaje>;
 }

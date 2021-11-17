@@ -23,6 +23,9 @@ export class MongoDbDao implements IDao {
     MongoDbDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+  getMessagesSync(): Mensaje[] {
+    throw new Error('Method not implemented.');
+  }
 
   // mongoose.connect("mongodb://localhost:27017/test", {
   //   useNewUrlParser: true,

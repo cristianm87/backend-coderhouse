@@ -61,6 +61,9 @@ var FirebaseDao = /** @class */ (function () {
         FirebaseDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    FirebaseDao.prototype.getMessagesSync = function () {
+        throw new Error('Method not implemented.');
+    };
     FirebaseDao.prototype.filterByName = function (filtro) {
         throw new Error('Method not implemented.');
     };

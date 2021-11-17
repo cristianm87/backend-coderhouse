@@ -54,6 +54,9 @@ var MongoDbDao = /** @class */ (function () {
         MongoDbDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MongoDbDao.prototype.getMessagesSync = function () {
+        throw new Error('Method not implemented.');
+    };
     // mongoose.connect("mongodb://localhost:27017/test", {
     //   useNewUrlParser: true,
     //   useUnifiedTopology: true,

@@ -63,6 +63,7 @@ var path_1 = __importDefault(require("path"));
 var SocketIO = __importStar(require("socket.io"));
 var http_1 = __importDefault(require("http"));
 var express_session_1 = __importDefault(require("express-session"));
+var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var daoFactory_1 = require("./daoFactory");
 var faker_1 = __importDefault(require("faker"));
 faker_1.default.locale = 'es';
@@ -120,7 +121,7 @@ var MYSQLSQLITE3 = 4;
 var FILESYSTEM = 5;
 var FIREBASE = 6;
 //
-var option = MONGODB;
+var option = MEMORY;
 //
 var daoFactory = new daoFactory_1.DaoFactory();
 var dao = daoFactory.getDao(option);
@@ -341,10 +342,247 @@ routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0
         }
     });
 }); });
+//////// ENDPOINTS CARRITO
+routerCarrito.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var cartProducts, error_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                cartProducts = [];
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 5, , 6]);
+                if (!(option === 0)) return [3 /*break*/, 2];
+                cartProducts = dao.getCartProductsSync();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, dao.getCartProducts()];
+            case 3:
+                cartProducts = _a.sent();
+                _a.label = 4;
+            case 4:
+                if (cartProducts.length < 1) {
+                    res.status(404).send('El carrito esta vacio');
+                }
+                else {
+                    res.status(200).send(JSON.stringify({
+                        idCarrito: dao.getCartId(),
+                        timestampCarrito: dao.getCartTimestamp(),
+                        ProductosEnElCarrito: cartProducts,
+                    }));
+                }
+                return [3 /*break*/, 6];
+            case 5:
+                error_6 = _a.sent();
+                console.log(error_6);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); });
+routerCarrito.post(pathAgregarPorId, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var paramId, productToAdd, error_7;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                paramId = req.params.id;
+                productToAdd = {};
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 5, , 6]);
+                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
+                productToAdd = dao.getProductByIdSync(paramId);
+                console.log('ProductToAdd', productToAdd);
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
+            case 3:
+                productToAdd = _a.sent();
+                _a.label = 4;
+            case 4:
+                if (productToAdd === undefined || Object.keys(productToAdd).length === 0) {
+                    res.status(404).send('Producto no encontrado');
+                }
+                else {
+                    dao.addToCart(productToAdd);
+                    res.status(200).send(JSON.stringify({ productoAgregado: productToAdd }));
+                }
+                return [3 /*break*/, 6];
+            case 5:
+                error_7 = _a.sent();
+                console.log(error_7);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); });
+routerCarrito.delete(pathDelete, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var paramId, productToDelete;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                paramId = req.params.id;
+                productToDelete = {};
+                if (!(option === 0 || option === 5)) return [3 /*break*/, 1];
+                productToDelete = dao.getCartProductByIdSync(paramId);
+                return [3 /*break*/, 3];
+            case 1: return [4 /*yield*/, dao.getCartProductById(paramId)];
+            case 2:
+                productToDelete = _a.sent();
+                _a.label = 3;
+            case 3:
+                if (productToDelete === undefined ||
+                    Object.keys(productToDelete).length === 0) {
+                    res.status(404).send('Producto no encontrado');
+                }
+                else {
+                    dao.deleteProductCart(paramId);
+                    res
+                        .status(200)
+                        .send(JSON.stringify({ productoEliminado: productToDelete }));
+                }
+                console.log('cartProductById_FromDelete', productToDelete);
+                return [2 /*return*/];
+        }
+    });
+}); });
+// Socker IO
+ioServer.on('connection', function (_socket) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log('Un cliente se ha conectado');
+                return [4 /*yield*/, initializeProducts()];
+            case 1:
+                _a.sent();
+                return [4 /*yield*/, initializeNormalizedMessages()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+// Socket IO Productos
+var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, _c, error_8;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                if (!(option === 0)) return [3 /*break*/, 1];
+                ioServer.sockets.emit('products-from-server', dao.getProductsSync());
+                return [3 /*break*/, 5];
+            case 1:
+                _d.trys.push([1, 4, , 5]);
+                _b = (_a = ioServer.sockets).emit;
+                _c = ['products-from-server'];
+                return [4 /*yield*/, dao.getProducts()];
+            case 2: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.sent()]))];
+            case 3:
+                _d.sent();
+                return [3 /*break*/, 5];
+            case 4:
+                error_8 = _d.sent();
+                console.error('initializeProducts()', error_8);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+// Socket IO Messages
+routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var body, date, mensaje;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                body = req.body;
+                date = new Date().toLocaleString('es-AR');
+                mensaje = {
+                    author: {
+                        email: body.email,
+                        nombre: body.firstname,
+                        apellido: body.lastname,
+                        edad: body.age,
+                        alias: body.nickname,
+                        avatar: body.avatar,
+                    },
+                    fecha: date,
+                    text: body.text,
+                };
+                return [4 /*yield*/, dao.insertMessage(mensaje)];
+            case 1:
+                _a.sent();
+                res.redirect('/');
+                return [2 /*return*/];
+        }
+    });
+}); });
+// Socket IO Messages Normalizr
+var initializeNormalizedMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var authorSchema, messageSchema, messagesSchema, messagesFromDb, messages, messagesData, normalizedData, _a, _b, _c, error_9;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                authorSchema = new normalizr.schema.Entity('author', undefined, {
+                    idAttribute: 'email',
+                });
+                messageSchema = new normalizr.schema.Entity('message', {
+                    author: authorSchema,
+                });
+                messagesSchema = new normalizr.schema.Entity('messages', {
+                    messages: [messageSchema],
+                });
+                messagesFromDb = [];
+                messages = [];
+                if (!(option === 0)) return [3 /*break*/, 2];
+                return [4 /*yield*/, dao.getMessagesSync()];
+            case 1:
+                messagesFromDb = _d.sent();
+                return [3 /*break*/, 4];
+            case 2: return [4 /*yield*/, dao.getMessages()];
+            case 3:
+                messagesFromDb = _d.sent();
+                _d.label = 4;
+            case 4:
+                messagesFromDb.forEach(function (e, i) {
+                    messages.push({
+                        id: i + 1,
+                        author: {
+                            email: e.author.email,
+                            nombre: e.author.nombre,
+                            apellido: e.author.apellido,
+                            edad: e.author.edad,
+                            alias: e.author.alias,
+                            avatar: e.author.avatar,
+                        },
+                        fecha: e.fecha,
+                        text: e.text,
+                    });
+                });
+                messagesData = {
+                    id: 1,
+                    messages: [],
+                };
+                messagesData.messages = messages;
+                normalizedData = normalizr.normalize(messagesData, messagesSchema);
+                _d.label = 5;
+            case 5:
+                _d.trys.push([5, 7, , 8]);
+                _b = (_a = ioServer.sockets).emit;
+                _c = ['message-from-server'];
+                return [4 /*yield*/, normalizedData];
+            case 6:
+                _b.apply(_a, _c.concat([_d.sent()]));
+                return [3 /*break*/, 8];
+            case 7:
+                error_9 = _d.sent();
+                console.error('initializeMessages()', error_9);
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
+        }
+    });
+}); };
 // VISTA PRODUCTOS
 // Filtro por nombre
 routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var filtrar, error_6;
+    var filtrar, error_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -357,8 +595,8 @@ routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(vo
                 _a.sent();
                 return [3 /*break*/, 5];
             case 3:
-                error_6 = _a.sent();
-                console.log(error_6);
+                error_10 = _a.sent();
+                console.log(error_10);
                 return [3 /*break*/, 5];
             case 4:
                 res.redirect('/productos/vista');
@@ -369,7 +607,7 @@ routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(vo
 }); });
 // Filtro por precio
 routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var precioMin, precioMax, error_7;
+    var precioMin, precioMax, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -383,8 +621,8 @@ routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(vo
                 _a.sent();
                 return [3 /*break*/, 5];
             case 3:
-                error_7 = _a.sent();
-                console.log(error_7);
+                error_11 = _a.sent();
+                console.log(error_11);
                 return [3 /*break*/, 5];
             case 4:
                 res.redirect('/productos/vista');
@@ -443,14 +681,27 @@ routerProductos.get(pathVistaTest, function (req, res) {
     }
 });
 // VISTA LOGIN (SESSION)
-var sessionHandler = (0, express_session_1.default)({
+// const sessionHandler = session({
+//   secret: 'secreto',
+//   resave: true,
+//   saveUninitialized: true,
+//   rolling: true,
+//   // cookie: { maxAge: 10_000 },
+// });
+// app.use(sessionHandler);
+app.use((0, express_session_1.default)({
+    store: connect_mongo_1.default.create({
+        //   mongoUrl: 'mongodb://localhost/sesiones', // mongo local
+        mongoUrl: 'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority', // mongo atlas
+    }),
     secret: 'secreto',
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     rolling: true,
-    cookie: { maxAge: 10000 },
-});
-app.use(sessionHandler);
+    cookie: {
+        maxAge: 10000,
+    },
+}));
 app.get(pathMain, function (req, res) {
     if (req.session.nombre == undefined) {
         return res.render('vista-login');
@@ -479,231 +730,3 @@ app.post(pathLogout, function (req, res) {
         }, 2000);
     });
 });
-//////// ENDPOINTS CARRITO
-routerCarrito.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var cartProducts, error_8;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                cartProducts = [];
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 5, , 6]);
-                if (!(option === 0)) return [3 /*break*/, 2];
-                cartProducts = dao.getCartProductsSync();
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, dao.getCartProducts()];
-            case 3:
-                cartProducts = _a.sent();
-                _a.label = 4;
-            case 4:
-                if (cartProducts.length < 1) {
-                    res.status(404).send('El carrito esta vacio');
-                }
-                else {
-                    res.status(200).send(JSON.stringify({
-                        idCarrito: dao.getCartId(),
-                        timestampCarrito: dao.getCartTimestamp(),
-                        ProductosEnElCarrito: cartProducts,
-                    }));
-                }
-                return [3 /*break*/, 6];
-            case 5:
-                error_8 = _a.sent();
-                console.log(error_8);
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
-        }
-    });
-}); });
-routerCarrito.post(pathAgregarPorId, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var paramId, productToAdd, error_9;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                paramId = req.params.id;
-                productToAdd = {};
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 5, , 6]);
-                if (!(option === 0 || option === 5)) return [3 /*break*/, 2];
-                productToAdd = dao.getProductByIdSync(paramId);
-                console.log('ProductToAdd', productToAdd);
-                return [3 /*break*/, 4];
-            case 2: return [4 /*yield*/, dao.getProductById(paramId)];
-            case 3:
-                productToAdd = _a.sent();
-                _a.label = 4;
-            case 4:
-                if (productToAdd === undefined || Object.keys(productToAdd).length === 0) {
-                    res.status(404).send('Producto no encontrado');
-                }
-                else {
-                    dao.addToCart(productToAdd);
-                    res.status(200).send(JSON.stringify({ productoAgregado: productToAdd }));
-                }
-                return [3 /*break*/, 6];
-            case 5:
-                error_9 = _a.sent();
-                console.log(error_9);
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
-        }
-    });
-}); });
-routerCarrito.delete(pathDelete, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var paramId, productToDelete;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                paramId = req.params.id;
-                productToDelete = {};
-                if (!(option === 0 || option === 5)) return [3 /*break*/, 1];
-                productToDelete = dao.getCartProductByIdSync(paramId);
-                return [3 /*break*/, 3];
-            case 1: return [4 /*yield*/, dao.getCartProductById(paramId)];
-            case 2:
-                productToDelete = _a.sent();
-                _a.label = 3;
-            case 3:
-                if (productToDelete === undefined ||
-                    Object.keys(productToDelete).length === 0) {
-                    res.status(404).send('Producto no encontrado');
-                }
-                else {
-                    dao.deleteProductCart(paramId);
-                    res
-                        .status(200)
-                        .send(JSON.stringify({ productoEliminado: productToDelete }));
-                }
-                console.log('cartProductById_FromDelete', productToDelete);
-                return [2 /*return*/];
-        }
-    });
-}); });
-// Socker IO
-ioServer.on('connection', function (_socket) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                console.log('Un cliente se ha conectado');
-                return [4 /*yield*/, initializeProducts()];
-            case 1:
-                _a.sent();
-                return [4 /*yield*/, initializeNormalizedMessages()];
-            case 2:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); });
-// Socket IO Productos
-var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, _c, error_10;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
-            case 0:
-                if (!(option === 0)) return [3 /*break*/, 1];
-                ioServer.sockets.emit('products-from-server', dao.getProductsSync());
-                return [3 /*break*/, 5];
-            case 1:
-                _d.trys.push([1, 4, , 5]);
-                _b = (_a = ioServer.sockets).emit;
-                _c = ['products-from-server'];
-                return [4 /*yield*/, dao.getProducts()];
-            case 2: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.sent()]))];
-            case 3:
-                _d.sent();
-                return [3 /*break*/, 5];
-            case 4:
-                error_10 = _d.sent();
-                console.error('initializeProducts()', error_10);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); };
-// Socket IO Messages
-routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var body, date, mensaje;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                body = req.body;
-                date = new Date().toLocaleString('es-AR');
-                mensaje = {
-                    author: {
-                        email: body.email,
-                        nombre: body.firstname,
-                        apellido: body.lastname,
-                        edad: body.age,
-                        alias: body.nickname,
-                        avatar: body.avatar,
-                    },
-                    fecha: date,
-                    text: body.text,
-                };
-                return [4 /*yield*/, dao.insertMessage(mensaje)];
-            case 1:
-                _a.sent();
-                res.redirect('/');
-                return [2 /*return*/];
-        }
-    });
-}); });
-// Socket IO Messages Normalizr
-var initializeNormalizedMessages = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var messagesFromDb, messages, authorSchema, messageSchema, messagesSchema, messagesData, normalizedData, _a, _b, _c, error_11;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
-            case 0: return [4 /*yield*/, dao.getMessages()];
-            case 1:
-                messagesFromDb = _d.sent();
-                messages = [];
-                authorSchema = new normalizr.schema.Entity('author', undefined, {
-                    idAttribute: 'email',
-                });
-                messageSchema = new normalizr.schema.Entity('message', {
-                    author: authorSchema,
-                });
-                messagesSchema = new normalizr.schema.Entity('messages', {
-                    messages: [messageSchema],
-                });
-                messagesFromDb.forEach(function (e, i) {
-                    messages.push({
-                        id: i + 1,
-                        author: {
-                            email: e.author.email,
-                            nombre: e.author.nombre,
-                            apellido: e.author.apellido,
-                            edad: e.author.edad,
-                            alias: e.author.alias,
-                            avatar: e.author.avatar,
-                        },
-                        fecha: e.fecha,
-                        text: e.text,
-                    });
-                });
-                messagesData = {
-                    id: 1,
-                    messages: [],
-                };
-                messagesData.messages = messages;
-                normalizedData = normalizr.normalize(messagesData, messagesSchema);
-                _d.label = 2;
-            case 2:
-                _d.trys.push([2, 4, , 5]);
-                _b = (_a = ioServer.sockets).emit;
-                _c = ['message-from-server'];
-                return [4 /*yield*/, normalizedData];
-            case 3:
-                _b.apply(_a, _c.concat([_d.sent()]));
-                return [3 /*break*/, 5];
-            case 4:
-                error_11 = _d.sent();
-                console.error('initializeMessages()', error_11);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); };

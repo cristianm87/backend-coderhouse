@@ -5,6 +5,7 @@ import path from 'path';
 import * as SocketIO from 'socket.io';
 import http, { request } from 'http';
 import session from 'express-session';
+import connectMongo from 'connect-mongo';
 import { DaoFactory } from './daoFactory';
 import faker from 'faker';
 faker.locale = 'es';
@@ -74,7 +75,7 @@ const MYSQLSQLITE3 = 4;
 const FILESYSTEM = 5;
 const FIREBASE = 6;
 //
-let option = MONGODB;
+let option = MEMORY;
 //
 const daoFactory = new DaoFactory();
 const dao: IDao = daoFactory.getDao(option);
@@ -223,129 +224,6 @@ routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
   }
 });
 
-// VISTA PRODUCTOS
-
-// Filtro por nombre
-routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
-  const filtrar = req.body.buscar;
-  try {
-    await dao.filterByName(filtrar);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    res.redirect('/productos/vista');
-  }
-});
-
-// Filtro por precio
-routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
-  const precioMin = req.body.min;
-  const precioMax = req.body.max;
-  try {
-    await dao.filterByPrice(precioMin, precioMax);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    res.redirect('/productos/vista');
-  }
-});
-
-routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
-  let productsFiltered: any = await dao.getProductsFiltered();
-  if (productsFiltered.length < 1) {
-    res.render('vista-productos', {
-      productos: await dao.getProducts(),
-    });
-  } else {
-    res.render('vista-productos', {
-      productos: dao.getProductsFiltered(),
-    });
-  }
-
-  // if (option === 0) {
-  //   res.render('layouts/index.ejs', {
-  //     productos: dao.getProductsSync(),
-  //   });
-  // } else {
-  //   res.render('layouts/index.ejs', {
-  //     productos: await dao.getProducts(),
-  //   });
-  // }
-});
-
-// VISTA TEST (Faker)
-
-routerProductos.get(pathVistaTest, (req, res) => {
-  const datos = [];
-
-  const cantidad = req.query.cant || 10;
-  let id = 1;
-  for (let index = 0; index < cantidad; index++) {
-    datos.push({
-      id: id++,
-      nombre: faker.commerce.productName(),
-      precio: faker.commerce.price(),
-      foto: faker.image.image(),
-    });
-  }
-  console.log(cantidad);
-  if (cantidad == '0') {
-    res.send('No hay productos');
-  } else {
-    res.render('vista-test', {
-      productos: datos,
-    });
-  }
-});
-
-// VISTA LOGIN (SESSION)
-const sessionHandler = session({
-  secret: 'secreto',
-  resave: true,
-  saveUninitialized: true,
-  rolling: true,
-  cookie: { maxAge: 10000 },
-});
-
-app.use(sessionHandler);
-
-declare module 'express-session' {
-  interface Session {
-    contador: number;
-    nombre: any;
-  }
-}
-
-app.get(pathMain, (req: Request, res: Response) => {
-  if (req.session.nombre == undefined) {
-    return res.render('vista-login');
-  } else {
-    return res.render('vista-main', {
-      nombre: req.session.nombre,
-    });
-  }
-});
-
-app.post(pathLogin, (req: Request, res: Response) => {
-  req.session.nombre = req.body.name;
-  res.status(200).redirect('/');
-});
-
-app.post(pathLogout, (req: Request, res: Response) => {
-  const { nombre } = req.session;
-  req.session.destroy(error => {
-    if (error) {
-      return res
-        .status(500)
-        .json({ error: `Hubo un error en el logout: ${error.message}` });
-    }
-    res.render('vista-logout', { nombre: nombre });
-    setTimeout(() => {
-      res.render('vista-login');
-    }, 2000);
-  });
-});
-
 //////// ENDPOINTS CARRITO
 
 routerCarrito.get(pathListar, async (req: Request, res: Response) => {
@@ -467,9 +345,6 @@ routerMensajes.post(
 // Socket IO Messages Normalizr
 
 const initializeNormalizedMessages = async () => {
-  const messagesFromDb: any = await dao.getMessages();
-  const messages: any = [];
-
   const authorSchema = new normalizr.schema.Entity('author', undefined, {
     idAttribute: 'email',
   });
@@ -481,6 +356,14 @@ const initializeNormalizedMessages = async () => {
   const messagesSchema = new normalizr.schema.Entity('messages', {
     messages: [messageSchema],
   });
+  let messagesFromDb: any = [];
+  const messages: any = [];
+
+  if (option === 0) {
+    messagesFromDb = await dao.getMessagesSync();
+  } else {
+    messagesFromDb = await dao.getMessages();
+  }
 
   messagesFromDb.forEach(function (e: any, i: any) {
     messages.push({
@@ -513,3 +396,143 @@ const initializeNormalizedMessages = async () => {
     console.error('initializeMessages()', error);
   }
 };
+
+// VISTA PRODUCTOS
+
+// Filtro por nombre
+routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
+  const filtrar = req.body.buscar;
+  try {
+    await dao.filterByName(filtrar);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    res.redirect('/productos/vista');
+  }
+});
+
+// Filtro por precio
+routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
+  const precioMin = req.body.min;
+  const precioMax = req.body.max;
+  try {
+    await dao.filterByPrice(precioMin, precioMax);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    res.redirect('/productos/vista');
+  }
+});
+
+routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
+  let productsFiltered: any = await dao.getProductsFiltered();
+  if (productsFiltered.length < 1) {
+    res.render('vista-productos', {
+      productos: await dao.getProducts(),
+    });
+  } else {
+    res.render('vista-productos', {
+      productos: dao.getProductsFiltered(),
+    });
+  }
+
+  // if (option === 0) {
+  //   res.render('layouts/index.ejs', {
+  //     productos: dao.getProductsSync(),
+  //   });
+  // } else {
+  //   res.render('layouts/index.ejs', {
+  //     productos: await dao.getProducts(),
+  //   });
+  // }
+});
+
+// VISTA TEST (Faker)
+
+routerProductos.get(pathVistaTest, (req, res) => {
+  const datos = [];
+
+  const cantidad = req.query.cant || 10;
+  let id = 1;
+  for (let index = 0; index < cantidad; index++) {
+    datos.push({
+      id: id++,
+      nombre: faker.commerce.productName(),
+      precio: faker.commerce.price(),
+      foto: faker.image.image(),
+    });
+  }
+  console.log(cantidad);
+  if (cantidad == '0') {
+    res.send('No hay productos');
+  } else {
+    res.render('vista-test', {
+      productos: datos,
+    });
+  }
+});
+
+// VISTA LOGIN (SESSION)
+// const sessionHandler = session({
+//   secret: 'secreto',
+//   resave: true,
+//   saveUninitialized: true,
+//   rolling: true,
+//   // cookie: { maxAge: 10_000 },
+// });
+
+// app.use(sessionHandler);
+
+app.use(
+  session({
+    store: connectMongo.create({
+      //   mongoUrl: 'mongodb://localhost/sesiones', // mongo local
+      mongoUrl:
+        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority', // mongo atlas
+    }),
+    secret: 'secreto',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+      maxAge: 10000,
+    },
+  })
+);
+
+declare module 'express-session' {
+  interface Session {
+    contador: number;
+    nombre: any;
+  }
+}
+
+app.get(pathMain, (req: Request, res: Response) => {
+  if (req.session.nombre == undefined) {
+    return res.render('vista-login');
+  } else {
+    return res.render('vista-main', {
+      nombre: req.session.nombre,
+    });
+  }
+});
+
+app.post(pathLogin, (req: Request, res: Response) => {
+  req.session.nombre = req.body.name;
+  res.status(200).redirect('/');
+});
+
+app.post(pathLogout, (req: Request, res: Response) => {
+  const { nombre } = req.session;
+  req.session.destroy(error => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ error: `Hubo un error en el logout: ${error.message}` });
+    }
+    res.render('vista-logout', { nombre: nombre });
+    setTimeout(() => {
+      res.render('vista-login');
+    }, 2000);
+  });
+});

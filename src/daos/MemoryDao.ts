@@ -5,6 +5,7 @@ import { Mensaje } from '../mensaje';
 export class MemoryDao implements IDao {
   productos: Array<Producto>;
   carrito: Array<Producto>;
+  mensajes: Array<Mensaje>;
   private count: number;
   private cartId: number;
   private static cartCount: number = 1;
@@ -13,11 +14,13 @@ export class MemoryDao implements IDao {
   constructor() {
     this.productos = new Array<Producto>();
     this.carrito = new Array<Producto>();
+    this.mensajes = new Array<Mensaje>();
     this.count = 0;
     this.cartId = MemoryDao.cartCount;
     MemoryDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+
   filterByName(filtro: any): void {
     throw new Error('Method not implemented.');
   }
@@ -25,12 +28,6 @@ export class MemoryDao implements IDao {
     throw new Error('Method not implemented.');
   }
   getProductsFiltered(): void {
-    throw new Error('Method not implemented.');
-  }
-  insertMessage(message: Mensaje): void {
-    throw new Error('Method not implemented.');
-  }
-  getMessages(): Promise<Mensaje[]> {
     throw new Error('Method not implemented.');
   }
 
@@ -99,7 +96,21 @@ export class MemoryDao implements IDao {
     }
   }
 
-  //
+  // MENSAJES
+
+  insertMessage(message: Mensaje) {
+    this.mensajes.push(message);
+    console.log('Mensaje agregado!');
+    return this.mensajes;
+  }
+
+  getMessagesSync(): Mensaje[] {
+    return this.mensajes;
+  }
+
+  getMessages(): Promise<Mensaje[]> {
+    throw new Error('Method not implemented.');
+  }
 
   getCartProductById(id: any): Promise<Producto[]> {
     throw new Error('Method not implemented.');

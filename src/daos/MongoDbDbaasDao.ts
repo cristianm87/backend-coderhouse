@@ -20,6 +20,9 @@ export class MongoDbDbaasDao implements IDao {
     MongoDbDbaasDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+  getMessagesSync(): Mensaje[] {
+    throw new Error('Method not implemented.');
+  }
   filterByName(filtro: any): void {
     throw new Error('Method not implemented.');
   }

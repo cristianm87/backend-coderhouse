@@ -51,6 +51,9 @@ var MongoDbDbaasDao = /** @class */ (function () {
         MongoDbDbaasDao.cartCount++;
         this.cartTimestamp = Date.now();
     }
+    MongoDbDbaasDao.prototype.getMessagesSync = function () {
+        throw new Error('Method not implemented.');
+    };
     MongoDbDbaasDao.prototype.filterByName = function (filtro) {
         throw new Error('Method not implemented.');
     };
