@@ -16,6 +16,9 @@ export class FileSystemDao implements IDao {
     FileSystemDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+  closeConnection(): void {
+    throw new Error('Method not implemented.');
+  }
   getMessagesSync(): Mensaje[] {
     throw new Error('Method not implemented.');
   }

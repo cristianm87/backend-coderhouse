@@ -29,22 +29,20 @@
           "
           role="alert"
         >
-          Bienvenido <%= nombre %>
-          <form action="/logout" method="post">
+          <span style="font-size: 1.5rem">Bienvenido <b><%= nombre %></b></span>
+          <form action="/logout" method="get">
             <input
               type="submit"
               class="btn btn-warning"
               name="logout"
-              value="logout"
+              value="Cerrar sesión"
             />
           </form>
         </div>
       </div>
     </section>
     <!-- PRODUCTOS -->
-    <section>
-      <div class="container"><%- include('../form-productos.ejs') %></div>
-    </section>
+    <div class="container"><%- include('../form-productos.ejs') %></div>
     <section>
       <div class="container">
         <hr />
@@ -61,8 +59,6 @@
       </div>
     </section>
     <!-- MENSAJES -->
-    <section>
-      <div class="container"><%- include('../form-mensajes.ejs') %></div>
-    </section>
+    <div class="container"><%- include('../form-mensajes.ejs') %></div>
   </body>
 </html>

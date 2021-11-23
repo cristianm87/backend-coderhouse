@@ -9,33 +9,31 @@ import { modelMensaje } from '../models/modelMensaje';
 export class MongoDbDbaasDao implements IDao {
   products: Array<any>;
   carrito: Array<any>;
+  productosFiltrados: Array<any>;
+  messages: Array<any>;
   private cartId: number;
   private static cartCount: number = 1;
   private cartTimestamp: Number;
 
   constructor() {
+    (async () => {
+      await mongoose.connect(
+        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
+      );
+    })();
+
     this.products = new Array<any>();
     this.carrito = new Array<any>();
+    this.productosFiltrados = Array<any>();
+    this.messages = Array<Mensaje>();
     this.cartId = MongoDbDbaasDao.cartCount;
     MongoDbDbaasDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+  async closeConnection() {
+    await mongoose.disconnect(() => {});
+  }
   getMessagesSync(): Mensaje[] {
-    throw new Error('Method not implemented.');
-  }
-  filterByName(filtro: any): void {
-    throw new Error('Method not implemented.');
-  }
-  filterByPrice(min: any, max: any): void {
-    throw new Error('Method not implemented.');
-  }
-  getProductsFiltered(): void {
-    throw new Error('Method not implemented.');
-  }
-  insertMessage(message: Mensaje): void {
-    throw new Error('Method not implemented.');
-  }
-  getMessages(): Promise<Mensaje[]> {
     throw new Error('Method not implemented.');
   }
 
@@ -43,9 +41,6 @@ export class MongoDbDbaasDao implements IDao {
 
   async insertProduct(product: Producto) {
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       await modelProductos.insertMany({
         timestamp: Date.now(),
         name: product.name,
@@ -58,16 +53,11 @@ export class MongoDbDbaasDao implements IDao {
       console.log('Producto guardado!');
     } catch (error) {
       console.log(error);
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getProducts(): Promise<Array<Producto>> {
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       const productsFromDb = await modelProductos.find();
       this.products = [];
       for (const product of productsFromDb) {
@@ -76,17 +66,12 @@ export class MongoDbDbaasDao implements IDao {
     } catch (error) {
       console.log(error);
     } finally {
-      await mongoose.disconnect(() => {});
-
       return this.products;
     }
   }
 
   async updateProduct(newProduct: Producto, id: any) {
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       await modelProductos.updateOne(
         { _id: id },
         {
@@ -102,35 +87,23 @@ export class MongoDbDbaasDao implements IDao {
       );
     } catch (error) {
       console.error('updateProduct: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async deleteProduct(id: any) {
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       await modelProductos.deleteOne({ _id: id });
     } catch (error) {
       console.error('deleteProduct: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getProductById(id: any): Promise<Array<Producto>> {
     let productById: any = {};
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       productById = await modelProductos.findOne({ _id: id });
     } catch (error) {
       console.error('getProductById: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
     return productById;
   }
@@ -140,22 +113,14 @@ export class MongoDbDbaasDao implements IDao {
   async addToCart(product: any) {
     // falta manejar error por si se ingresan dos productos con el mismo ID
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       await modelCarrito.insertMany(product);
     } catch (error) {
       console.error('Producto duplicado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getCartProducts(): Promise<Array<Producto>> {
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       const productsFromDb = await modelCarrito.find();
       this.carrito = [];
       for (const product of productsFromDb) {
@@ -164,35 +129,24 @@ export class MongoDbDbaasDao implements IDao {
     } catch (error) {
       console.log(error);
     } finally {
-      await mongoose.disconnect(() => {});
       return this.carrito;
     }
   }
 
   async deleteProductCart(id: any) {
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       await modelCarrito.deleteOne({ _id: id });
     } catch (error) {
       console.log(error);
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getCartProductById(id: any): Promise<Producto[]> {
     let cartProductById: any = {};
     try {
-      await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
       cartProductById = await modelCarrito.findOne({ _id: id });
     } catch (error) {
       console.error('getCartProductById: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
     return cartProductById;
   }
@@ -202,6 +156,52 @@ export class MongoDbDbaasDao implements IDao {
   }
   getCartTimestamp() {
     return this.cartTimestamp;
+  }
+
+  // FILTRAR PRODUCTOS
+
+  async filterByName(filtro: any) {
+    const productos = await this.getProducts();
+    this.productosFiltrados = productos.filter(
+      producto => producto.name == filtro
+    );
+  }
+
+  async filterByPrice(min: any, max: any) {
+    const productos = await this.getProducts();
+    this.productosFiltrados = productos.filter(
+      producto => producto.price >= min && producto.price <= max
+    );
+  }
+
+  getProductsFiltered() {
+    return this.productosFiltrados;
+  }
+
+  // MENSAJES
+
+  async insertMessage(message: any) {
+    try {
+      await modelMensaje.insertMany(message);
+      console.log('Mensaje guardado!');
+    } catch (error) {
+      console.error('insertMessage()', error);
+    }
+  }
+
+  async getMessages(): Promise<Array<Mensaje>> {
+    try {
+      const messagesFromDb = await modelMensaje.find();
+      // this.messages = messagesFromDb;
+      this.messages = [];
+      for (const mensaje of messagesFromDb) {
+        this.messages.push(mensaje);
+      }
+    } catch (error) {
+      console.error('getMessages()', error);
+    } finally {
+      return this.messages;
+    }
   }
 
   //

@@ -1,9 +1,16 @@
-<h1>Tabla de productos</h1>
+<h1>Vista Productos</h1>
+
 <!-- BUSCAR POR NOMBRE -->
-<section class="mt-3" style="max-width: 300px">
-  <form action="/productos/filtrar-nombre" method="POST">
+<section class="d-flex justify-content-center">
+  <form
+    action="/productos/filtrar-nombre"
+    method="POST"
+    class="bg-dark p-2 mt-3 col-5"
+  >
     <div class="form-group">
-      <label for="buscar"> <b> Buscar producto por nombre:</b> </label>
+      <h5>
+        <b> <label for="buscar"> Buscar producto por nombre</label></b>
+      </h5>
       <input
         class="form-control"
         type="text"
@@ -11,13 +18,19 @@
         placeholder="Ingrese nombre de producto"
       />
     </div>
-    <input class="btn btn-primary mt-2" type="submit" value="Buscar" />
+    <div class="d-grid gap-2">
+      <input class="btn btn-primary mt-2" type="submit" value="Buscar" />
+    </div>
   </form>
 </section>
 <!-- BUSCAR POR PRECIO-->
-<section class="mt-3" style="max-width: 300px">
-  <span><b>Buscar producto por rango de precio</b> </span>
-  <form action="/productos/filtrar-precio" method="POST">
+<section class="d-flex justify-content-center">
+  <form
+    action="/productos/filtrar-precio"
+    method="POST"
+    class="bg-dark p-2 mt-3 col-5"
+  >
+    <h5><b>Buscar producto por rango de precio</b></h5>
     <div class="row">
       <div class="col">
         <input
@@ -40,11 +53,14 @@
         />
       </div>
     </div>
-    <input class="btn btn-primary mt-2" type="submit" value="Buscar" />
+    <div class="d-grid gap-2">
+      <input class="btn btn-primary mt-2" type="submit" value="Buscar" />
+    </div>
   </form>
 </section>
 
 <section class="mt-2">
+  <h3>Tabla de productos</h3>
   <% if(productos.length === 0) {%>
   <h2>(No hay productos para mostrar)</h2>
   <%} else {%>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ecommerce login</title>
+    <title>Ecommerce signup</title>
     <!-- CSS only -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
@@ -21,8 +21,8 @@
         style="height: 100vh"
       >
         <div class="bg-dark p-3 col-5 h-auto d-inline-block">
-          <h1>Login de usuario</h1>
-          <form class="p-4 text-center rounded" action="/login" method="POST">
+          <h1>Registro de usuario</h1>
+          <form class="p-4 text-center rounded" action="/signup" method="POST">
             <div class="mb-3">
               <!-- <label for="name" class="form-label"></label> -->
               <input
@@ -44,18 +44,21 @@
             </div>
 
             <div class="d-grid gap-2">
-              <button class="btn btn-primary mb-2" type="submit">Login!</button>
+              <button class="btn btn-primary mb-2" type="submit">
+                SignUp!
+              </button>
             </div>
           </form>
 
-          <button id="signup" class="btn btn-primary mt-2">Sign Up!</button>
+          <button id="login" class="btn btn-primary mt-2" type="submit">
+            Login!
+          </button>
         </div>
       </section>
     </div>
-
-    <script type="text/javascript">
-      document.getElementById('signup').onclick = function () {
-        location.href = '/signup';
+    <script>
+      document.getElementById('login').onclick = function () {
+        location.href = '/';
       };
     </script>
   </body>

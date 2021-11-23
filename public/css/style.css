@@ -9,6 +9,7 @@ h4,
 h5,
 h6 {
   color: rgb(41, 140, 206);
+  text-align: center;
 }
 
 hr {
@@ -29,4 +30,9 @@ hr {
 
 #chatAvatar {
   max-width: 40px;
+}
+
+.errorText {
+  font-size: 2rem;
+  color: white;
 }

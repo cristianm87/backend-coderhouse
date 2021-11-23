@@ -1,9 +1,5 @@
 node_modules/
 .DS_Store
-webchat.zip
-diagnostic.data
-journal
-WiredTiger.turtle
-WiredTiger.wt
-index-6-4602767040769562856.wt
-index-5-4602767040769562856.wt
+dist/
+diagnostic.data/
+journal/

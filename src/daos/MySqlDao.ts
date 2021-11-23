@@ -27,6 +27,9 @@ export class MySqlDao implements IDao {
     MySqlDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+  closeConnection(): void {
+    throw new Error('Method not implemented.');
+  }
   getMessagesSync(): Mensaje[] {
     throw new Error('Method not implemented.');
   }

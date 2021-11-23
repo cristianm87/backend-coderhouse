@@ -18,10 +18,3 @@ npm run TStoJS5
 npm run start
 
 ```
-
-### URL
-
-```
-/login
-
-```

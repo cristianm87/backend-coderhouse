@@ -52,7 +52,7 @@ const socketProductos = io();
 socketProductos.on('products-from-server', data => {
   const html = ejs.render(
     `<section>
-            <h1>Tabla</h1>
+            <h1>Lista de productos</h1>
             <% if(productos.length === 0) {%>
             <h2>No hay productos</h2>
             <%} else {%>

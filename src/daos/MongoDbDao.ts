@@ -15,6 +15,9 @@ export class MongoDbDao implements IDao {
   private cartTimestamp: Number;
 
   constructor() {
+    (async () => {
+      mongoose.connect('mongodb://localhost:27017/ecommerce');
+    })();
     this.products = new Array<any>();
     this.carrito = new Array<any>();
     this.productosFiltrados = Array<any>();
@@ -23,20 +26,17 @@ export class MongoDbDao implements IDao {
     MongoDbDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
+  async closeConnection() {
+    await mongoose.disconnect(() => {});
+  }
   getMessagesSync(): Mensaje[] {
     throw new Error('Method not implemented.');
   }
-
-  // mongoose.connect("mongodb://localhost:27017/test", {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // });
 
   // PRODUCTO
 
   async insertProduct(product: Producto) {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       await modelProductos.insertMany({
         timestamp: Date.now(),
         name: product.name,
@@ -49,27 +49,21 @@ export class MongoDbDao implements IDao {
       console.log('Producto guardado!');
     } catch (error) {
       console.log('insertProduct()', error);
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getProducts(): Promise<Array<Producto>> {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       this.products = await modelProductos.find();
     } catch (error) {
       console.error('getProducts()', error);
     } finally {
-      await mongoose.disconnect(() => {});
-
       return await this.products;
     }
   }
 
   async updateProduct(newProduct: Producto, id: any) {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       await modelProductos.updateOne(
         { _id: id },
         {
@@ -85,31 +79,23 @@ export class MongoDbDao implements IDao {
       );
     } catch (error) {
       console.error('updateProduct: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async deleteProduct(id: any) {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       await modelProductos.deleteOne({ _id: id });
     } catch (error) {
       console.error('deleteProduct: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getProductById(id: any): Promise<Array<Producto>> {
     let productById: any = {};
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       productById = await modelProductos.findOne({ _id: id });
     } catch (error) {
       console.error('getProductById: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
     return productById;
   }
@@ -119,18 +105,14 @@ export class MongoDbDao implements IDao {
   async addToCart(product: any) {
     // falta manejar error por si se ingresan dos productos con el mismo ID
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       await modelCarrito.insertMany(product);
     } catch (error) {
       console.error('Producto duplicado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getCartProducts(): Promise<Array<Producto>> {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       const productsFromDb = await modelCarrito.find();
       this.carrito = [];
       for (const product of productsFromDb) {
@@ -139,31 +121,24 @@ export class MongoDbDao implements IDao {
     } catch (error) {
       console.log(error);
     } finally {
-      await mongoose.disconnect(() => {});
       return this.carrito;
     }
   }
 
   async deleteProductCart(id: any) {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       await modelCarrito.deleteOne({ _id: id });
     } catch (error) {
       console.log(error);
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getCartProductById(id: any): Promise<Producto[]> {
     let cartProductById: any = {};
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       cartProductById = await modelCarrito.findOne({ _id: id });
     } catch (error) {
       console.error('getCartProductById: Producto no encontrado');
-    } finally {
-      await mongoose.disconnect(() => {});
     }
     return cartProductById;
   }
@@ -199,19 +174,15 @@ export class MongoDbDao implements IDao {
 
   async insertMessage(message: any) {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       await modelMensaje.insertMany(message);
       console.log('Mensaje guardado!');
     } catch (error) {
       console.error('insertMessage()', error);
-    } finally {
-      await mongoose.disconnect(() => {});
     }
   }
 
   async getMessages(): Promise<Array<Mensaje>> {
     try {
-      await mongoose.connect('mongodb://localhost:27017/ecommerce');
       const messagesFromDb = await modelMensaje.find();
       // this.messages = messagesFromDb;
       this.messages = [];
@@ -221,7 +192,6 @@ export class MongoDbDao implements IDao {
     } catch (error) {
       console.error('getMessages()', error);
     } finally {
-      await mongoose.disconnect(() => {});
       return this.messages;
     }
   }

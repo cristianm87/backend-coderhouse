@@ -1,35 +1,42 @@
-<h1>Ingrese un producto:</h1>
-
-<form
-  action="/productos/agregar"
-  method="POST"
-  class="text-light bg-dark row g-3 mt-2"
->
-  <div class="col-auto">
-    <label for="name" class="form-label">Nombre *</label>
-    <input type="text" name="name" class="form-control" />
-  </div>
-  <div class="col-auto">
-    <label for="description" class="form-label">Descripción *</label>
-    <input type="text" name="description" class="form-control" />
-  </div>
-  <div class="col-auto">
-    <label for="code" class="form-label">Codigo *</label>
-    <input type="text" name="code" class="form-control" />
-  </div>
-  <div class="col-auto">
-    <label for="thumbnail" class="form-label">Foto Url</label>
-    <input type="text" name="thumbnail" class="form-control" />
-  </div>
-  <div class="col-auto">
-    <label for="price" class="form-label">Precio</label>
-    <input type="number" name="price" min="0" step=".10" class="form-control" />
-  </div>
-  <div class="col-auto">
-    <label for="stock" class="form-label">Stock</label>
-    <input type="number" name="stock" min="0" class="form-control" />
-  </div>
-  <div class="row-1">
-    <button type="submit" class="btn btn-primary mb-3">Enviar</button>
-  </div>
-</form>
+<section>
+  <h1>Ingrese un producto:</h1>
+  <form
+    action="/productos/agregar"
+    method="POST"
+    class="text-light bg-dark row g-3 mt-2"
+  >
+    <div class="col-4">
+      <label for="name" class="form-label">Nombre *</label>
+      <input type="text" name="name" class="form-control" />
+    </div>
+    <div class="col-4">
+      <label for="description" class="form-label">Descripción *</label>
+      <input type="text" name="description" class="form-control" />
+    </div>
+    <div class="col-4">
+      <label for="code" class="form-label">Codigo *</label>
+      <input type="text" name="code" class="form-control" />
+    </div>
+    <div class="col-4">
+      <label for="thumbnail" class="form-label">Foto Url</label>
+      <input type="text" name="thumbnail" class="form-control" />
+    </div>
+    <div class="col-4">
+      <label for="price" class="form-label">Precio</label>
+      <input
+        type="number"
+        name="price"
+        min="0"
+        step=".10"
+        class="form-control"
+      />
+    </div>
+    <div class="col-4">
+      <label for="stock" class="form-label">Stock</label>
+      <input type="number" name="stock" min="0" class="form-control" />
+    </div>
+    <div class="row-1">
+      <button type="submit" class="btn btn-primary mb-3">Enviar</button>
+    </div>
+  </form>
+</section>

@@ -22,4 +22,5 @@ export interface IDao {
   insertMessage(message: Mensaje): void;
   getMessages(): Promise<Array<Mensaje>>;
   getMessagesSync(): Array<Mensaje>;
+  closeConnection(): void;
 }

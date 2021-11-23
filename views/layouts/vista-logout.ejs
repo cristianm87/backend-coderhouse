@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ecommerce Vista</title>
+    <title>Ecommerce logout</title>
     <!-- CSS only -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
@@ -12,17 +12,20 @@
       integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
   </head>
-  <body style="background-color: rgb(15, 15, 15); color: rgb(0, 108, 180)">
+  <body>
     <div class="container">
       <section>
         <div class="alert alert-primary mt-3 text-center" role="alert">
-          Hasta luego <%= nombre %>
+          <span style="font-size: 1.5rem"
+            >Hasta luego <b><%= nombre %></b>
+          </span>
         </div>
       </section>
       <script>
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/login';
         }, 2000);
       </script>
     </div>

@@ -5,13 +5,18 @@ import path from 'path';
 import * as SocketIO from 'socket.io';
 import http, { request } from 'http';
 import session from 'express-session';
-import connectMongo from 'connect-mongo';
 import { DaoFactory } from './daoFactory';
+import { modelLogin } from './models/modelLogin';
 import faker from 'faker';
 faker.locale = 'es';
 // import normalizr from 'normalizr';
 const normalizr = require('normalizr');
-const util = require('util');
+
+// PASSPORT
+import passport from 'passport';
+import passportLocal from 'passport-local';
+import bodyParser from 'body-parser';
+import bcrypt from 'bcrypt';
 
 const PORT = 8080 || process.env.PORT;
 const app = express();
@@ -21,6 +26,7 @@ const routerMensajes = express.Router();
 const __dirname = path.resolve();
 const server = http.createServer(app); // antes estaba como Server(app)
 const ioServer = new SocketIO.Server(server);
+
 // AUTHORIZATION
 const isAdmin: boolean = true;
 
@@ -50,12 +56,18 @@ server.on('error', error => {
   console.error('Server Error:', error);
 });
 
-// Middleware
+process.on('SIGTERM', () => {
+  server.close(() => {
+    console.log('adios!');
+    dao.closeConnection();
+  });
+});
+
+// Middlewares
 
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+app.use(express.urlencoded({ extended: true })); // Esto es para que el request lea el body
 app.use('/productos', routerProductos);
 app.use('/carrito', routerCarrito);
 app.use('/mensajes', routerMensajes);
@@ -75,17 +87,10 @@ const MYSQLSQLITE3 = 4;
 const FILESYSTEM = 5;
 const FIREBASE = 6;
 //
-let option = MEMORY;
+let option = MONGODB;
 //
 const daoFactory = new DaoFactory();
 const dao: IDao = daoFactory.getDao(option);
-
-// Ejemplo de producto
-// {
-//   name: 'Producto 1',
-//   price: 5000,
-//   thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-and-school-8/48/Computer-512.png',
-// };
 
 //////// ENDPOINTS PRODUCTOS
 
@@ -137,7 +142,7 @@ routerProductos.post(pathAgregar, async (req: Request, res: Response) => {
         console.log(error);
       } finally {
         await initializeProducts();
-        res.redirect('/');
+        res.redirect(pathMain);
       }
     } else {
       res.status(400).send({ error: 'Información incompleta' });
@@ -338,7 +343,7 @@ routerMensajes.post(
       text: body.text,
     };
     await dao.insertMessage(mensaje);
-    res.redirect('/');
+    res.redirect(pathMain);
   }
 );
 
@@ -427,24 +432,20 @@ routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
 routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
   let productsFiltered: any = await dao.getProductsFiltered();
   if (productsFiltered.length < 1) {
-    res.render('vista-productos', {
-      productos: await dao.getProducts(),
-    });
+    if (option === 0) {
+      res.render('vista-productos', {
+        productos: dao.getProductsSync(),
+      });
+    } else {
+      res.render('vista-productos', {
+        productos: await dao.getProducts(),
+      });
+    }
   } else {
     res.render('vista-productos', {
       productos: dao.getProductsFiltered(),
     });
   }
-
-  // if (option === 0) {
-  //   res.render('layouts/index.ejs', {
-  //     productos: dao.getProductsSync(),
-  //   });
-  // } else {
-  //   res.render('layouts/index.ejs', {
-  //     productos: await dao.getProducts(),
-  //   });
-  // }
 });
 
 // VISTA TEST (Faker)
@@ -462,7 +463,6 @@ routerProductos.get(pathVistaTest, (req, res) => {
       foto: faker.image.image(),
     });
   }
-  console.log(cantidad);
   if (cantidad == '0') {
     res.send('No hay productos');
   } else {
@@ -472,67 +472,195 @@ routerProductos.get(pathVistaTest, (req, res) => {
   }
 });
 
-// VISTA LOGIN (SESSION)
-// const sessionHandler = session({
-//   secret: 'secreto',
-//   resave: true,
-//   saveUninitialized: true,
-//   rolling: true,
-//   // cookie: { maxAge: 10_000 },
-// });
+////////// PASSPORT DBAAS ////////////
 
-// app.use(sessionHandler);
+const createHash = (password: string) =>
+  bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+const isValidPassword = (
+  user: { password: string },
+  password: string | Buffer
+) => bcrypt.compareSync(password, user.password);
+
+const loginStrategyName = 'login';
+const signUpStrategyName = 'signup';
+
+passport.use(
+  loginStrategyName,
+  new passportLocal.Strategy(
+    {
+      passReqToCallback: true,
+    },
+    (_request, username, password, done) => {
+      modelLogin.findOne(
+        {
+          username,
+        },
+        (error: any, user: { password: string }) => {
+          if (error) {
+            return done(error);
+          }
+
+          if (!user) {
+            console.log(`User Not Found with username ${username}`);
+
+            return done(null, false);
+          }
+
+          if (!isValidPassword(user, password)) {
+            console.log('Invalid Password');
+
+            return done(null, false);
+          }
+
+          return done(null, user);
+        }
+      );
+    }
+  )
+);
+
+passport.use(
+  signUpStrategyName,
+  new passportLocal.Strategy(
+    {
+      passReqToCallback: true,
+    },
+    (_request, username, password, done) => {
+      modelLogin.findOne(
+        {
+          username,
+        },
+        (error: any, user: any) => {
+          if (error) {
+            console.log(`Error in SignUp: ${error}`);
+
+            return done(error);
+          }
+
+          if (user) {
+            console.log('User already exists');
+
+            return done(null, false);
+          }
+
+          const newUser: any = new modelLogin();
+          newUser.username = username;
+          newUser.password = createHash(password);
+
+          return newUser.save((error: any) => {
+            if (error) {
+              console.log(`Error in Saving user: ${error}`);
+
+              throw error;
+            }
+
+            console.log('User Registration succesful');
+
+            return done(null, newUser);
+          });
+        }
+      );
+    }
+  )
+);
+
+passport.serializeUser((user: any, done) => {
+  done(null, user._id);
+});
+
+passport.deserializeUser((id, done) => {
+  modelLogin.findById(
+    id,
+    (error: any, user: boolean | Express.User | null | undefined) =>
+      done(error, user)
+  );
+});
 
 app.use(
   session({
-    store: connectMongo.create({
-      //   mongoUrl: 'mongodb://localhost/sesiones', // mongo local
-      mongoUrl:
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority', // mongo atlas
-    }),
-    secret: 'secreto',
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,
+    secret: 'keyboard cat',
     cookie: {
-      maxAge: 10000,
+      httpOnly: false,
+      secure: false,
+      maxAge: 60 * 10 * 1000,
     },
+    rolling: true,
+    resave: true,
+    saveUninitialized: false,
   })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Endpoints Passport
+
+app.get(pathMain, (req: Request, res: Response) => {
+  if (req.session.username == undefined) {
+    return res.redirect(pathLogin);
+  }
+  return res.render('vista-main', {
+    nombre: req.session.username,
+  });
+});
+
+//signup
+
+app.post(
+  '/signup',
+  passport.authenticate(signUpStrategyName, { failureRedirect: '/failsignup' }),
+  (req: Request, res: Response) => {
+    res.render('vista-login');
+  }
+);
+
+app.get('/signup', (req: Request, res: Response) => {
+  if (req.session.username == undefined) {
+    res.render('vista-signup');
+  } else {
+    res.redirect(pathMain);
+  }
+});
+
+app.get('/failsignup', (req: Request, res: Response) => {
+  res.render('vista-user-error-signup');
+});
+
+//login
+
 declare module 'express-session' {
   interface Session {
-    contador: number;
-    nombre: any;
+    username: number;
+    password: any;
   }
 }
 
-app.get(pathMain, (req: Request, res: Response) => {
-  if (req.session.nombre == undefined) {
-    return res.render('vista-login');
+app.get(pathLogin, (req: Request, res: Response) => {
+  if (req.session.username == undefined) {
+    res.render('vista-login');
   } else {
-    return res.render('vista-main', {
-      nombre: req.session.nombre,
-    });
+    res.redirect(pathMain);
   }
 });
 
-app.post(pathLogin, (req: Request, res: Response) => {
-  req.session.nombre = req.body.name;
-  res.status(200).redirect('/');
+app.post(
+  pathLogin,
+  passport.authenticate(loginStrategyName, { failureRedirect: '/faillogin' }),
+  (req: Request, res: Response) => {
+    req.session.username = req.body.username;
+    req.session.password = req.body.password;
+
+    return res.redirect(pathMain);
+  }
+);
+
+app.get('/faillogin', (req: Request, res: Response) => {
+  res.render('vista-user-error-login');
 });
 
-app.post(pathLogout, (req: Request, res: Response) => {
-  const { nombre } = req.session;
-  req.session.destroy(error => {
-    if (error) {
-      return res
-        .status(500)
-        .json({ error: `Hubo un error en el logout: ${error.message}` });
-    }
-    res.render('vista-logout', { nombre: nombre });
-    setTimeout(() => {
-      res.render('vista-login');
-    }, 2000);
+app.get(pathLogout, (req: Request, res: Response) => {
+  const username = req.session.username;
+  req.session.destroy(function (err) {
+    res.render('vista-logout', { nombre: username });
   });
 });

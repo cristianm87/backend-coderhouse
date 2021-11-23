@@ -4,6 +4,7 @@ import { Mensaje } from '../mensaje';
 
 export class MemoryDao implements IDao {
   productos: Array<Producto>;
+  productosFiltrados: Array<Producto>;
   carrito: Array<Producto>;
   mensajes: Array<Mensaje>;
   private count: number;
@@ -13,6 +14,7 @@ export class MemoryDao implements IDao {
 
   constructor() {
     this.productos = new Array<Producto>();
+    this.productosFiltrados = new Array<Producto>();
     this.carrito = new Array<Producto>();
     this.mensajes = new Array<Mensaje>();
     this.count = 0;
@@ -20,14 +22,7 @@ export class MemoryDao implements IDao {
     MemoryDao.cartCount++;
     this.cartTimestamp = Date.now();
   }
-
-  filterByName(filtro: any): void {
-    throw new Error('Method not implemented.');
-  }
-  filterByPrice(min: any, max: any): void {
-    throw new Error('Method not implemented.');
-  }
-  getProductsFiltered(): void {
+  closeConnection(): void {
     throw new Error('Method not implemented.');
   }
 
@@ -39,7 +34,12 @@ export class MemoryDao implements IDao {
 
   insertProduct(product: Producto) {
     this.productos.push({
-      ...product,
+      name: product.name,
+      description: product.description,
+      code: product.code,
+      thumbnail: product.thumbnail,
+      price: Number(product.price),
+      stock: Number(product.stock),
       _id: String(this.count + 1),
       timestamp: new Date(),
     });
@@ -66,6 +66,23 @@ export class MemoryDao implements IDao {
     const product = this.productos.find(element => element._id == id);
     return product;
   }
+
+  filterByName(filtro: any): void {
+    this.productosFiltrados = this.productos.filter(
+      producto => producto.name == filtro
+    );
+  }
+
+  filterByPrice(min: any, max: any) {
+    this.productosFiltrados = this.productos.filter(
+      producto => producto.price >= min && producto.price <= max
+    );
+  }
+
+  getProductsFiltered() {
+    return this.productosFiltrados;
+  }
+
   // CARRITO
 
   addToCart(product: Producto) {
