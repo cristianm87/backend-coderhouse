@@ -29,7 +29,14 @@
           "
           role="alert"
         >
-          <span style="font-size: 1.5rem">Bienvenido <b><%= nombre %></b></span>
+          <span style="font-size: 1.5rem"
+            >Bienvenido
+            <b
+              ><img src="<%= userData.photos[0].value %>" /><%=
+              userData.displayName %></b
+            >
+          </span>
+
           <form action="/logout" method="get">
             <input
               type="submit"

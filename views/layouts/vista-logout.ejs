@@ -19,13 +19,14 @@
       <section>
         <div class="alert alert-primary mt-3 text-center" role="alert">
           <span style="font-size: 1.5rem"
-            >Hasta luego <b><%= nombre %></b>
+            >Hasta luego <%if (typeof userData !== "undefined") { %>
+            <b> <%= userData.displayName %> </b> <% } %>
           </span>
         </div>
       </section>
       <script>
         setTimeout(() => {
-          window.location.href = '/login';
+          window.location.href = '/';
         }, 2000);
       </script>
     </div>

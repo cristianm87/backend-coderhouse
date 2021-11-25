@@ -6,17 +6,12 @@ import * as SocketIO from 'socket.io';
 import http, { request } from 'http';
 import session from 'express-session';
 import { DaoFactory } from './daoFactory';
-import { modelLogin } from './models/modelLogin';
+import passportFacebook from 'passport-facebook';
+import passport from 'passport';
 import faker from 'faker';
 faker.locale = 'es';
 // import normalizr from 'normalizr';
 const normalizr = require('normalizr');
-
-// PASSPORT
-import passport from 'passport';
-import passportLocal from 'passport-local';
-import bodyParser from 'body-parser';
-import bcrypt from 'bcrypt';
 
 const PORT = 8080 || process.env.PORT;
 const app = express();
@@ -472,195 +467,69 @@ routerProductos.get(pathVistaTest, (req, res) => {
   }
 });
 
-////////// PASSPORT DBAAS ////////////
+////////// PASSPORT FACEBOOK ////////////
 
-const createHash = (password: string) =>
-  bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-const isValidPassword = (
-  user: { password: string },
-  password: string | Buffer
-) => bcrypt.compareSync(password, user.password);
-
-const loginStrategyName = 'login';
-const signUpStrategyName = 'signup';
+const FACEBOOK_CLIENT_ID = '5013697905325423';
+const FACEBOOK_CLIENT_SECRET = '62dbd3c28deb41afa48a712662520dd2';
 
 passport.use(
-  loginStrategyName,
-  new passportLocal.Strategy(
+  new passportFacebook.Strategy(
     {
-      passReqToCallback: true,
+      clientID: FACEBOOK_CLIENT_ID,
+      clientSecret: FACEBOOK_CLIENT_SECRET,
+      callbackURL: '/oklogin',
+      profileFields: ['id', 'displayName', 'photos', 'emails'],
     },
-    (_request, username, password, done) => {
-      modelLogin.findOne(
-        {
-          username,
-        },
-        (error: any, user: { password: string }) => {
-          if (error) {
-            return done(error);
-          }
+    (_accessToken, _refreshToken, profile, done) => {
+      // console.log(profile);
 
-          if (!user) {
-            console.log(`User Not Found with username ${username}`);
-
-            return done(null, false);
-          }
-
-          if (!isValidPassword(user, password)) {
-            console.log('Invalid Password');
-
-            return done(null, false);
-          }
-
-          return done(null, user);
-        }
-      );
+      return done(null, profile);
     }
   )
 );
 
-passport.use(
-  signUpStrategyName,
-  new passportLocal.Strategy(
-    {
-      passReqToCallback: true,
-    },
-    (_request, username, password, done) => {
-      modelLogin.findOne(
-        {
-          username,
-        },
-        (error: any, user: any) => {
-          if (error) {
-            console.log(`Error in SignUp: ${error}`);
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user: any, done) => done(null, user));
 
-            return done(error);
-          }
-
-          if (user) {
-            console.log('User already exists');
-
-            return done(null, false);
-          }
-
-          const newUser: any = new modelLogin();
-          newUser.username = username;
-          newUser.password = createHash(password);
-
-          return newUser.save((error: any) => {
-            if (error) {
-              console.log(`Error in Saving user: ${error}`);
-
-              throw error;
-            }
-
-            console.log('User Registration succesful');
-
-            return done(null, newUser);
-          });
-        }
-      );
-    }
-  )
-);
-
-passport.serializeUser((user: any, done) => {
-  done(null, user._id);
+const sessionHandler = session({
+  secret: 'secreto',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 3_000,
+  },
+  rolling: true,
 });
 
-passport.deserializeUser((id, done) => {
-  modelLogin.findById(
-    id,
-    (error: any, user: boolean | Express.User | null | undefined) =>
-      done(error, user)
-  );
-});
-
-app.use(
-  session({
-    secret: 'keyboard cat',
-    cookie: {
-      httpOnly: false,
-      secure: false,
-      maxAge: 60 * 10 * 1000,
-    },
-    rolling: true,
-    resave: true,
-    saveUninitialized: false,
-  })
-);
-
+app.use(sessionHandler);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Endpoints Passport
-
-app.get(pathMain, (req: Request, res: Response) => {
-  if (req.session.username == undefined) {
-    return res.redirect(pathLogin);
+app.get(pathMain, (request, response) => {
+  if (request.isAuthenticated()) {
+    return response.render('vista-main', { userData: request.user });
   }
-  return res.render('vista-main', {
-    nombre: req.session.username,
-  });
+
+  return response.render('vista-login'); // 1
 });
 
-//signup
+app.post('/login', passport.authenticate('facebook')); // 2
 
-app.post(
-  '/signup',
-  passport.authenticate(signUpStrategyName, { failureRedirect: '/failsignup' }),
-  (req: Request, res: Response) => {
-    res.render('vista-login');
-  }
+app.get(
+  // 3
+  '/oklogin',
+  passport.authenticate('facebook', {
+    successRedirect: pathMain,
+    failureRedirect: '/faillogin',
+  })
 );
 
-app.get('/signup', (req: Request, res: Response) => {
-  if (req.session.username == undefined) {
-    res.render('vista-signup');
-  } else {
-    res.redirect(pathMain);
-  }
-});
-
-app.get('/failsignup', (req: Request, res: Response) => {
-  res.render('vista-user-error-signup');
-});
-
-//login
-
-declare module 'express-session' {
-  interface Session {
-    username: number;
-    password: any;
-  }
-}
-
-app.get(pathLogin, (req: Request, res: Response) => {
-  if (req.session.username == undefined) {
-    res.render('vista-login');
-  } else {
-    res.redirect(pathMain);
-  }
-});
-
-app.post(
-  pathLogin,
-  passport.authenticate(loginStrategyName, { failureRedirect: '/faillogin' }),
-  (req: Request, res: Response) => {
-    req.session.username = req.body.username;
-    req.session.password = req.body.password;
-
-    return res.redirect(pathMain);
-  }
+app.get('/faillogin', (_request, response) =>
+  response.render('vista-user-error-login')
 );
 
-app.get('/faillogin', (req: Request, res: Response) => {
-  res.render('vista-user-error-login');
-});
-
-app.get(pathLogout, (req: Request, res: Response) => {
-  const username = req.session.username;
-  req.session.destroy(function (err) {
-    res.render('vista-logout', { nombre: username });
-  });
+app.get(pathLogout, (request, response) => {
+  const userData = request.user;
+  request.logout();
+  return response.render('vista-logout', { userData });
 });
