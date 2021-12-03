@@ -76,7 +76,7 @@ app.use('/mensajes', routerMensajes);
 app.set('views', __dirname + '/views/layouts');
 app.set('view engine', 'ejs');
 
-/// DAO OPTIONS ///
+//////////// DAO OPTIONS ////////////
 
 const MEMORY = 0;
 const MONGODB = 1;
@@ -91,7 +91,7 @@ let option = MONGODB;
 const daoFactory = new DaoFactory();
 const dao: IDao = daoFactory.getDao(option);
 
-//////// ENDPOINTS PRODUCTOS
+//////////// ENDPOINTS PRODUCTOS ////////////
 
 routerProductos.get(pathListar, async (req: Request, res: Response) => {
   try {
@@ -228,7 +228,7 @@ routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
   }
 });
 
-//////// ENDPOINTS CARRITO
+//////////// ENDPOINTS CARRITO ////////////
 
 routerCarrito.get(pathListar, async (req: Request, res: Response) => {
   let cartProducts: any = [];
@@ -297,7 +297,7 @@ routerCarrito.delete(pathDelete, async (req: Request, res: Response) => {
   console.log('cartProductById_FromDelete', productToDelete);
 });
 
-// Socker IO
+//////////// SOCKET IO ////////////
 
 ioServer.on('connection', async _socket => {
   console.log('Un cliente se ha conectado');
@@ -401,9 +401,10 @@ const initializeNormalizedMessages = async () => {
   }
 };
 
-// VISTA PRODUCTOS
+//////////// VISTA PRODUCTOS ////////////
 
 // Filtro por nombre
+
 routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
   const filtrar = req.body.buscar;
   try {
@@ -416,6 +417,7 @@ routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
 });
 
 // Filtro por precio
+
 routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
   const precioMin = req.body.min;
   const precioMax = req.body.max;
@@ -447,7 +449,7 @@ routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
   }
 });
 
-// VISTA TEST (Faker)
+//////////// VISTA TEST (Faker) ////////////
 
 routerProductos.get(pathVistaTest, (req, res) => {
   const datos = [];
@@ -471,7 +473,7 @@ routerProductos.get(pathVistaTest, (req, res) => {
   }
 });
 
-// VISTA INFO
+//////////// VISTA INFO ////////////
 
 app.get('/info', (req, res) => {
   const info = {
@@ -486,17 +488,19 @@ app.get('/info', (req, res) => {
   res.render('info', { info });
 });
 
-// VISTA RANDOM
+//////////// NUMEROS RANDOMS ////////////
 
 app.get('/randoms', (req, res) => {
   const cantidad = Number(req.query.cant) || 100000000;
   const { fork } = require('child_process');
   const child = fork('./dist/child.js');
   child.send(cantidad);
-  child.on('message', (message: any) => console.log('NumerosRandoms', message));
+  child.on('message', (message: any) =>
+    res.status(200).send(JSON.stringify(message))
+  );
 });
 
-////////// PASSPORT FACEBOOK ////////////
+//////////// PASSPORT FACEBOOK ////////////
 
 const FACEBOOK_CLIENT_ID: any = +process.argv[3] || '5013697905325423';
 const FACEBOOK_CLIENT_SECRET: any =
@@ -540,13 +544,12 @@ app.get(pathMain, (request, response) => {
     return response.render('index', { userData: request.user });
   }
 
-  return response.render('login'); // 1
+  return response.render('login');
 });
 
-app.post(pathLogin, passport.authenticate('facebook')); // 2
+app.post(pathLogin, passport.authenticate('facebook'));
 
 app.get(
-  // 3
   '/oklogin',
   passport.authenticate('facebook', {
     successRedirect: pathMain,
