@@ -18,5 +18,15 @@
 		"stock": 10,
 		"timestamp": "2021-10-24T03:09:40.599Z",
 		"_id": "3"
+	},
+	{
+		"name": "asd",
+		"description": "asd",
+		"code": "asd",
+		"thumbnail": "asd",
+		"price": "50",
+		"stock": "50",
+		"timestamp": "2021-11-27T00:21:58.069Z",
+		"_id": "4"
 	}
 ]

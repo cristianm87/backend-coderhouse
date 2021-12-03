@@ -13,7 +13,7 @@ faker.locale = 'es';
 // import normalizr from 'normalizr';
 const normalizr = require('normalizr');
 
-const PORT = 8080 || process.env.PORT;
+const PORT = +process.argv[2] || 8080;
 const app = express();
 const routerProductos = express.Router();
 const routerCarrito = express.Router();
@@ -56,6 +56,10 @@ process.on('SIGTERM', () => {
     console.log('adios!');
     dao.closeConnection();
   });
+});
+
+process.on('exit', code => {
+  console.log(code);
 });
 
 // Middlewares
@@ -361,7 +365,7 @@ const initializeNormalizedMessages = async () => {
 
   if (option === 0) {
     messagesFromDb = await dao.getMessagesSync();
-  } else {
+  } else if (option === 1 || option === 2) {
     messagesFromDb = await dao.getMessages();
   }
 
@@ -428,16 +432,16 @@ routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
   let productsFiltered: any = await dao.getProductsFiltered();
   if (productsFiltered.length < 1) {
     if (option === 0) {
-      res.render('vista-productos', {
+      res.render('productos', {
         productos: dao.getProductsSync(),
       });
     } else {
-      res.render('vista-productos', {
+      res.render('productos', {
         productos: await dao.getProducts(),
       });
     }
   } else {
-    res.render('vista-productos', {
+    res.render('productos', {
       productos: dao.getProductsFiltered(),
     });
   }
@@ -461,16 +465,42 @@ routerProductos.get(pathVistaTest, (req, res) => {
   if (cantidad == '0') {
     res.send('No hay productos');
   } else {
-    res.render('vista-test', {
+    res.render('test', {
       productos: datos,
     });
   }
 });
 
+// VISTA INFO
+
+app.get('/info', (req, res) => {
+  const info = {
+    argumentosDeEntrada: process.argv,
+    nombreDeLaPlataforma: process.platform,
+    pathDeEjecución: process.argv[0],
+    processId: process.pid,
+    versionDeNodeJs: process.version,
+    usoDeMemoria: process.memoryUsage(),
+    carpetaCorriente: process.cwd(),
+  };
+  res.render('info', { info });
+});
+
+// VISTA RANDOM
+
+app.get('/randoms', (req, res) => {
+  const cantidad = Number(req.query.cant) || 100000000;
+  const { fork } = require('child_process');
+  const child = fork('./dist/child.js');
+  child.send(cantidad);
+  child.on('message', (message: any) => console.log('NumerosRandoms', message));
+});
+
 ////////// PASSPORT FACEBOOK ////////////
 
-const FACEBOOK_CLIENT_ID = '5013697905325423';
-const FACEBOOK_CLIENT_SECRET = '62dbd3c28deb41afa48a712662520dd2';
+const FACEBOOK_CLIENT_ID: any = +process.argv[3] || '5013697905325423';
+const FACEBOOK_CLIENT_SECRET: any =
+  +process.argv[4] || '62dbd3c28deb41afa48a712662520dd2';
 
 passport.use(
   new passportFacebook.Strategy(
@@ -496,7 +526,7 @@ const sessionHandler = session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-    maxAge: 3_000,
+    // maxAge: 3_000,
   },
   rolling: true,
 });
@@ -507,13 +537,13 @@ app.use(passport.session());
 
 app.get(pathMain, (request, response) => {
   if (request.isAuthenticated()) {
-    return response.render('vista-main', { userData: request.user });
+    return response.render('index', { userData: request.user });
   }
 
-  return response.render('vista-login'); // 1
+  return response.render('login'); // 1
 });
 
-app.post('/login', passport.authenticate('facebook')); // 2
+app.post(pathLogin, passport.authenticate('facebook')); // 2
 
 app.get(
   // 3
@@ -525,11 +555,11 @@ app.get(
 );
 
 app.get('/faillogin', (_request, response) =>
-  response.render('vista-user-error-login')
+  response.render('user-error-login')
 );
 
 app.get(pathLogout, (request, response) => {
   const userData = request.user;
   request.logout();
-  return response.render('vista-logout', { userData });
+  return response.render('logout', { userData });
 });
