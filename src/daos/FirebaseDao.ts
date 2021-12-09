@@ -5,7 +5,7 @@ const firebaseAdmin = require('firebase-admin');
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(
-    './DbFirebase/proyecto-back-ca329-firebase-adminsdk-n8ijy-e1f0e749ea.json'
+    './DbFirebase/proyecto-back-ca329-firebase-adminsdk-n8ijy-49cfee06cb.json'
   ),
   databaseURL: 'http://proyecto-back-ca329.firebaseio.com',
 });

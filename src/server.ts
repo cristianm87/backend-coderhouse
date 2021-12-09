@@ -8,8 +8,15 @@ import session from 'express-session';
 import { DaoFactory } from './daoFactory';
 import passportFacebook from 'passport-facebook';
 import passport from 'passport';
+import MongoStore from 'connect-mongo';
 import faker from 'faker';
 faker.locale = 'es';
+// IMPORT CLUSTER //
+import cluster from 'cluster';
+import { cpus } from 'os';
+
+const numCPUs = cpus().length;
+
 // import normalizr from 'normalizr';
 const normalizr = require('normalizr');
 
@@ -43,13 +50,16 @@ const pathMain = '/';
 
 // Server listen
 
-server.listen(PORT, () => {
-  console.log(`Server listen on port ${PORT}`);
-});
+const ServerInit = () => {
+  server.listen(PORT, () => {
+    console.log(`Server listen on port ${PORT}`);
+    console.log(`PID ${process.pid}`);
+  });
 
-server.on('error', error => {
-  console.error('Server Error:', error);
-});
+  server.on('error', error => {
+    console.error('Server Error:', error);
+  });
+};
 
 process.on('SIGTERM', () => {
   server.close(() => {
@@ -61,6 +71,25 @@ process.on('SIGTERM', () => {
 process.on('exit', code => {
   console.log(code);
 });
+
+//////////// CLUSTER ////////////
+
+if (process.argv[2] == 'CLUSTER') {
+  if (cluster.isPrimary) {
+    console.log(`Primary ${process.pid} is running`);
+
+    for (let index = 0; index < numCPUs; index++) {
+      cluster.fork();
+    }
+    cluster.on('exit', worker =>
+      console.log(`Worker ${worker.process.pid} died`)
+    );
+  } else {
+    ServerInit();
+  }
+} else {
+  ServerInit();
+}
 
 // Middlewares
 
@@ -484,6 +513,7 @@ app.get('/info', (req, res) => {
     versionDeNodeJs: process.version,
     usoDeMemoria: process.memoryUsage(),
     carpetaCorriente: process.cwd(),
+    nucleosCpu: numCPUs,
   };
   res.render('info', { info });
 });
@@ -529,9 +559,10 @@ const sessionHandler = session({
   secret: 'secreto',
   resave: true,
   saveUninitialized: true,
-  cookie: {
-    // maxAge: 3_000,
-  },
+  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
+  // cookie: {
+  //   maxAge: 5_000,
+  // },
   rolling: true,
 });
 
