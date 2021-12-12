@@ -74,16 +74,18 @@ process.on('exit', code => {
 
 //////////// CLUSTER ////////////
 
-if (process.argv[2] == 'CLUSTER') {
+if (process.argv[3] == 'CLUSTER') {
   if (cluster.isPrimary) {
     console.log(`Primary ${process.pid} is running`);
 
     for (let index = 0; index < numCPUs; index++) {
       cluster.fork();
     }
-    cluster.on('exit', worker =>
-      console.log(`Worker ${worker.process.pid} died`)
-    );
+    cluster.on('exit', worker => {
+      console.log(`Primary PID: ${process.pid}`);
+      console.log(`Worker ${worker.process.pid} died`);
+      cluster.fork();
+    });
   } else {
     ServerInit();
   }
@@ -94,6 +96,7 @@ if (process.argv[2] == 'CLUSTER') {
 // Middlewares
 
 app.use(express.static(`${__dirname}/public`));
+console.log(`${__dirname}/public`);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Esto es para que el request lea el body
 app.use('/productos', routerProductos);
@@ -329,7 +332,7 @@ routerCarrito.delete(pathDelete, async (req: Request, res: Response) => {
 //////////// SOCKET IO ////////////
 
 ioServer.on('connection', async _socket => {
-  console.log('Un cliente se ha conectado');
+  // console.log('Un cliente se ha conectado');
   await initializeProducts();
   await initializeNormalizedMessages();
 });
