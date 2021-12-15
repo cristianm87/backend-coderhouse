@@ -3,12 +3,14 @@ import { IDao } from './interfaces/daos/IDao';
 
 import path from 'path';
 import * as SocketIO from 'socket.io';
-import http, { request } from 'http';
+import http from 'http';
 import session from 'express-session';
 import { DaoFactory } from './daoFactory';
 import passportFacebook from 'passport-facebook';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
+import compression from 'compression';
+import winston from 'winston';
 import faker from 'faker';
 faker.locale = 'es';
 // IMPORT CLUSTER //
@@ -48,16 +50,43 @@ const pathLogin = '/login';
 const pathLogout = '/logout';
 const pathMain = '/';
 
+//////////// WINSTON LOGGER ////////////
+
+const consoleLogger = winston.createLogger({
+  level: 'info',
+  transports: [new winston.transports.Console({})],
+});
+
+const errorLogger = winston.createLogger({
+  level: 'error',
+  transports: [
+    new winston.transports.File({
+      filename: 'error.log',
+    }),
+  ],
+});
+
+const warnLogger = winston.createLogger({
+  level: 'warn',
+  transports: [
+    new winston.transports.File({
+      filename: 'warn.log',
+    }),
+  ],
+});
+
+warnLogger.warn('Prueba warnLogger');
+
 // Server listen
 
 const ServerInit = () => {
   server.listen(PORT, () => {
-    console.log(`Server listen on port ${PORT}`);
-    console.log(`PID ${process.pid}`);
+    consoleLogger.info(`Server listen on port ${PORT}`);
+    consoleLogger.info(`PID ${process.pid}`);
   });
 
   server.on('error', error => {
-    console.error('Server Error:', error);
+    errorLogger.error('Server Error:', error);
   });
 };
 
@@ -96,12 +125,12 @@ if (process.argv[3] == 'CLUSTER') {
 // Middlewares
 
 app.use(express.static(`${__dirname}/public`));
-console.log(`${__dirname}/public`);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Esto es para que el request lea el body
 app.use('/productos', routerProductos);
 app.use('/carrito', routerCarrito);
 app.use('/mensajes', routerMensajes);
+app.use(compression());
 
 // Ejs Config
 
