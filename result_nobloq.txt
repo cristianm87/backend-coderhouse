@@ -1,0 +1,1256 @@
+Statistical profiling result from nobloq.log, (5187 ticks, 11 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+    129    2.5%          /usr/lib/system/libsystem_kernel.dylib
+    103    2.0%          /usr/lib/system/libsystem_pthread.dylib
+     87    1.7%          /usr/lib/system/libsystem_c.dylib
+     51    1.0%          /usr/lib/system/libsystem_platform.dylib
+     51    1.0%          /usr/lib/system/libsystem_malloc.dylib
+     30    0.6%          /usr/lib/libc++.1.dylib
+      4    0.1%          /usr/lib/libc++abi.dylib
+      1    0.0%          /usr/lib/system/libdyld.dylib
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+     30    0.6%    0.6%  LazyCompile: *resolve node:path:1091:10
+     10    0.2%    0.2%  RegExp: [ \t]*<%_
+      7    0.1%    0.1%  LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      6    0.1%    0.1%  LazyCompile: *normalizeString node:path:66:25
+      5    0.1%    0.1%  LazyCompile: *nextTick node:internal/process/task_queues:104:18
+      5    0.1%    0.1%  Function: ^readSync node:fs:684:18
+      5    0.1%    0.1%  Function: ^readFileSync node:fs:450:22
+      4    0.1%    0.1%  RegExp: (<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)
+      4    0.1%    0.1%  LazyCompile: *readFileSync node:fs:450:22
+      3    0.1%    0.1%  RegExp: ;(\s*$)
+      3    0.1%    0.1%  LazyCompile: *realpathSync node:fs:2408:22
+      3    0.1%    0.1%  LazyCompile: *readPackage node:internal/modules/cjs/loader:290:21
+      3    0.1%    0.1%  LazyCompile: *Module._nodeModulePaths node:internal/modules/cjs/loader:629:37
+      3    0.1%    0.1%  LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      3    0.1%    0.1%  Function: ^emit node:events:340:44
+      3    0.1%    0.1%  Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      2    0.0%    0.0%  RegExp: ^.*[\.\/\\]
+      2    0.0%    0.0%  LazyCompile: *readPackageScope node:internal/modules/cjs/loader:321:26
+      2    0.0%    0.0%  LazyCompile: *dirname node:path:1275:10
+      2    0.0%    0.0%  LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      2    0.0%    0.0%  Function: ^getHeader node:_http_outgoing:590:57
+      2    0.0%    0.0%  Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    0.0%    0.0%  RegExp: _%>[ \t]*
+      1    0.0%    0.0%  LazyCompile: *syncExports node:internal/bootstrap/loaders:287:14
+      1    0.0%    0.0%  LazyCompile: *scanLine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:803:22
+      1    0.0%    0.0%  LazyCompile: *processTicksAndRejections node:internal/process/task_queues:68:35
+      1    0.0%    0.0%  LazyCompile: *normalize node:path:1127:12
+      1    0.0%    0.0%  LazyCompile: *compileFunction node:vm:308:25
+      1    0.0%    0.0%  LazyCompile: *compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+      1    0.0%    0.0%  LazyCompile: *basename node:path:1306:11
+      1    0.0%    0.0%  LazyCompile: *_storeHeader node:_http_outgoing:374:22
+      1    0.0%    0.0%  LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      1    0.0%    0.0%  LazyCompile: *<anonymous> node:internal/fs/utils:686:40
+      1    0.0%    0.0%  Function: ^validateString node:internal/validators:117:24
+      1    0.0%    0.0%  Function: ^tryHandleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:252:24
+      1    0.0%    0.0%  Function: ^stat node:internal/modules/cjs/loader:151:14
+      1    0.0%    0.0%  Function: ^stat node:fs:1452:14
+      1    0.0%    0.0%  Function: ^specify /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/lib/encoding.js:117:17
+      1    0.0%    0.0%  Function: ^shift node:internal/fixed_queue:108:8
+      1    0.0%    0.0%  Function: ^setHeader node:_http_outgoing:574:57
+      1    0.0%    0.0%  Function: ^resOnFinish node:_http_server:788:21
+      1    0.0%    0.0%  Function: ^render /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:989:29
+      1    0.0%    0.0%  Function: ^realpathSync node:fs:2408:22
+      1    0.0%    0.0%  Function: ^readPackageScope node:internal/modules/cjs/loader:321:26
+      1    0.0%    0.0%  Function: ^process_params /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:327:47
+      1    0.0%    0.0%  Function: ^processTicksAndRejections node:internal/process/task_queues:68:35
+      1    0.0%    0.0%  Function: ^processPromiseRejections node:internal/process/promises:203:34
+      1    0.0%    0.0%  Function: ^parserOnIncoming node:_http_server:852:26
+      1    0.0%    0.0%  Function: ^parserOnHeadersComplete node:_http_common:77:33
+      1    0.0%    0.0%  Function: ^parse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/vary/index.js:96:16
+      1    0.0%    0.0%  Function: ^parse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/content-type/index.js:106:16
+      1    0.0%    0.0%  Function: ^openSync node:fs:576:18
+      1    0.0%    0.0%  Function: ^onconnection node:net:1548:22
+      1    0.0%    0.0%  Function: ^normalizeParseOptions /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/qs/lib/parse.js:189:59
+      1    0.0%    0.0%  Function: ^module.exports /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/qs/lib/parse.js:222:27
+      1    0.0%    0.0%  Function: ^markAsUntransferable node:internal/buffer:1048:30
+      1    0.0%    0.0%  Function: ^makeRequireFunction node:internal/modules/cjs/helpers:58:29
+      1    0.0%    0.0%  Function: ^isUint8Array node:internal/util/types:13:22
+      1    0.0%    0.0%  Function: ^insert node:internal/timers:350:16
+      1    0.0%    0.0%  Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:136:31
+      1    0.0%    0.0%  Function: ^get node:_http_incoming:108:16
+      1    0.0%    0.0%  Function: ^extname node:path:1385:10
+      1    0.0%    0.0%  Function: ^end /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:92:28
+      1    0.0%    0.0%  Function: ^emitAfterScript node:internal/async_hooks:507:25
+      1    0.0%    0.0%  Function: ^debug /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/node_modules/debug/src/debug.js:65:17
+      1    0.0%    0.0%  Function: ^createWriteWrap node:internal/stream_base_commons:113:25
+      1    0.0%    0.0%  Function: ^append /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/vary/index.js:38:17
+      1    0.0%    0.0%  Function: ^allocate node:buffer:397:18
+      1    0.0%    0.0%  Function: ^afterWriteDispatched node:internal/stream_base_commons:159:30
+      1    0.0%    0.0%  Function: ^afterWrite node:internal/streams/writable:487:20
+      1    0.0%    0.0%  Function: ^_addHeaderLine node:_http_incoming:337:24
+      1    0.0%    0.0%  Function: ^Template /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:507:18
+      1    0.0%    0.0%  Function: ^Readable node:internal/streams/readable:181:18
+      1    0.0%    0.0%  Function: ^Module._resolveLookupPaths node:internal/modules/cjs/loader:667:38
+      1    0.0%    0.0%  Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1    0.0%    0.0%  Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      1    0.0%    0.0%  Function: ^Accepts /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/accepts/index.js:32:18
+      1    0.0%    0.0%  Function: ^<anonymous> node:internal/validators:83:3
+      1    0.0%    0.0%  Function: ^<anonymous> node:internal/validators:72:3
+      1    0.0%    0.0%  Function: ^<anonymous> node:internal/fs/utils:680:42
+      1    0.0%    0.0%  Function: ^<anonymous> node:internal/fs/utils:668:38
+      1    0.0%    0.0%  Function: ^<anonymous> :1:20
+
+ [C++]:
+   ticks  total  nonlib   name
+   1931   37.2%   40.8%  t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+    901   17.4%   19.0%  T node::contextify::ContextifyContext::CompileFunction(v8::FunctionCallbackInfo<v8::Value> const&)
+    790   15.2%   16.7%  t node::fs::Read(v8::FunctionCallbackInfo<v8::Value> const&)
+    117    2.3%    2.5%  t node::fs::Open(v8::FunctionCallbackInfo<v8::Value> const&)
+    101    1.9%    2.1%  T node::native_module::NativeModuleEnv::CompileFunction(v8::FunctionCallbackInfo<v8::Value> const&)
+     92    1.8%    1.9%  T __kernelrpc_mach_port_set_attributes
+     82    1.6%    1.7%  T _task_get_special_port
+     77    1.5%    1.6%  t node::fs::InternalModuleReadJSON(v8::FunctionCallbackInfo<v8::Value> const&)
+     74    1.4%    1.6%  t node::fs::Stat(v8::FunctionCallbackInfo<v8::Value> const&)
+     70    1.3%    1.5%  T node::fs::Close(v8::FunctionCallbackInfo<v8::Value> const&)
+     51    1.0%    1.1%  t node::fs::InternalModuleStat(v8::FunctionCallbackInfo<v8::Value> const&)
+     47    0.9%    1.0%  T _host_get_clock_service
+     32    0.6%    0.7%  T _mach_timebase_info
+     27    0.5%    0.6%  T _mach_ports_register
+     21    0.4%    0.4%  T _mach_port_allocate
+     19    0.4%    0.4%  T _mig_strncpy_zerofill
+     17    0.3%    0.4%  t void node::Buffer::(anonymous namespace)::StringSlice<(node::encoding)1>(v8::FunctionCallbackInfo<v8::Value> const&)
+     13    0.3%    0.3%  T _mach_make_memory_entry_64
+     12    0.2%    0.3%  t std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> > std::__1::__pad_and_output<char, std::__1::char_traits<char> >(std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> >, char const*, char const*, char const*, std::__1::ios_base&, char)
+     12    0.2%    0.3%  t std::__1::basic_ostream<char, std::__1::char_traits<char> >& std::__1::__put_character_sequence<char, std::__1::char_traits<char> >(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, char const*, unsigned long)
+     11    0.2%    0.2%  t node::fs::FStat(v8::FunctionCallbackInfo<v8::Value> const&)
+      7    0.1%    0.1%  T _guarded_open_np
+      4    0.1%    0.1%  T node::fs::NewFSReqCallback(v8::FunctionCallbackInfo<v8::Value> const&)
+      4    0.1%    0.1%  T node::binding::GetInternalBinding(v8::FunctionCallbackInfo<v8::Value> const&)
+      3    0.1%    0.1%  t std::__1::__hash_table<unsigned long, std::__1::hash<unsigned long>, std::__1::equal_to<unsigned long>, std::__1::allocator<unsigned long> >::remove(std::__1::__hash_const_iterator<std::__1::__hash_node<unsigned long, void*>*>)
+      3    0.1%    0.1%  t node::fs::LStat(v8::FunctionCallbackInfo<v8::Value> const&)
+      3    0.1%    0.1%  t node::fs::GetReqWrap(v8::FunctionCallbackInfo<v8::Value> const&, int, bool)
+      3    0.1%    0.1%  T node::AsyncWrap::EmitTraceEventAfter(node::AsyncWrap::ProviderType, double)
+      2    0.0%    0.0%  t std::__1::__hash_iterator<std::__1::__hash_node<std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, void*>*> std::__1::__hash_table<std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, std::__1::__unordered_map_hasher<node::FastStringKey, std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, node::FastStringKey::Hash, true>, std::__1::__unordered_map_equal<node::FastStringKey, std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, std::__1::equal_to<node::FastStringKey>, true>, std::__1::allocator<std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> > > >::find<node::FastStringKey>(node::FastStringKey const&)
+      2    0.0%    0.0%  t node::EnvGetter(v8::Local<v8::Name>, v8::PropertyCallbackInfo<v8::Value> const&)
+      2    0.0%    0.0%  t node::Buffer::(anonymous namespace)::ByteLengthUtf8(v8::FunctionCallbackInfo<v8::Value> const&)
+      2    0.0%    0.0%  t node::(anonymous namespace)::Parser::Proxy<int (node::(anonymous namespace)::Parser::*)(), &(node::(anonymous namespace)::Parser::on_message_complete())>::Raw(llhttp__internal_s*)
+      2    0.0%    0.0%  T node::InternalCallbackScope::Close()
+      2    0.0%    0.0%  T _mach_port_get_attributes
+      1    0.0%    0.0%  t void node::Buffer::(anonymous namespace)::StringWrite<(node::encoding)1>(v8::FunctionCallbackInfo<v8::Value> const&)
+      1    0.0%    0.0%  t non-virtual thunk to v8::internal::PointersUpdatingVisitor::~PointersUpdatingVisitor()
+      1    0.0%    0.0%  t non-virtual thunk to node::(anonymous namespace)::Parser::OnStreamRead(long, uv_buf_t const&)
+      1    0.0%    0.0%  t node::fs::FillGlobalStatsArray(node::fs::BindingData*, bool, uv_stat_t const*, bool)
+      1    0.0%    0.0%  t node::Environment::AddCleanupHook(void (*)(void*), void*)
+      1    0.0%    0.0%  t node::AsyncHooks::pop_async_context(double)
+      1    0.0%    0.0%  t node::(anonymous namespace)::Parser::New(v8::FunctionCallbackInfo<v8::Value> const&)
+      1    0.0%    0.0%  t node::(anonymous namespace)::Parser::Execute(char const*, unsigned long)
+      1    0.0%    0.0%  t __pthread_mutex_global_init
+      1    0.0%    0.0%  T node::cares_wrap::ChannelWrap::New(v8::FunctionCallbackInfo<v8::Value> const&)
+      1    0.0%    0.0%  T _vm_copy
+      1    0.0%    0.0%  T _task_info
+      1    0.0%    0.0%  T _pthread_get_qos_class_np
+      1    0.0%    0.0%  T _pselect$DARWIN_EXTSN
+      1    0.0%    0.0%  T __kernelrpc_vm_remap
+
+ [Summary]:
+   ticks  total  nonlib   name
+    169    3.3%    3.6%  JavaScript
+   4551   87.7%   96.2%  C++
+    262    5.1%    5.5%  GC
+    456    8.8%          Shared libraries
+     11    0.2%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+   4166   95.6%   80.3%  t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     82    1.9%    1.6%  T _task_get_special_port
+     32    0.7%    0.6%  T _mach_timebase_info
+     27    0.6%    0.5%  T _mach_ports_register
+     26    0.6%    0.5%  T __kernelrpc_mach_port_set_attributes
+      7    0.2%    0.1%  t std::__1::basic_ostream<char, std::__1::char_traits<char> >& std::__1::__put_character_sequence<char, std::__1::char_traits<char> >(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, char const*, unsigned long)
+      6    0.1%    0.1%  t std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> > std::__1::__pad_and_output<char, std::__1::char_traits<char> >(std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> >, char const*, char const*, char const*, std::__1::ios_base&, char)
+      3    0.1%    0.1%  t node::fs::GetReqWrap(v8::FunctionCallbackInfo<v8::Value> const&, int, bool)
+      2    0.0%    0.0%  t std::__1::__hash_iterator<std::__1::__hash_node<std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, void*>*> std::__1::__hash_table<std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, std::__1::__unordered_map_hasher<node::FastStringKey, std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, node::FastStringKey::Hash, true>, std::__1::__unordered_map_equal<node::FastStringKey, std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> >, std::__1::equal_to<node::FastStringKey>, true>, std::__1::allocator<std::__1::__hash_value_type<node::FastStringKey, node::BaseObjectPtrImpl<node::BaseObject, false> > > >::find<node::FastStringKey>(node::FastStringKey const&)
+      2    0.0%    0.0%  t node::fs::InternalModuleStat(v8::FunctionCallbackInfo<v8::Value> const&)
+      2    0.0%    0.0%  t node::fs::FStat(v8::FunctionCallbackInfo<v8::Value> const&)
+      1    0.0%    0.0%  t node::fs::Read(v8::FunctionCallbackInfo<v8::Value> const&)
+      1    0.0%    0.0%  t node::fs::FillGlobalStatsArray(node::fs::BindingData*, bool, uv_stat_t const*, bool)
+      1    0.0%    0.0%  t node::Environment::AddCleanupHook(void (*)(void*), void*)
+      1    0.0%    0.0%  T _mach_make_memory_entry_64
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+   1931   37.2%  t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+    899   46.6%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     90   10.0%      Function: ^writevGeneric node:internal/stream_base_commons:126:23
+     90  100.0%        Function: ^Socket._writeGeneric node:net:769:42
+     90  100.0%          Function: ^Socket._writev node:net:801:36
+     90  100.0%            Function: ^doWrite node:internal/streams/writable:398:17
+     89    9.9%      t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     16   18.0%        LazyCompile: *scanLine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:803:22
+     10   62.5%          LazyCompile: *<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:730:32
+      9   90.0%            t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1   10.0%            LazyCompile: *compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+      6   37.5%          Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:730:32
+      5   83.3%            t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1   16.7%            LazyCompile: *compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+      8    9.0%        Function: ^readPackage node:internal/modules/cjs/loader:290:21
+      8  100.0%          Function: ^readPackageScope node:internal/modules/cjs/loader:321:26
+      5   62.5%            Function: ^trySelf node:internal/modules/cjs/loader:441:17
+      3   37.5%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      5    5.6%        LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      4   80.0%          Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      3   75.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      1   25.0%            Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      1   20.0%          LazyCompile: *Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      5    5.6%        Function: ^exports.escapeRegExpChars /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/utils.js:39:38
+      5  100.0%          Function: ^createRegex /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:558:25
+      5  100.0%            Function: ^Template /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:507:18
+      5    5.6%        Function: ^FastBuffer node:internal/buffer:958:14
+      5  100.0%          Function: ^createUnsafeBuffer node:internal/buffer:1059:28
+      3   60.0%            Function: ^createPool node:buffer:150:20
+      2   40.0%            Function: ^allocate node:buffer:397:18
+      4    4.5%        Function: ^header /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:754:29
+      2   50.0%          Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      2  100.0%            Function: ^done /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:1006:27
+      2   50.0%          Function: ^contentType /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:594:32
+      2  100.0%            Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      3    3.4%        LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      2   66.7%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      2  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+      1   33.3%          LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      1  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+      3    3.4%        Function: ^exports.escapeXML /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/utils.js:94:30
+      3  100.0%          Function: ^<anonymous> :1:20
+      3  100.0%            Function: ^anonymous /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:684:59
+      3    3.4%        Function: ^createRegex /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:558:25
+      3  100.0%          Function: ^Template /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:507:18
+      3  100.0%            Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:379:35
+      3    3.4%        Function: ^compileFunction node:vm:308:25
+      3  100.0%          Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+      3  100.0%            Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      2    2.2%        LazyCompile: ~isIPv4 node:internal/net:31:16
+      2  100.0%          LazyCompile: ~isIP node:internal/net:39:14
+      1   50.0%            LazyCompile: ~lookupAndConnect node:net:995:26
+      1   50.0%            LazyCompile: ~lookup node:dns:97:16
+      2    2.2%        Function: ^format /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/content-type/index.js:65:17
+      2  100.0%          Function: ^setCharset /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:250:41
+      2  100.0%            Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      2    2.2%        Function: ^expressInit /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/middleware/init.js:29:30
+      1   50.0%          LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      1  100.0%            Function: ^query /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/middleware/query.js:39:24
+      1   50.0%          Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%            Function: ^trim_prefix /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:288:23
+      2    2.2%        Function: ^checkInvalidHeaderChar node:_http_common:232:32
+      2  100.0%          Function: ^<anonymous> node:_http_outgoing:564:45
+      2  100.0%            Function: ^setHeader node:_http_outgoing:574:57
+      2    2.2%        Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/pluralize.js:86:34
+      2  100.0%          t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      2  100.0%            LazyCompile: ~pluralize /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/pluralize.js:82:19
+      1    1.1%        LazyCompile: ~serializeObjectId /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/serializer.js:208:27
+      1  100.0%          LazyCompile: ~serializeInto /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/serializer.js:550:23
+      1  100.0%            Function: ^serializeObject /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/serializer.js:258:25
+      1    1.1%        LazyCompile: ~preferredEncodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/lib/encoding.js:138:28
+      1  100.0%          LazyCompile: ~encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/index.js:55:52
+      1  100.0%            LazyCompile: ~Accepts.encoding.Accepts.encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/accepts/index.js:127:40
+      1    1.1%        LazyCompile: ~populateStatusesMap /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/statuses/index.js:60:30
+      1  100.0%          Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/statuses/index.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1    1.1%        LazyCompile: ~parse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/content-type/index.js:106:16
+      1  100.0%          LazyCompile: ~setCharset /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:250:41
+      1  100.0%            LazyCompile: ~send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      1    1.1%        LazyCompile: ~match /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:110:39
+      1  100.0%          LazyCompile: ~matchLayer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:572:20
+      1  100.0%            LazyCompile: ~next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      1    1.1%        LazyCompile: ~enable /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/debug/src/debug.js:138:16
+      1  100.0%          Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/debug/src/node.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1    1.1%        LazyCompile: ~callSiteToString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/lib/compat/index.js:21:76
+      1  100.0%          LazyCompile: ~get /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/lib/compat/index.js:54:16
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/index.js:1:1
+      1    1.1%        LazyCompile: ~addColors /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/logform/colorize.js:36:19
+      1  100.0%          LazyCompile: ~module.exports /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/logform/levels.js:9:18
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/winston/lib/winston/config/index.js:1:1
+      1    1.1%        LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/index.js:62:45
+      1  100.0%          t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%            LazyCompile: ~Faker /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/index.js:24:16
+      1    1.1%        LazyCompile: *realpathSync node:fs:2408:22
+      1  100.0%          Function: ^toRealPath node:internal/modules/cjs/loader:393:20
+      1  100.0%            Function: ^tryFile node:internal/modules/cjs/loader:384:17
+      1    1.1%        Function: ~<anonymous> node:zlib:1:1
+      1  100.0%          Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1  100.0%            Function: ^compileForPublicLoader node:internal/bootstrap/loaders:246:25
+      1    1.1%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/utils.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.1%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/node_modules/debug/src/node.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.1%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/color/index.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.1%        Function: ^stat node:internal/modules/cjs/loader:151:14
+      1  100.0%          Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+      1  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1    1.1%        Function: ^readPackageScope node:internal/modules/cjs/loader:321:26
+      1  100.0%          Function: ^trySelf node:internal/modules/cjs/loader:441:17
+      1  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1    1.1%        Function: ^pipe /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:510:43
+      1  100.0%          Function: ^serveStatic /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/serve-static/index.js:72:31
+      1  100.0%            LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      1    1.1%        Function: ^pathtoRegexp /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/path-to-regexp/index.js:28:22
+      1  100.0%          Function: ^Layer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:33:15
+      1  100.0%            LazyCompile: ~route /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:491:29
+      1    1.1%        Function: ^parseAcceptEncoding /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/lib/encoding.js:31:29
+      1  100.0%          Function: ^preferredEncodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/lib/encoding.js:138:28
+      1  100.0%            Function: ^encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/index.js:55:52
+      1    1.1%        Function: ^parse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/content-type/index.js:106:16
+      1  100.0%          Function: ^setCharset /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:250:41
+      1  100.0%            Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      1    1.1%        Function: ^onParserExecuteCommon node:_http_server:690:31
+      1  100.0%          Function: ^onParserExecute node:_http_server:633:25
+      1    1.1%        Function: ^normalize node:path:1127:12
+      1  100.0%          Function: ^pipe /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:510:43
+      1  100.0%            Function: ^serveStatic /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/serve-static/index.js:72:31
+      1    1.1%        Function: ^generateSource /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:709:28
+      1  100.0%          Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+      1  100.0%            Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:379:35
+      1    1.1%        Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+      1  100.0%          Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1  100.0%            Function: ^Module._load node:internal/modules/cjs/loader:757:24
+     54    6.0%      Function: ^memoryUsage node:internal/process/per_thread:165:23
+     54  100.0%        Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:749:27
+     54  100.0%          Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+     53   98.1%            Function: ^next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/route.js:114:16
+      1    1.9%            LazyCompile: ~next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/route.js:114:16
+     31    3.4%      LazyCompile: *realpathSync node:fs:2408:22
+     18   58.1%        LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+     11   61.1%          LazyCompile: *Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     11  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      7   38.9%          Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      7  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     13   41.9%        Function: ^toRealPath node:internal/modules/cjs/loader:393:20
+     12   92.3%          Function: ^tryFile node:internal/modules/cjs/loader:384:17
+     10   83.3%            Function: ^tryExtensions node:internal/modules/cjs/loader:400:23
+      2   16.7%            Function: ^tryPackage node:internal/modules/cjs/loader:338:20
+      1    7.7%          Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+      1  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     25    2.8%      LazyCompile: *scanLine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:803:22
+     15   60.0%        LazyCompile: *<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:730:32
+     15  100.0%          t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     15  100.0%            Function: ^generateSource /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:709:28
+     10   40.0%        Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:730:32
+      8   80.0%          t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      8  100.0%            Function: ^generateSource /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:709:28
+      2   20.0%          LazyCompile: *compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+      2  100.0%            Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:379:35
+     24    2.7%      Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+     24  100.0%        Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:379:35
+     24  100.0%          Function: ^handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+     24  100.0%            Function: ^tryHandleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:252:24
+     15    1.7%      Function: ^Hash node:internal/crypto/hash:58:14
+     15  100.0%        Function: ^createHash node:crypto:129:20
+     15  100.0%          Function: ^entitytag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/etag/index.js:39:20
+     15  100.0%            Function: ^etag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/etag/index.js:70:15
+     14    1.6%      Function: ^nextTick node:internal/process/task_queues:104:18
+      5   35.7%        Function: ^emitReadable node:internal/streams/readable:563:22
+      5  100.0%          Function: ^onEofChunk node:internal/streams/readable:533:20
+      5  100.0%            Function: ^readableAddChunk node:internal/streams/readable:236:26
+      4   28.6%        Function: ^onwrite node:internal/streams/writable:425:17
+      4  100.0%          Function: ^afterWriteDispatched node:internal/stream_base_commons:159:30
+      4  100.0%            Function: ^writevGeneric node:internal/stream_base_commons:126:23
+      3   21.4%        Function: ^resume node:internal/streams/readable:978:16
+      3  100.0%          Function: ^Readable.resume node:internal/streams/readable:964:37
+      2   66.7%            Function: ^_dump node:_http_incoming:364:49
+      1   33.3%            Function: ^Socket.resume node:net:630:35
+      1    7.1%        Function: ^onDestroy node:internal/streams/destroy:73:21
+      1  100.0%          Function: ^onError node:_http_incoming:374:17
+      1  100.0%            Function: ^_destroy node:_http_incoming:176:55
+      1    7.1%        Function: ^maybeReadMore node:internal/streams/readable:602:23
+      1  100.0%          Function: ^addChunk node:internal/streams/readable:304:18
+      1  100.0%            LazyCompile: ~readableAddChunk node:internal/streams/readable:236:26
+     13    1.4%      Function: ^writeHead node:_http_server:269:19
+     13  100.0%        Function: ^writeHead /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/on-headers/index.js:28:29
+     13  100.0%          Function: ^_implicitHeader node:_http_server:264:68
+     13  100.0%            Function: ^end /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:92:28
+     13    1.4%      Function: ^<anonymous> :1:20
+     13  100.0%        Function: ^anonymous /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:684:59
+     13  100.0%          Function: ^tryHandleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:252:24
+     13  100.0%            Function: ^exports.renderFile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:439:31
+     12    1.3%      LazyCompile: *resolve node:path:1091:10
+      6   50.0%        LazyCompile: *readPackageScope node:internal/modules/cjs/loader:321:26
+      4   66.7%          Function: ^trySelf node:internal/modules/cjs/loader:441:17
+      4  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      2   33.3%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1   50.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      1   50.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      4   33.3%        Function: ^readPackage node:internal/modules/cjs/loader:290:21
+      3   75.0%          Function: ^readPackageScope node:internal/modules/cjs/loader:321:26
+      2   66.7%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1   33.3%            Function: ^trySelf node:internal/modules/cjs/loader:441:17
+      1   25.0%          LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      1  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      2   16.7%        LazyCompile: *realpathSync node:fs:2408:22
+      2  100.0%          LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      2  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     12    1.3%      Function: ^compression /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:59:31
+      7   58.3%        LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      7  100.0%          Function: ^urlencodedParser /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/body-parser/lib/types/urlencoded.js:79:36
+      7  100.0%            LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      5   41.7%        Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      5  100.0%          Function: ^trim_prefix /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:288:23
+      5  100.0%            Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:275:64
+     10    1.1%      LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      6   60.0%        Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      6  100.0%          Function: ^require node:internal/modules/cjs/helpers:101:31
+      1   16.7%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/ne/address/index.js:1:1
+      1   16.7%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/he/index.js:1:1
+      1   16.7%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/he/address/index.js:1:1
+      1   16.7%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/en/animal/index.js:1:1
+      1   16.7%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/en/address/index.js:1:1
+      1   16.7%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales.js:1:1
+      4   40.0%        LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      4  100.0%          Function: ^require node:internal/modules/cjs/helpers:101:31
+      1   25.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/zh_TW/address/index.js:1:1
+      1   25.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/uk/internet/index.js:1:1
+      1   25.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/sk/company/index.js:1:1
+      1   25.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/pl/lorem/index.js:1:1
+     10    1.1%      LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      9   90.0%        Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      8   88.9%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      8  100.0%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      1   11.1%          Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      1  100.0%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      1   10.0%        LazyCompile: *Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      1  100.0%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      9    1.0%      Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      9  100.0%        Function: ^done /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:1006:27
+      9  100.0%          Function: ^tryHandleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:252:24
+      9  100.0%            Function: ^exports.renderFile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:439:31
+      9    1.0%      Function: ^getOptions node:internal/fs/utils:314:20
+      9  100.0%        Function: ^readFileSync node:fs:450:22
+      9  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      5   55.6%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      4   44.4%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      9    1.0%      Function: ^expressInit /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/middleware/init.js:29:30
+      7   77.8%        LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      7  100.0%          Function: ^query /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/middleware/query.js:39:24
+      7  100.0%            LazyCompile: *next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      2   22.2%        Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      2  100.0%          Function: ^trim_prefix /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:288:23
+      2  100.0%            Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:275:64
+     67    3.5%    LazyCompile: *compileFunction node:vm:308:25
+     47   70.1%      LazyCompile: *Module._compile node:internal/modules/cjs/loader:1055:37
+     47  100.0%        Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     47  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     30   63.8%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+     17   36.2%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     20   29.9%      Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+     20  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+     20  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     20  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     25    1.3%    LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+     14   56.0%      Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     11   78.6%        LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     11  100.0%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     11  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+      3   21.4%        Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      3  100.0%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      3  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+     11   44.0%      LazyCompile: *Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     11  100.0%        LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      9   81.8%          LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      9  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+      2   18.2%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      2  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+     24    1.2%    Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     13   54.2%      Function: ^Module.load node:internal/modules/cjs/loader:969:33
+     13  100.0%        Function: ^Module._load node:internal/modules/cjs/loader:757:24
+     13  100.0%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     13  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+     11   45.8%      LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     10   90.9%        Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     10  100.0%          Function: ^require node:internal/modules/cjs/helpers:101:31
+      2   20.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/fr_CH/address/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/id_ID/address/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/hy/address/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/ge/name/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/ge/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/fr_CA/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/fr/name/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/en/index.js:1:1
+      1   10.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/de_AT/address/index.js:1:1
+      1    9.1%        LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      1  100.0%          Function: ^require node:internal/modules/cjs/helpers:101:31
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/locales/zh_CN/name/index.js:1:1
+     20    1.0%    LazyCompile: *realpathSync node:fs:2408:22
+     12   60.0%      LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      7   58.3%        Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      4   57.1%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      4  100.0%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      3   42.9%          Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      3  100.0%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      5   41.7%        LazyCompile: *Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      5  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      4   80.0%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      1   20.0%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      8   40.0%      Function: ^toRealPath node:internal/modules/cjs/loader:393:20
+      8  100.0%        Function: ^tryFile node:internal/modules/cjs/loader:384:17
+      6   75.0%          Function: ^tryExtensions node:internal/modules/cjs/loader:400:23
+      5   83.3%            Function: ^tryPackage node:internal/modules/cjs/loader:338:20
+      1   16.7%            Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+      2   25.0%          Function: ^tryPackage node:internal/modules/cjs/loader:338:20
+      1   50.0%            LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      1   50.0%            Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+
+    901   17.4%  T node::contextify::ContextifyContext::CompileFunction(v8::FunctionCallbackInfo<v8::Value> const&)
+    901  100.0%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+    893   99.1%      Function: ^compileFunction node:vm:308:25
+    883   98.9%        Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+    881   99.8%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+    865   98.2%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     16    1.8%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+
+    790   15.2%  t node::fs::Read(v8::FunctionCallbackInfo<v8::Value> const&)
+    789   99.9%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+    782   99.1%      Function: ^readSync node:fs:684:18
+    615   78.6%        Function: ^tryReadSync node:fs:429:21
+    615  100.0%          Function: ^readFileSync node:fs:450:22
+    594   96.6%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     16    2.6%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+    166   21.2%        LazyCompile: *readFileSync node:fs:450:22
+    166  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+    166  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+
+    129    2.5%  /usr/lib/system/libsystem_kernel.dylib
+     78   60.5%    LazyCompile: *readSync node:fs:684:18
+     69   88.5%      LazyCompile: *readFileSync node:fs:450:22
+     69  100.0%        Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     69  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     69  100.0%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      9   11.5%      Function: ^tryReadSync node:fs:429:21
+      9  100.0%        Function: ^readFileSync node:fs:450:22
+      8   88.9%          Function: ^fileLoader /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:290:20
+      8  100.0%            Function: ^handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+      1   11.1%          LazyCompile: ~fileLoader /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:290:20
+      1  100.0%            LazyCompile: ~handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+     29   22.5%    LazyCompile: *readFileSync node:fs:450:22
+     29  100.0%      Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     29  100.0%        LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     16   55.2%          LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+     16  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+     13   44.8%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     13  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+      4    3.1%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1   25.0%      LazyCompile: ~module.exports /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/qs/lib/parse.js:222:27
+      1  100.0%        LazyCompile: ~parseExtendedQueryString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:291:34
+      1  100.0%          LazyCompile: ~query /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/middleware/query.js:39:24
+      1  100.0%            LazyCompile: ~handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      1   25.0%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connection_pool.js:264:23
+      1  100.0%        LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connection_pool.js:456:32
+      1  100.0%          LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connection_pool.js:363:44
+      1  100.0%            LazyCompile: ~callback /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:48:31
+      1   25.0%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:16:29
+      1  100.0%        LazyCompile: ~callback /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:239:31
+      1  100.0%          LazyCompile: ~connectHandler /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:270:28
+      1  100.0%            LazyCompile: ~onceWrapper node:events:504:21
+      1   25.0%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/drivers/node-mongodb-native/decimal128.js:1:1
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      2    1.6%    LazyCompile: *compileFunction node:vm:308:25
+      1   50.0%      LazyCompile: *Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%        Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      1  100.0%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      1   50.0%      Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+
+    117    2.3%  t node::fs::Open(v8::FunctionCallbackInfo<v8::Value> const&)
+    117  100.0%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+    117  100.0%      Function: ^openSync node:fs:576:18
+    117  100.0%        Function: ^readFileSync node:fs:450:22
+     68   58.1%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     40   58.8%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+     28   41.2%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     48   41.0%          Function: ^fileLoader /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:290:20
+     47   97.9%            Function: ^handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+      1    2.1%            LazyCompile: ~handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+
+    103    2.0%  /usr/lib/system/libsystem_pthread.dylib
+     52   50.5%    LazyCompile: *compileFunction node:vm:308:25
+     32   61.5%      LazyCompile: *Module._compile node:internal/modules/cjs/loader:1055:37
+     32  100.0%        Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     32  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     24   75.0%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      8   25.0%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     20   38.5%      Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+     20  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+     20  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     20  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     49   47.6%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      3    6.1%      t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      2   66.7%        LazyCompile: ~callSiteToString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/lib/compat/index.js:21:76
+      2  100.0%          LazyCompile: ~get /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/lib/compat/index.js:54:16
+      2  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/index.js:1:1
+      1   33.3%        LazyCompile: ~resolveOptions /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:824:24
+      1  100.0%          LazyCompile: ~createIndex /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/collection.js:255:16
+      1  100.0%            LazyCompile: ~setAutoRemove /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/connect-mongo/build/main/lib/MongoStore.js:138:18
+      3    6.1%      LazyCompile: ~realpathSync node:fs:2408:22
+      3  100.0%        LazyCompile: ~toRealPath node:internal/modules/cjs/loader:393:20
+      3  100.0%          LazyCompile: ~Module._findPath node:internal/modules/cjs/loader:494:28
+      3  100.0%            LazyCompile: ~resolveMainPath node:internal/modules/run_main:11:25
+      3    6.1%      LazyCompile: ~patchProcessObject node:internal/bootstrap/pre_execution:82:28
+      3  100.0%        LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      3  100.0%          Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      2    4.1%      LazyCompile: ~setStreamTimeout node:internal/stream_base_commons:254:26
+      2  100.0%        LazyCompile: ~makeConnection /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:227:24
+      2  100.0%          LazyCompile: ~connect /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:15:17
+      2  100.0%            LazyCompile: ~checkServer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/monitor.js:138:21
+      2    4.1%      LazyCompile: ~nextTick node:internal/process/task_queues:104:18
+      2  100.0%        LazyCompile: ~immediate /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/immediate.js:12:36
+      2  100.0%          LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/connection.js:566:34
+      2  100.0%            LazyCompile: ~promiseOrCallback /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/promiseOrCallback.js:8:44
+      2    4.1%      Function: ~<anonymous> node:internal/fs/promises:1:1
+      2  100.0%        LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      2  100.0%          LazyCompile: ~nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      2  100.0%            Function: ~<anonymous> node:internal/modules/esm/get_source:1:1
+      2    4.1%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:1:1
+      2  100.0%        LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      2  100.0%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      2  100.0%            LazyCompile: ~Module.load node:internal/modules/cjs/loader:969:33
+      1    2.0%      LazyCompile: ~wrapSafe node:internal/modules/cjs/loader:1017:18
+      1  100.0%        LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            LazyCompile: ~Module.load node:internal/modules/cjs/loader:969:33
+      1    2.0%      LazyCompile: ~toRealPath node:internal/modules/cjs/loader:393:20
+      1  100.0%        LazyCompile: ~Module._findPath node:internal/modules/cjs/loader:494:28
+      1  100.0%          LazyCompile: ~resolveMainPath node:internal/modules/run_main:11:25
+      1  100.0%            LazyCompile: ~executeUserEntryPoint node:internal/modules/run_main:74:31
+      1    2.0%      LazyCompile: ~setupWarningHandler node:internal/bootstrap/pre_execution:142:29
+      1  100.0%        LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1  100.0%          Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      1    2.0%      LazyCompile: ~resolve node:path:1091:10
+      1  100.0%        LazyCompile: ~patchProcessObject node:internal/bootstrap/pre_execution:82:28
+      1  100.0%          LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1  100.0%            Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      1    2.0%      LazyCompile: ~parserOnHeadersComplete node:_http_common:77:33
+      1    2.0%      LazyCompile: ~parseOpaqueHost /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:379:25
+      1  100.0%        LazyCompile: ~parseHost /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:328:19
+      1  100.0%          LazyCompile: ~parseHostName /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:773:65
+      1  100.0%            LazyCompile: ~URLStateMachine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:481:25
+      1    2.0%      LazyCompile: ~onResponseHeaders /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:140:47
+      1  100.0%        LazyCompile: ~writeHead /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/on-headers/index.js:28:29
+      1  100.0%          LazyCompile: ~_implicitHeader node:_http_server:264:68
+      1  100.0%            LazyCompile: ~end /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:92:28
+      1    2.0%      LazyCompile: ~messageHandler /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connection.js:421:35
+      1  100.0%        Function: ^emit node:events:340:44
+      1  100.0%          LazyCompile: ~processIncomingData /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/message_stream.js:79:29
+      1  100.0%            LazyCompile: ~_write /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/message_stream.js:26:11
+      1    2.0%      LazyCompile: ~maxWireVersion /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:533:24
+      1  100.0%        LazyCompile: ~handleOperationResult /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/server.js:322:42
+      1  100.0%          LazyCompile: ~messageHandler /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connection.js:421:35
+      1  100.0%            Function: ^emit node:events:340:44
+      1    2.0%      LazyCompile: ~makeConnection /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:227:24
+      1  100.0%        LazyCompile: ~connect /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:15:17
+      1  100.0%          LazyCompile: ~checkServer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/monitor.js:138:21
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/monitor.js:222:12
+      1    2.0%      LazyCompile: ~isASCIIAlpha /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/infra.js:9:22
+      1  100.0%        LazyCompile: ~parseSchemeStart /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:540:76
+      1  100.0%          Function: ^URLStateMachine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:481:25
+      1  100.0%            LazyCompile: ~module.exports.basicURLParse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:1206:41
+      1    2.0%      LazyCompile: ~introduce /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/@dabh/diagnostics/diagnostics.js:134:19
+      1  100.0%        LazyCompile: ~nope /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/@dabh/diagnostics/diagnostics.js:152:14
+      1  100.0%          LazyCompile: ~dev /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/@dabh/diagnostics/node/development.js:12:38
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/winston/lib/winston/rejection-handler.js:1:1
+      1    2.0%      LazyCompile: ~encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/index.js:55:52
+      1  100.0%        LazyCompile: ~Accepts.encoding.Accepts.encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/accepts/index.js:127:40
+      1  100.0%          LazyCompile: ~onResponseHeaders /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:140:47
+      1  100.0%            LazyCompile: ~writeHead /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/on-headers/index.js:28:29
+      1    2.0%      LazyCompile: ~dirname node:path:1275:10
+      1  100.0%        LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            LazyCompile: ~Module.load node:internal/modules/cjs/loader:969:33
+      1    2.0%      LazyCompile: ~command /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connection.js:161:12
+      1  100.0%        LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:63:43
+      1  100.0%          LazyCompile: ~prepareHandshakeDocument /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:128:34
+      1  100.0%            LazyCompile: ~performInitialHandshake /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:47:33
+      1    2.0%      LazyCompile: ~_construct node:internal/fs/streams:42:20
+      1  100.0%        LazyCompile: ~constructNT node:internal/streams/destroy:250:21
+      1  100.0%          LazyCompile: ~processTicksAndRejections node:internal/process/task_queues:68:35
+      1    2.0%      LazyCompile: ~ServerResponse node:_http_server:178:24
+      1  100.0%        LazyCompile: ~parserOnIncoming node:_http_server:852:26
+      1  100.0%          LazyCompile: ~parserOnHeadersComplete node:_http_common:77:33
+      1    2.0%      LazyCompile: ~ServerInit /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:128:27
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:1:1
+      1  100.0%          LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    2.0%      LazyCompile: ~OAuth2Strategy /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/passport-oauth2/lib/strategy.js:77:24
+      1  100.0%        LazyCompile: ~Strategy /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/passport-facebook/lib/strategy.js:48:18
+      1  100.0%          Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1    2.0%      LazyCompile: ~Mongoose.model /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:461:36
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/models/modelProducto.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    2.0%      LazyCompile: ~<anonymous> node:internal/fs/utils:357:35
+      1  100.0%        LazyCompile: ~<anonymous> node:internal/fs/utils:668:38
+      1  100.0%          LazyCompile: ~realpathSync node:fs:2408:22
+      1  100.0%            LazyCompile: ~toRealPath node:internal/modules/cjs/loader:393:20
+      1    2.0%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/collection.js:82:13
+      1  100.0%        Function: ^processTicksAndRejections node:internal/process/task_queues:68:35
+      1    2.0%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:16:29
+      1  100.0%        LazyCompile: ~callback /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:239:31
+      1  100.0%          LazyCompile: ~connectHandler /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/connect.js:270:28
+      1  100.0%            LazyCompile: ~onceWrapper node:events:504:21
+      1    2.0%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/daos/MongoDbDao.js:4:46
+      1  100.0%        t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%          LazyCompile: ~__awaiter /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/daos/MongoDbDao.js:2:54
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/daos/MongoDbDao.js:50:19
+      1    2.0%      Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      1    2.0%      Function: ~<anonymous> node:internal/fs/rimraf:1:1
+      1  100.0%        LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1  100.0%          LazyCompile: ~nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      1  100.0%            Function: ~<anonymous> node:internal/fs/promises:1:1
+      1    2.0%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/winston/lib/winston.js:1:1
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    2.0%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/knex/lib/schema/tablebuilder.js:1:1
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    2.0%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/color-string/index.js:1:1
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    2.0%      Function: ^wrapfunction /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/index.js:397:23
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    2.0%      Function: ^parseOptions /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/connection_string.js:208:22
+      1  100.0%        LazyCompile: ~MongoClient /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/mongo_client.js:60:16
+      1  100.0%          LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/connection.js:776:31
+      1  100.0%            t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1    2.0%      Function: ^URLStateMachine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:481:25
+      1  100.0%        LazyCompile: ~module.exports.basicURLParse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/url-state-machine.js:1206:41
+      1  100.0%          LazyCompile: ~URLImpl /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL-impl.js:7:14
+      1  100.0%            LazyCompile: ~exports.setup /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL.js:49:17
+
+    101    1.9%  T node::native_module::NativeModuleEnv::CompileFunction(v8::FunctionCallbackInfo<v8::Value> const&)
+    101  100.0%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     74   73.3%      Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+     60   81.1%        Function: ^nativeModuleRequire node:internal/bootstrap/loaders:332:29
+     11   18.3%          Function: ~<anonymous> node:crypto:1:1
+     11  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      9   15.0%          Function: ~<anonymous> node:http:1:1
+      9  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      4    6.7%          Function: ~<anonymous> node:_http_client:1:1
+      4  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3    5.0%          LazyCompile: ~lazyRequire node:internal/crypto/util:67:21
+      3  100.0%            LazyCompile: ~get node:crypto:287:8
+      3    5.0%          Function: ~<anonymous> node:tls:1:1
+      3  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3    5.0%          Function: ~<anonymous> node:internal/cluster/primary:1:1
+      3  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3    5.0%          Function: ~<anonymous> node:internal/child_process:1:1
+      3  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3    5.0%          Function: ~<anonymous> node:child_process:1:1
+      3  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      2    3.3%          LazyCompile: ~lazyLoadStreams node:fs:2841:25
+      2  100.0%            LazyCompile: ~get ReadStream node:fs:2984:17
+      2    3.3%          Function: ~<anonymous> node:internal/crypto/pbkdf2:1:1
+      2  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      2    3.3%          Function: ~<anonymous> node:internal/crypto/hkdf:1:1
+      2  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      2    3.3%          Function: ~<anonymous> node:https:1:1
+      2  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      2    3.3%          Function: ~<anonymous> node:assert:1:1
+      2  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      2    3.3%          Function: ~<anonymous> node:_http_common:1:1
+      2  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    1.7%          LazyCompile: ~initializeCJSLoader node:internal/bootstrap/pre_execution:422:29
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1    1.7%          LazyCompile: ~get node:dns:334:8
+      1  100.0%            t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1    1.7%          LazyCompile: ~get BlockList node:net:1779:16
+      1  100.0%            t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1    1.7%          Function: ~<anonymous> node:tty:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    1.7%          Function: ~<anonymous> node:internal/blocklist:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    1.7%          Function: ~<anonymous> node:dns:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    1.7%          Function: ~<anonymous> node:cluster:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    1.7%          Function: ~<anonymous> node:_tls_common:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    1.7%          Function: ~<anonymous> node:_http_server:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+     14   18.9%        Function: ^compileForPublicLoader node:internal/bootstrap/loaders:246:25
+     13   92.9%          Function: ^loadNativeModule node:internal/modules/cjs/helpers:44:26
+     13  100.0%            Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      1    7.1%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+      1  100.0%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+     27   26.7%      LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+     27  100.0%        LazyCompile: ~nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      4   14.8%          LazyCompile: ~initializeCJSLoader node:internal/bootstrap/pre_execution:422:29
+      4  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      4   14.8%          Function: ~<anonymous> node:internal/modules/esm/loader:1:1
+      4  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3   11.1%          Function: ~<anonymous> node:internal/process/esm_loader:1:1
+      3  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3   11.1%          Function: ~<anonymous> node:internal/modules/esm/get_source:1:1
+      3  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      3   11.1%          Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      2    7.4%          Function: ~<anonymous> node:internal/source_map/source_map_cache:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    3.7%          LazyCompile: ~setupInspectorHooks node:internal/bootstrap/pre_execution:233:29
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1    3.7%          LazyCompile: ~initializeSourceMapsHandlers node:internal/bootstrap/pre_execution:461:38
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1    3.7%          LazyCompile: ~initializeReport node:internal/bootstrap/pre_execution:183:26
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1    3.7%          Function: ~<anonymous> node:internal/modules/esm/module_map:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    3.7%          Function: ~<anonymous> node:internal/modules/esm/load:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    3.7%          Function: ~<anonymous> node:internal/modules/cjs/loader:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    3.7%          Function: ~<anonymous> node:internal/fs/promises:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1    3.7%          Function: ~<anonymous> node:internal/bootstrap/pre_execution:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+
+     92    1.8%  T __kernelrpc_mach_port_set_attributes
+     55   59.8%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      3    5.5%      LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      3  100.0%        Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      2    3.6%      t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1   50.0%        LazyCompile: ~resolveExports node:internal/modules/cjs/loader:472:24
+      1  100.0%          LazyCompile: ~Module._findPath node:internal/modules/cjs/loader:494:28
+      1  100.0%            LazyCompile: ~Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      1   50.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/types/buffer.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      2    3.6%      LazyCompile: ~OAuth2Strategy /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/passport-oauth2/lib/strategy.js:77:24
+      2  100.0%        LazyCompile: ~Strategy /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/passport-facebook/lib/strategy.js:48:18
+      2  100.0%          Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:1:1
+      2  100.0%            LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1    1.8%      LazyCompile: ~validateRetryConfig /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/utils/api-request.js:139:29
+      1  100.0%        LazyCompile: ~HttpClient /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/utils/api-request.js:159:24
+      1  100.0%          LazyCompile: ~ServiceAccountCredential /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/app/credential-internal.js:63:38
+      1  100.0%            LazyCompile: ~cert /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/app/credential-factory.js:100:14
+      1    1.8%      LazyCompile: ~urlencoded /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/body-parser/lib/types/urlencoded.js:43:21
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:1:1
+      1  100.0%          LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.8%      LazyCompile: ~serveStatic /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/serve-static/index.js:72:31
+      1  100.0%        LazyCompile: ~handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%          LazyCompile: ~trim_prefix /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:288:23
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:275:64
+      1    1.8%      LazyCompile: ~scanLine /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:803:22
+      1  100.0%        LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:730:32
+      1  100.0%          t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%            LazyCompile: ~generateSource /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:709:28
+      1    1.8%      LazyCompile: ~readSync node:fs:684:18
+      1  100.0%        LazyCompile: ~tryReadSync node:fs:429:21
+      1  100.0%          LazyCompile: ~readFileSync node:fs:450:22
+      1  100.0%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.8%      LazyCompile: ~parsersCb node:_http_common:170:65
+      1  100.0%        LazyCompile: ~alloc node:internal/freelist:15:8
+      1  100.0%          LazyCompile: ~connectionListenerInternal node:_http_server:442:36
+      1  100.0%            Function: ^defaultTriggerAsyncIdScope node:internal/async_hooks:445:36
+      1    1.8%      LazyCompile: ~parserOnIncoming node:_http_server:852:26
+      1  100.0%        LazyCompile: ~parserOnHeadersComplete node:_http_common:77:33
+      1    1.8%      LazyCompile: ~onParserExecuteCommon node:_http_server:690:31
+      1  100.0%        Function: ^onParserExecute node:_http_server:633:25
+      1    1.8%      LazyCompile: ~normalizeParseOptions /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/qs/lib/parse.js:189:59
+      1  100.0%        LazyCompile: ~module.exports /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/qs/lib/parse.js:222:27
+      1  100.0%          Function: ^parseExtendedQueryString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:291:34
+      1  100.0%            Function: ^query /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/middleware/query.js:39:24
+      1    1.8%      LazyCompile: ~nocompress /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:134:25
+      1  100.0%        LazyCompile: ~onResponseHeaders /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:140:47
+      1  100.0%          LazyCompile: ~writeHead /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/on-headers/index.js:28:29
+      1  100.0%            LazyCompile: ~_implicitHeader node:_http_server:264:68
+      1    1.8%      LazyCompile: ~maybeCacheSourceMap node:internal/source_map/source_map_cache:74:29
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    1.8%      LazyCompile: ~makeClientMetadata /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:670:28
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/connection_string.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.8%      LazyCompile: ~jsonParser /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/body-parser/lib/types/json.js:98:30
+      1  100.0%        Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%          Function: ^trim_prefix /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:288:23
+      1  100.0%            Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:275:64
+      1    1.8%      LazyCompile: ~hrtime node:internal/process/per_thread:67:18
+      1  100.0%        Function: ^now /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:708:13
+      1  100.0%          LazyCompile: ~calculateDurationInMs /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:714:31
+      1  100.0%            LazyCompile: ~hasTimedOut /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sessions.js:535:16
+      1    1.8%      LazyCompile: ~header /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:754:29
+      1  100.0%        LazyCompile: ~send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      1  100.0%          LazyCompile: ~done /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:1006:27
+      1  100.0%            LazyCompile: ~tryHandleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:252:24
+      1    1.8%      LazyCompile: ~get isPinned /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/transactions.js:88:17
+      1  100.0%        LazyCompile: ~get isPinned /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sessions.js:126:17
+      1  100.0%          LazyCompile: ~executeWithServerSelection /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/execute_operation.js:66:36
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/execute_operation.js:17:48
+      1    1.8%      LazyCompile: ~fresh /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/parseurl/index.js:153:16
+      1  100.0%        LazyCompile: ~parseurl /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/parseurl/index.js:35:19
+      1  100.0%          LazyCompile: ~getPathname /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:526:21
+      1  100.0%            LazyCompile: ~next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      1    1.8%      LazyCompile: ~fresh /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/fresh/index.js:33:16
+      1  100.0%        Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/request.js:467:36
+      1  100.0%          t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%            Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/response.js:107:25
+      1    1.8%      LazyCompile: ~exports.is /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL.js:11:14
+      1  100.0%        LazyCompile: ~get pathname /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL.js:321:17
+      1  100.0%          LazyCompile: ~parseOptions /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/connection_string.js:208:22
+      1  100.0%            LazyCompile: ~MongoClient /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/mongo_client.js:60:16
+      1    1.8%      LazyCompile: ~execute /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/indexes.js:128:12
+      1  100.0%        LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/execute_operation.js:148:61
+      1  100.0%          LazyCompile: ~processWaitQueue /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/topology.js:636:26
+      1  100.0%            LazyCompile: ~selectServer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/topology.js:286:17
+      1    1.8%      LazyCompile: ~emit node:events:340:44
+      1  100.0%        LazyCompile: ~addChunk /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/readable-stream/lib/_stream_readable.js:295:18
+      1  100.0%          LazyCompile: ~readableAddChunk /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/readable-stream/lib/_stream_readable.js:249:26
+      1  100.0%            LazyCompile: ~Readable.push /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/readable-stream/lib/_stream_readable.js:222:36
+      1    1.8%      LazyCompile: ~digest node:internal/crypto/hash:115:40
+      1  100.0%        Function: ^entitytag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/etag/index.js:39:20
+      1  100.0%          LazyCompile: ~etag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/etag/index.js:70:15
+      1  100.0%            LazyCompile: ~generateETag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:275:32
+      1    1.8%      LazyCompile: ~createRegex /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:558:25
+      1  100.0%        LazyCompile: ~Template /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:507:18
+      1  100.0%          LazyCompile: ~compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:379:35
+      1  100.0%            LazyCompile: ~handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+      1    1.8%      LazyCompile: ~createHash node:crypto:129:20
+      1  100.0%        LazyCompile: ~entitytag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/etag/index.js:39:20
+      1  100.0%          LazyCompile: ~etag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/etag/index.js:70:15
+      1  100.0%            LazyCompile: ~generateETag /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/utils.js:275:32
+      1    1.8%      LazyCompile: ~createDebug /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/debug/src/common.js:60:22
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/engine.io/build/transport.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.8%      LazyCompile: ~createDebug /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/node_modules/debug/src/debug.js:63:21
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.8%      LazyCompile: ~connectionListenerInternal node:_http_server:442:36
+      1  100.0%        Function: ^defaultTriggerAsyncIdScope node:internal/async_hooks:445:36
+      1  100.0%          LazyCompile: ~connectionListener node:_http_server:436:28
+      1  100.0%            Function: ^emit node:events:340:44
+      1    1.8%      LazyCompile: ~compression /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:59:31
+      1  100.0%        Function: ^handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%          Function: ^trim_prefix /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:288:23
+      1  100.0%            Function: ^<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:275:64
+      1    1.8%      LazyCompile: ~_transform /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/winston/lib/winston/logger.js:267:13
+      1  100.0%        LazyCompile: ~Transform._read /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/readable-stream/lib/_stream_transform.js:171:38
+      1  100.0%          LazyCompile: ~Transform._write /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/readable-stream/lib/_stream_transform.js:156:39
+      1  100.0%            LazyCompile: ~doWrite /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/readable-stream/lib/_stream_writable.js:404:17
+      1    1.8%      LazyCompile: ~_preCompile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/schema.js:2195:52
+      1  100.0%        LazyCompile: ~compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/model.js:4751:33
+      1  100.0%          LazyCompile: ~Mongoose._model /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:525:37
+      1  100.0%            LazyCompile: ~Mongoose.model /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:461:36
+      1    1.8%      LazyCompile: ~Socket.resume node:net:630:35
+      1  100.0%        LazyCompile: ~readStart node:_http_incoming:40:19
+      1  100.0%          LazyCompile: ~parserOnMessageComplete node:_http_common:147:33
+      1    1.8%      LazyCompile: ~Socket._writeGeneric node:net:769:42
+      1  100.0%        LazyCompile: ~Socket._writev node:net:801:36
+      1  100.0%          LazyCompile: ~doWrite node:internal/streams/writable:398:17
+      1  100.0%            LazyCompile: ~clearBuffer node:internal/streams/writable:529:21
+      1    1.8%      LazyCompile: ~ObjectId.auto /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/schema/objectid.js:103:35
+      1  100.0%        LazyCompile: ~SchemaType /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/schematype.js:40:20
+      1  100.0%          LazyCompile: ~ObjectId /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/schema/objectid.js:26:18
+      1  100.0%            LazyCompile: ~Schema.interpretAsType /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/schema.js:908:44
+      1    1.8%      LazyCompile: ~ObjectId /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/objectid.js:23:22
+      1  100.0%        LazyCompile: ~deserializeObject /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:65:27
+      1  100.0%          LazyCompile: ~deserializeObject /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:65:27
+      1  100.0%            LazyCompile: ~deserialize /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:36:21
+      1    1.8%      LazyCompile: ~NativeConnection /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/drivers/node-mongodb-native/connection.js:19:26
+      1  100.0%        LazyCompile: ~Mongoose.createConnection /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:264:47
+      1  100.0%          LazyCompile: ~Mongoose /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:60:18
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:1:1
+      1    1.8%      LazyCompile: ~Long.comp /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/long.js:311:36
+      1  100.0%        LazyCompile: ~Long.lessThanOrEqual /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/long.js:516:47
+      1  100.0%          LazyCompile: ~deserializeObject /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:65:27
+      1  100.0%            LazyCompile: ~deserializeObject /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:65:27
+      1    1.8%      LazyCompile: ~Faker /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/lib/index.js:24:16
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/faker/index.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    1.8%      LazyCompile: ~Bitfield /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/sparse-bitfield/index.js:5:19
+      1  100.0%        LazyCompile: ~Bitfield /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/sparse-bitfield/index.js:5:19
+      1  100.0%          LazyCompile: ~read /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/saslprep/lib/memory-code-points.js:15:14
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/saslprep/lib/memory-code-points.js:1:1
+      1    1.8%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/execute_operation.js:17:48
+      1  100.0%        LazyCompile: ~maybePromise /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:482:22
+      1  100.0%          LazyCompile: ~executeOperation /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/execute_operation.js:12:26
+      1  100.0%            LazyCompile: ~createCollection /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/db.js:143:21
+      1    1.8%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/connection_string.js:1023:10
+      1  100.0%        t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%          Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/connection_string.js:1:1
+      1  100.0%            Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1    1.8%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/toidentifier/index.js:25:19
+      1  100.0%        t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%          LazyCompile: ~toIdentifier /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/toidentifier/index.js:22:23
+      1  100.0%            LazyCompile: ~forEachCode /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/http-errors/index.js:243:38
+      1    1.8%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/daos/MongoDbDao.js:4:46
+      1  100.0%        t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%          LazyCompile: ~__awaiter /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/daos/MongoDbDao.js:2:54
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/daos/MongoDbDao.js:50:19
+      1    1.8%      Function: ~<anonymous> node:internal/fs/promises:1:1
+      1  100.0%        LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1  100.0%          LazyCompile: ~nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      1  100.0%            Function: ~<anonymous> node:internal/modules/esm/get_source:1:1
+      1    1.8%      Function: ~<anonymous> node:internal/crypto/util:1:1
+      1  100.0%        Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1  100.0%          Function: ^nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      1  100.0%            Function: ~<anonymous> node:internal/crypto/pbkdf2:1:1
+      1    1.8%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/request.js:1:1
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    1.8%      Function: ^validateNumber node:internal/validators:122:24
+      1  100.0%        Function: ^getTimerDuration node:internal/timers:383:26
+      1  100.0%          Function: ^setStreamTimeout node:internal/stream_base_commons:254:26
+      1  100.0%            Function: ^resOnFinish node:_http_server:788:21
+      1    1.8%      Function: ^toNamespacedPath node:path:1266:19
+      1  100.0%        Function: ^stat node:fs:1452:14
+      1  100.0%          Function: ^sendFile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:716:51
+      1  100.0%            Function: ^pipe /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:510:43
+      1    1.8%      Function: ^forEachCode /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/http-errors/index.js:243:38
+      1  100.0%        t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1  100.0%          LazyCompile: ~populateConstructorExports /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/http-errors/index.js:242:37
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/node_modules/http-errors/index.js:1:1
+     26   28.3%    LazyCompile: *compileFunction node:vm:308:25
+     16   61.5%      LazyCompile: *Module._compile node:internal/modules/cjs/loader:1055:37
+     16  100.0%        Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     16  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     14   87.5%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      2   12.5%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     10   38.5%      Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+     10  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+     10  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     10  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+
+     87    1.7%  /usr/lib/system/libsystem_c.dylib
+     42   48.3%    LazyCompile: *compileFunction node:vm:308:25
+     28   66.7%      LazyCompile: *Module._compile node:internal/modules/cjs/loader:1055:37
+     28  100.0%        Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     28  100.0%          LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     22   78.6%            LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+      6   21.4%            Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     14   33.3%      Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+     14  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+     14  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     14  100.0%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     41   47.1%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      5   12.2%      t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+      1   20.0%        LazyCompile: ~callSiteToString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/lib/compat/index.js:21:76
+      1  100.0%          LazyCompile: ~get /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/lib/compat/index.js:54:16
+      1  100.0%            Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/depd/index.js:1:1
+      1   20.0%        LazyCompile: ~applyQueryMiddleware /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/query/applyQueryMiddleware.js:26:30
+      1  100.0%          LazyCompile: ~compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/model.js:4751:33
+      1  100.0%            LazyCompile: ~Mongoose._model /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:525:37
+      1   20.0%        LazyCompile: ~Connection.openUri /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/connection.js:670:40
+      1  100.0%          LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:331:49
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/promiseOrCallback.js:31:22
+      1   20.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/browserDocument.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1   20.0%        Function: ^parseTemplateText /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:749:31
+      1  100.0%          Function: ^generateSource /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:709:28
+      1  100.0%            Function: ^compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:569:21
+      5   12.2%      LazyCompile: ~toRealPath node:internal/modules/cjs/loader:393:20
+      5  100.0%        LazyCompile: ~Module._findPath node:internal/modules/cjs/loader:494:28
+      5  100.0%          LazyCompile: ~resolveMainPath node:internal/modules/run_main:11:25
+      5  100.0%            LazyCompile: ~executeUserEntryPoint node:internal/modules/run_main:74:31
+      2    4.9%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/encoding.js:1:1
+      2  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      2  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      2  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    2.4%      LazyCompile: ~setupWarningHandler node:internal/bootstrap/pre_execution:142:29
+      1  100.0%        LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:23:36
+      1  100.0%          Function: ~<anonymous> node:internal/main/run_main_module:1:1
+      1    2.4%      LazyCompile: ~read /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/saslprep/lib/memory-code-points.js:15:14
+      1  100.0%        Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/saslprep/lib/memory-code-points.js:1:1
+      1  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1    2.4%      LazyCompile: ~preferredEncodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/lib/encoding.js:138:28
+      1  100.0%        LazyCompile: ~encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/negotiator/index.js:55:52
+      1  100.0%          LazyCompile: ~Accepts.encoding.Accepts.encodings /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/accepts/index.js:127:40
+      1  100.0%            LazyCompile: ~onResponseHeaders /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/compression/index.js:140:47
+      1    2.4%      LazyCompile: ~pki.privateKeyFromAsn1 /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/rsa.js:1285:34
+      1  100.0%        LazyCompile: ~pki.privateKeyFromPem /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/pki.js:51:33
+      1  100.0%          LazyCompile: ~ServiceAccount /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/app/credential-internal.js:117:28
+      1  100.0%            LazyCompile: ~ServiceAccount.fromPath /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/app/credential-internal.js:146:40
+      1    2.4%      LazyCompile: ~parseurl /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/parseurl/index.js:35:19
+      1  100.0%        LazyCompile: ~getPathname /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:526:21
+      1  100.0%          LazyCompile: ~next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:176:16
+      1  100.0%            LazyCompile: ~handle /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/router/index.js:136:31
+      1    2.4%      LazyCompile: ~openSync node:fs:576:18
+      1  100.0%        LazyCompile: ~readFileSync node:fs:450:22
+      1  100.0%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            LazyCompile: ~Module.load node:internal/modules/cjs/loader:969:33
+      1    2.4%      LazyCompile: ~init /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/engine.io/build/server.js:282:9
+      1  100.0%        LazyCompile: ~BaseServer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/engine.io/build/server.js:21:16
+      1  100.0%          LazyCompile: ~Server /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/engine.io/build/server.js:276:1
+      1  100.0%            LazyCompile: ~attach /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/engine.io/build/engine.io.js:51:16
+      1    2.4%      LazyCompile: ~immediate /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/immediate.js:12:36
+      1  100.0%        LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/connection.js:566:34
+      1  100.0%          LazyCompile: ~promiseOrCallback /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/helpers/promiseOrCallback.js:8:44
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/connection.js:558:18
+      1    2.4%      LazyCompile: ~get pathname /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL.js:321:17
+      1  100.0%        LazyCompile: ~ConnectionString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb-connection-string-url/lib/index.js:64:16
+      1  100.0%          LazyCompile: ~parseOptions /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/connection_string.js:208:22
+      1  100.0%            LazyCompile: ~MongoClient /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/mongo_client.js:60:16
+      1    2.4%      LazyCompile: ~exports.create /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URLSearchParams.js:50:18
+      1  100.0%        LazyCompile: ~exports.createImpl /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URLSearchParams.js:55:22
+      1  100.0%          LazyCompile: ~URLImpl /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL-impl.js:7:14
+      1  100.0%            LazyCompile: ~exports.setup /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/whatwg-url/lib/URL.js:49:17
+      1    2.4%      LazyCompile: ~error /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:267:45
+      1  100.0%        LazyCompile: ~onStatError /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:416:57
+      1  100.0%          LazyCompile: ~next /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:732:17
+      1  100.0%            LazyCompile: ~onstat /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:721:33
+      1    2.4%      LazyCompile: ~deserializeObject /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:65:27
+      1  100.0%        LazyCompile: ~deserialize /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/parser/deserializer.js:36:21
+      1  100.0%          LazyCompile: ~deserialize /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/bson/lib/bson.js:162:21
+      1  100.0%            LazyCompile: ~parse /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/commands.js:577:10
+      1    2.4%      LazyCompile: ~createWritableStdioStream node:internal/bootstrap/switches/is_main_thread:41:35
+      1  100.0%        LazyCompile: ~getStderr node:internal/bootstrap/switches/is_main_thread:133:19
+      1  100.0%          Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/finalhandler/node_modules/debug/src/node.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1    2.4%      LazyCompile: ~createTopology /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/connect.js:53:24
+      1  100.0%        LazyCompile: ~connect /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/connect.js:17:17
+      1  100.0%          LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/mongo_client.js:126:52
+      1  100.0%            LazyCompile: ~maybePromise /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/utils.js:482:22
+      1    2.4%      LazyCompile: ~connect /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/topology.js:189:12
+      1  100.0%        LazyCompile: ~createTopology /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/connect.js:53:24
+      1  100.0%          LazyCompile: ~connect /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/connect.js:17:17
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/mongo_client.js:126:52
+      1    2.4%      LazyCompile: ~compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:379:35
+      1  100.0%        LazyCompile: ~handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+      1  100.0%          LazyCompile: ~tryHandleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:252:24
+      1  100.0%            LazyCompile: ~exports.renderFile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:439:31
+      1    2.4%      LazyCompile: ~command /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/sdam/server.js:133:12
+      1  100.0%        LazyCompile: ~executeCommand /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/command.js:49:19
+      1  100.0%          LazyCompile: ~execute /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/create_collection.js:36:12
+      1  100.0%            LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/operations/execute_operation.js:148:61
+      1    2.4%      LazyCompile: ~bnpFromString /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/jsbn.js:181:23
+      1  100.0%        LazyCompile: ~BigInteger /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/jsbn.js:61:20
+      1  100.0%          LazyCompile: ~pki.privateKeyFromAsn1 /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/rsa.js:1285:34
+      1  100.0%            LazyCompile: ~pki.privateKeyFromPem /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/pki.js:51:33
+      1    2.4%      LazyCompile: ~asn1.fromDer /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/asn1.js:423:24
+      1  100.0%        LazyCompile: ~pki.privateKeyFromPem /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/node-forge/lib/pki.js:51:33
+      1  100.0%          LazyCompile: ~ServiceAccount /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/app/credential-internal.js:117:28
+      1  100.0%            LazyCompile: ~ServiceAccount.fromPath /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/firebase-admin/lib/app/credential-internal.js:146:40
+      1    2.4%      LazyCompile: ~_storeHeader node:_http_outgoing:374:22
+      1  100.0%        LazyCompile: ~writeHead node:_http_server:269:19
+      1  100.0%          LazyCompile: ~writeHead /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/on-headers/index.js:28:29
+      1  100.0%            LazyCompile: ~_implicitHeader node:_http_server:264:68
+      1    2.4%      LazyCompile: ~Schema.path /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/schema.js:644:33
+      1  100.0%        LazyCompile: ~Document.$__setSchema /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/document.js:3263:43
+      1  100.0%          LazyCompile: ~compile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/model.js:4751:33
+      1  100.0%            LazyCompile: ~Mongoose._model /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/index.js:525:37
+      1    2.4%      LazyCompile: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/socket.io/dist/index.js:262:27
+      1  100.0%        Function: ^emit node:events:340:44
+      1  100.0%          LazyCompile: ~parserOnIncoming node:_http_server:852:26
+      1  100.0%            LazyCompile: ~parserOnHeadersComplete node:_http_common:77:33
+      1    2.4%      LazyCompile: *validateString node:internal/validators:117:24
+      1  100.0%        Function: ^resolve node:path:1091:10
+      1  100.0%          Function: ^SendStream /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:96:21
+      1  100.0%            Function: ^send /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:83:15
+      1    2.4%      Function: ~<anonymous> node:internal/fs/rimraf:1:1
+      1  100.0%        LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1  100.0%          LazyCompile: ~nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      1  100.0%            Function: ~<anonymous> node:internal/fs/promises:1:1
+      1    2.4%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:1:1
+      1  100.0%        Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1    2.4%      Function: ~<anonymous> /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/dist/server.js:1:1
+      1  100.0%        LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1055:37
+      1  100.0%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      1  100.0%            LazyCompile: ~Module.load node:internal/modules/cjs/loader:969:33
+      1    2.4%      Function: ^processTicksAndRejections node:internal/process/task_queues:68:35
+      1    2.4%      Function: ^emit node:events:340:44
+      1  100.0%        LazyCompile: ~processIncomingData /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/message_stream.js:79:29
+      1  100.0%          LazyCompile: ~_write /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/mongodb/lib/cmap/message_stream.js:26:11
+      1  100.0%            LazyCompile: ~writeOrBuffer node:internal/streams/writable:365:23
+      1    2.4%      Function: ^<anonymous> node:internal/validators:235:42
+      1  100.0%        Function: ^compileFunction node:vm:308:25
+      1  100.0%          Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+      1  100.0%            Function: ^Module._compile node:internal/modules/cjs/loader:1055:37
+
+     82    1.6%  T _task_get_special_port
+     82  100.0%    LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+     52   63.4%      Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     41   78.8%        LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     41  100.0%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     41  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+     11   21.2%        Function: ^Module._load node:internal/modules/cjs/loader:757:24
+     11  100.0%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+     11  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+     30   36.6%      LazyCompile: *Module._resolveFilename node:internal/modules/cjs/loader:848:35
+     30  100.0%        LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     22   73.3%          LazyCompile: *Module.require node:internal/modules/cjs/loader:997:36
+     22  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+      8   26.7%          Function: ^Module.require node:internal/modules/cjs/loader:997:36
+      8  100.0%            Function: ^require node:internal/modules/cjs/helpers:101:31
+
+     77    1.5%  t node::fs::InternalModuleReadJSON(v8::FunctionCallbackInfo<v8::Value> const&)
+     77  100.0%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     70   90.9%      Function: ^read node:internal/modules/package_json_reader:16:14
+     67   95.7%        Function: ^readPackage node:internal/modules/cjs/loader:290:21
+     49   73.1%          Function: ^resolveExports node:internal/modules/cjs/loader:472:24
+     49  100.0%            Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+     13   19.4%          LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+     13  100.0%            Function: ^Module._resolveFilename node:internal/modules/cjs/loader:848:35
+      3    4.5%          Function: ^tryPackage node:internal/modules/cjs/loader:338:20
+      3  100.0%            LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      2    3.0%          LazyCompile: ~resolveExports node:internal/modules/cjs/loader:472:24
+      2  100.0%            Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+      3    4.3%        LazyCompile: *readPackage node:internal/modules/cjs/loader:290:21
+      2   66.7%          Function: ^tryPackage node:internal/modules/cjs/loader:338:20
+      2  100.0%            LazyCompile: *Module._findPath node:internal/modules/cjs/loader:494:28
+      1   33.3%          Function: ^resolveExports node:internal/modules/cjs/loader:472:24
+      1  100.0%            Function: ^Module._findPath node:internal/modules/cjs/loader:494:28
+      7    9.1%      LazyCompile: ~read node:internal/modules/package_json_reader:16:14
+      5   71.4%        LazyCompile: ~readPackage node:internal/modules/cjs/loader:290:21
+      5  100.0%          LazyCompile: ~resolveExports node:internal/modules/cjs/loader:472:24
+      5  100.0%            LazyCompile: ~Module._findPath node:internal/modules/cjs/loader:494:28
+      2   28.6%        Function: ^readPackage node:internal/modules/cjs/loader:290:21
+      2  100.0%          LazyCompile: ~resolveExports node:internal/modules/cjs/loader:472:24
+      2  100.0%            LazyCompile: ~Module._findPath node:internal/modules/cjs/loader:494:28
+
+     74    1.4%  t node::fs::Stat(v8::FunctionCallbackInfo<v8::Value> const&)
+     74  100.0%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     39   52.7%      Function: ^statSync node:fs:1528:18
+     39  100.0%        Function: ^tryStat /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/view.js:174:17
+     39  100.0%          Function: ^resolve /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/view.js:146:42
+     39  100.0%            Function: ^lookup /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/express/lib/view.js:104:40
+     35   47.3%      Function: ^stat node:fs:1452:14
+     35  100.0%        Function: ^sendFile /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:716:51
+     34   97.1%          Function: ^pipe /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:510:43
+     34  100.0%            Function: ^serveStatic /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/serve-static/index.js:72:31
+      1    2.9%          LazyCompile: ~pipe /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/send/index.js:510:43
+      1  100.0%            Function: ^serveStatic /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/serve-static/index.js:72:31
+
+     70    1.3%  T node::fs::Close(v8::FunctionCallbackInfo<v8::Value> const&)
+     70  100.0%    t std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > >::push_back(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&&)
+     70  100.0%      Function: ^closeSync node:fs:526:19
+     70  100.0%        Function: ^readFileSync node:fs:450:22
+     62   88.6%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1110:37
+     40   64.5%            LazyCompile: *Module._load node:internal/modules/cjs/loader:757:24
+     22   35.5%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      5    7.1%          Function: ^fileLoader /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:290:20
+      5  100.0%            Function: ^handleCache /Users/cristianmarcos/Dropbox/Web Development/Coder House/Back-end/Desafios/Proyecto Final/node_modules/ejs/lib/ejs.js:208:21
+      3    4.3%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1110:37
+      3  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+

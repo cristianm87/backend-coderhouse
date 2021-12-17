@@ -578,7 +578,6 @@ passport.use(
     },
     (_accessToken, _refreshToken, profile, done) => {
       // console.log(profile);
-
       return done(null, profile);
     }
   )
