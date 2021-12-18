@@ -34,7 +34,10 @@
   "scripts": {
     "TStoJS5": "node_modules/.bin/tsc -w",
     "ES6toJS5": "node_modules/.bin/babel server.es6.js -o server.js -w",
-    "start": "nodemon ./dist/server.js",
+    "cluster": "nodemon ./dist/server.js 8080 CLUSTER",
+    "dev": "ts-node-dev --clear server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -22,7 +22,7 @@ const numCPUs = cpus().length;
 // import normalizr from 'normalizr';
 const normalizr = require('normalizr');
 
-const PORT = +process.argv[2] || 8080;
+const PORT = process.env.PORT || +process.argv[2] || 8080;
 const app = express();
 const routerProductos = express.Router();
 const routerCarrito = express.Router();

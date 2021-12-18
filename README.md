@@ -5,16 +5,23 @@ npm run ES6toJS5 (not in use)
 
 ```
 
-### con TS:
+### TS to JS5 Compile
 
 ```
 npm run TStoJS5
 
 ```
 
-### start
+### start (FORK)
 
 ```
 npm run start
+
+```
+
+### start (CLUSTER)
+
+```
+npm run cluster
 
 ```
