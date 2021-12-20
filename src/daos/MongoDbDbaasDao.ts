@@ -18,7 +18,8 @@ export class MongoDbDbaasDao implements IDao {
   constructor() {
     (async () => {
       await mongoose.connect(
-        'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
+        process.env.MONGODB_URI ||
+          'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
       );
     })();
 

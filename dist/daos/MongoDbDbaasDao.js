@@ -50,7 +50,8 @@ var MongoDbDbaasDao = /** @class */ (function () {
         (function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, mongoose_1.default.connect('mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority')];
+                    case 0: return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGODB_URI ||
+                            'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority')];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
