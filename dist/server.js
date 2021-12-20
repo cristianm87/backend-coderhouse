@@ -183,7 +183,7 @@ var MYSQLSQLITE3 = 4;
 var FILESYSTEM = 5;
 var FIREBASE = 6;
 //
-var option = MONGODB;
+var option = MONGODBDBAAS;
 //
 var daoFactory = new daoFactory_1.DaoFactory();
 var dao = daoFactory.getDao(option);

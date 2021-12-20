@@ -147,7 +147,7 @@ const MYSQLSQLITE3 = 4;
 const FILESYSTEM = 5;
 const FIREBASE = 6;
 //
-let option = MONGODB;
+let option = MONGODBDBAAS;
 //
 const daoFactory = new DaoFactory();
 const dao: IDao = daoFactory.getDao(option);
