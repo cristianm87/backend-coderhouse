@@ -603,7 +603,7 @@ app.use(passport.session());
 
 app.get(pathMain, (request, response) => {
   if (request.isAuthenticated()) {
-    return response.render('index');
+    return response.render('index', { userData: request.user });
   }
 
   return response.render('login');
