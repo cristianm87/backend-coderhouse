@@ -798,7 +798,7 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.get(pathMain, function (request, response) {
     if (request.isAuthenticated()) {
-        return response.render('index', { userData: request.user });
+        return response.render('index');
     }
     return response.render('login');
 });
