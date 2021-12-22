@@ -590,14 +590,14 @@ const sessionHandler = session({
   secret: 'secreto',
   resave: true,
   saveUninitialized: true,
-  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
+  // store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
   // cookie: {
   //   maxAge: 5_000,
   // },
   rolling: true,
 });
 
-// app.use(sessionHandler);
+app.use(sessionHandler);
 app.use(passport.initialize());
 app.use(passport.session());
 

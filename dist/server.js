@@ -66,7 +66,6 @@ var express_session_1 = __importDefault(require("express-session"));
 var daoFactory_1 = require("./daoFactory");
 var passport_facebook_1 = __importDefault(require("passport-facebook"));
 var passport_1 = __importDefault(require("passport"));
-var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var compression_1 = __importDefault(require("compression"));
 var winston_1 = __importDefault(require("winston"));
 var faker_1 = __importDefault(require("faker"));
@@ -787,13 +786,13 @@ var sessionHandler = (0, express_session_1.default)({
     secret: 'secreto',
     resave: true,
     saveUninitialized: true,
-    store: connect_mongo_1.default.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
+    // store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
     // cookie: {
     //   maxAge: 5_000,
     // },
     rolling: true,
 });
-// app.use(sessionHandler);
+app.use(sessionHandler);
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.get(pathMain, function (request, response) {
