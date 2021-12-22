@@ -597,7 +597,7 @@ const sessionHandler = session({
   rolling: true,
 });
 
-app.use(sessionHandler);
+// app.use(sessionHandler);
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -16,6 +16,10 @@ hr {
   background-color: white;
 }
 
+.index-main-hr {
+  border: 5px solid rgb(255, 222, 32);
+}
+
 #chatAuthor {
   color: deepSkyBlue;
 }

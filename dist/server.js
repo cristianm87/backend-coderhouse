@@ -793,7 +793,7 @@ var sessionHandler = (0, express_session_1.default)({
     // },
     rolling: true,
 });
-app.use(sessionHandler);
+// app.use(sessionHandler);
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.get(pathMain, function (request, response) {
