@@ -769,8 +769,8 @@ app.get('/randoms', function (req, res) {
     });
 });
 //////////// PASSPORT FACEBOOK ////////////
-var FACEBOOK_CLIENT_ID = +process.argv[3] || '5013697905325423';
-var FACEBOOK_CLIENT_SECRET = +process.argv[4] || '62dbd3c28deb41afa48a712662520dd2';
+var FACEBOOK_CLIENT_ID = +process.argv[3] || '500325114613311';
+var FACEBOOK_CLIENT_SECRET = +process.argv[4] || '119e7db7336c5a159422d73e11c62bc2';
 passport_1.default.use(new passport_facebook_1.default.Strategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret: FACEBOOK_CLIENT_SECRET,

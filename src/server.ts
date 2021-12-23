@@ -564,9 +564,9 @@ app.get('/randoms', (req, res) => {
 
 //////////// PASSPORT FACEBOOK ////////////
 
-const FACEBOOK_CLIENT_ID: any = +process.argv[3] || '5013697905325423';
+const FACEBOOK_CLIENT_ID: any = +process.argv[3] || '500325114613311';
 const FACEBOOK_CLIENT_SECRET: any =
-  +process.argv[4] || '62dbd3c28deb41afa48a712662520dd2';
+  +process.argv[4] || '119e7db7336c5a159422d73e11c62bc2';
 
 passport.use(
   new passportFacebook.Strategy(
