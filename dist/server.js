@@ -63,6 +63,8 @@ var path_1 = __importDefault(require("path"));
 var SocketIO = __importStar(require("socket.io"));
 var http_1 = __importDefault(require("http"));
 var express_session_1 = __importDefault(require("express-session"));
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 var daoFactory_1 = require("./daoFactory");
 var passport_facebook_1 = __importDefault(require("passport-facebook"));
 var passport_1 = __importDefault(require("passport"));
@@ -769,8 +771,8 @@ app.get('/randoms', function (req, res) {
     });
 });
 //////////// PASSPORT FACEBOOK ////////////
-var FACEBOOK_CLIENT_ID = +process.argv[3] || '500325114613311';
-var FACEBOOK_CLIENT_SECRET = +process.argv[4] || '119e7db7336c5a159422d73e11c62bc2';
+var FACEBOOK_CLIENT_ID = +process.argv[3] || process.env.FACEBOOK_ID;
+var FACEBOOK_CLIENT_SECRET = +process.argv[4] || process.env.FACEBOOK_CLIENT;
 passport_1.default.use(new passport_facebook_1.default.Strategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret: FACEBOOK_CLIENT_SECRET,

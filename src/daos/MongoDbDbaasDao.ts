@@ -17,10 +17,9 @@ export class MongoDbDbaasDao implements IDao {
 
   constructor() {
     (async () => {
-      await mongoose.connect(
-        process.env.MONGODB_URI ||
-          'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority'
-      );
+      const MONGODB_URI: any = process.env.MONGODB_URI;
+
+      await mongoose.connect(MONGODB_URI);
     })();
 
     this.products = new Array<any>();
@@ -51,6 +50,7 @@ export class MongoDbDbaasDao implements IDao {
         price: product.price,
         stock: product.stock,
       });
+
       console.log('Producto guardado!');
     } catch (error) {
       console.log(error);

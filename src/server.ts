@@ -5,6 +5,8 @@ import path from 'path';
 import * as SocketIO from 'socket.io';
 import http from 'http';
 import session from 'express-session';
+import dotenv from 'dotenv';
+dotenv.config();
 import { DaoFactory } from './daoFactory';
 import passportFacebook from 'passport-facebook';
 import passport from 'passport';
@@ -564,9 +566,9 @@ app.get('/randoms', (req, res) => {
 
 //////////// PASSPORT FACEBOOK ////////////
 
-const FACEBOOK_CLIENT_ID: any = +process.argv[3] || '500325114613311';
+const FACEBOOK_CLIENT_ID: any = +process.argv[3] || process.env.FACEBOOK_ID;
 const FACEBOOK_CLIENT_SECRET: any =
-  +process.argv[4] || '119e7db7336c5a159422d73e11c62bc2';
+  +process.argv[4] || process.env.FACEBOOK_CLIENT;
 
 passport.use(
   new passportFacebook.Strategy(
