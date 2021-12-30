@@ -66,8 +66,10 @@ var express_session_1 = __importDefault(require("express-session"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var daoFactory_1 = require("./daoFactory");
+var twilio_1 = __importDefault(require("twilio"));
 var passport_facebook_1 = __importDefault(require("passport-facebook"));
 var passport_1 = __importDefault(require("passport"));
+var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var compression_1 = __importDefault(require("compression"));
 var winston_1 = __importDefault(require("winston"));
 var faker_1 = __importDefault(require("faker"));
@@ -75,6 +77,8 @@ faker_1.default.locale = 'es';
 // IMPORT CLUSTER //
 var cluster_1 = __importDefault(require("cluster"));
 var os_1 = require("os");
+// EMAILING
+var nodemailer_1 = __importDefault(require("nodemailer"));
 var numCPUs = (0, os_1.cpus)().length;
 // import normalizr from 'normalizr';
 var normalizr = require('normalizr');
@@ -189,7 +193,7 @@ var option = MONGODBDBAAS;
 var daoFactory = new daoFactory_1.DaoFactory();
 var dao = daoFactory.getDao(option);
 //////////// ENDPOINTS PRODUCTOS ////////////
-routerProductos.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.get(pathListar, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var productos, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -205,10 +209,10 @@ routerProductos.get(pathListar, function (req, res) { return __awaiter(void 0, v
                 _a.label = 3;
             case 3:
                 if (productos.length < 1) {
-                    res.status(404).send('No hay productos para mostrar');
+                    response.status(404).send('No hay productos para mostrar');
                 }
                 else {
-                    res.status(200).send(JSON.stringify(productos));
+                    response.status(200).send(JSON.stringify(productos));
                 }
                 return [3 /*break*/, 5];
             case 4:
@@ -219,12 +223,12 @@ routerProductos.get(pathListar, function (req, res) { return __awaiter(void 0, v
         }
     });
 }); });
-routerProductos.get(pathListarPorId, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.get(pathListarPorId, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var paramId, productById, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                paramId = req.params.id;
+                paramId = request.params.id;
                 productById = {};
                 _a.label = 1;
             case 1:
@@ -238,10 +242,10 @@ routerProductos.get(pathListarPorId, function (req, res) { return __awaiter(void
                 _a.label = 4;
             case 4:
                 if (productById === undefined || Object.keys(productById).length === 0) {
-                    res.status(404).send('Producto no encontrado');
+                    response.status(404).send('Producto no encontrado');
                 }
                 else {
-                    res.status(200).send(JSON.stringify(productById));
+                    response.status(200).send(JSON.stringify(productById));
                 }
                 return [3 /*break*/, 6];
             case 5:
@@ -254,13 +258,13 @@ routerProductos.get(pathListarPorId, function (req, res) { return __awaiter(void
         }
     });
 }); });
-routerProductos.post(pathAgregar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.post(pathAgregar, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var product, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 if (!isAdmin) return [3 /*break*/, 9];
-                product = req.body;
+                product = request.body;
                 if (!(product.name && product.description && product.code)) return [3 /*break*/, 7];
                 _a.label = 1;
             case 1:
@@ -276,15 +280,15 @@ routerProductos.post(pathAgregar, function (req, res) { return __awaiter(void 0,
             case 4: return [4 /*yield*/, initializeProducts()];
             case 5:
                 _a.sent();
-                res.redirect(pathMain);
+                response.redirect(pathMain);
                 return [7 /*endfinally*/];
             case 6: return [3 /*break*/, 8];
             case 7:
-                res.status(400).send({ error: 'Información incompleta' });
+                response.status(400).send({ error: 'Información incompleta' });
                 _a.label = 8;
             case 8: return [3 /*break*/, 10];
             case 9:
-                res.status(403).send({
+                response.status(403).send({
                     error: -1,
                     descripcion: "ruta '".concat(pathAgregar, "' m\u00E9todo 'Guardar' no autorizada"),
                 });
@@ -293,14 +297,14 @@ routerProductos.post(pathAgregar, function (req, res) { return __awaiter(void 0,
         }
     });
 }); });
-routerProductos.put(pathUpdate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.put(pathUpdate, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var paramId, newValues, productToUpdate, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 if (!isAdmin) return [3 /*break*/, 12];
-                paramId = req.params.id;
-                newValues = req.body;
+                paramId = request.params.id;
+                newValues = request.body;
                 productToUpdate = {};
                 _a.label = 1;
             case 1:
@@ -315,12 +319,12 @@ routerProductos.put(pathUpdate, function (req, res) { return __awaiter(void 0, v
             case 4:
                 if (!(productToUpdate === undefined ||
                     Object.keys(productToUpdate).length === 0)) return [3 /*break*/, 5];
-                res.status(404).send('Producto no encontrado');
+                response.status(404).send('Producto no encontrado');
                 return [3 /*break*/, 7];
             case 5: return [4 /*yield*/, dao.updateProduct(newValues, paramId)];
             case 6:
                 _a.sent();
-                res.status(200).send(JSON.stringify({
+                response.status(200).send(JSON.stringify({
                     productoAactualizar: productToUpdate,
                     valoresActualizados: newValues,
                 }));
@@ -338,7 +342,7 @@ routerProductos.put(pathUpdate, function (req, res) { return __awaiter(void 0, v
                 console.log('productToUpdate', productToUpdate);
                 return [3 /*break*/, 13];
             case 12:
-                res.status(403).send({
+                response.status(403).send({
                     error: -1,
                     descripcion: "ruta '".concat(pathUpdate, "' m\u00E9todo 'Guardar' no autorizada"),
                 });
@@ -347,13 +351,13 @@ routerProductos.put(pathUpdate, function (req, res) { return __awaiter(void 0, v
         }
     });
 }); });
-routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.delete(pathDelete, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var paramId, productToDelete, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 if (!isAdmin) return [3 /*break*/, 12];
-                paramId = req.params.id;
+                paramId = request.params.id;
                 productToDelete = {};
                 _a.label = 1;
             case 1:
@@ -368,12 +372,12 @@ routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0
             case 4:
                 if (!(productToDelete === undefined ||
                     Object.keys(productToDelete).length === 0)) return [3 /*break*/, 5];
-                res.status(404).send('Producto no encontrado');
+                response.status(404).send('Producto no encontrado');
                 return [3 /*break*/, 7];
             case 5: return [4 /*yield*/, dao.deleteProduct(paramId)];
             case 6:
                 _a.sent();
-                res
+                response
                     .status(200)
                     .send(JSON.stringify({ productoEliminado: productToDelete }));
                 _a.label = 7;
@@ -390,7 +394,7 @@ routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0
                 return [7 /*endfinally*/];
             case 11: return [3 /*break*/, 13];
             case 12:
-                res.status(403).send({
+                response.status(403).send({
                     error: -1,
                     descripcion: "ruta '".concat(pathDelete, "' m\u00E9todo 'Guardar' no autorizada"),
                 });
@@ -400,7 +404,7 @@ routerProductos.delete(pathDelete, function (req, res) { return __awaiter(void 0
     });
 }); });
 //////////// ENDPOINTS CARRITO ////////////
-routerCarrito.get(pathListar, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerCarrito.get(pathListar, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var cartProducts, error_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -418,10 +422,10 @@ routerCarrito.get(pathListar, function (req, res) { return __awaiter(void 0, voi
                 _a.label = 4;
             case 4:
                 if (cartProducts.length < 1) {
-                    res.status(404).send('El carrito esta vacio');
+                    response.status(404).send('El carrito esta vacio');
                 }
                 else {
-                    res.status(200).send(JSON.stringify({
+                    response.status(200).send(JSON.stringify({
                         idCarrito: dao.getCartId(),
                         timestampCarrito: dao.getCartTimestamp(),
                         ProductosEnElCarrito: cartProducts,
@@ -436,12 +440,12 @@ routerCarrito.get(pathListar, function (req, res) { return __awaiter(void 0, voi
         }
     });
 }); });
-routerCarrito.post(pathAgregarPorId, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerCarrito.post(pathAgregarPorId, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var paramId, productToAdd, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                paramId = req.params.id;
+                paramId = request.params.id;
                 productToAdd = {};
                 _a.label = 1;
             case 1:
@@ -456,11 +460,13 @@ routerCarrito.post(pathAgregarPorId, function (req, res) { return __awaiter(void
                 _a.label = 4;
             case 4:
                 if (productToAdd === undefined || Object.keys(productToAdd).length === 0) {
-                    res.status(404).send('Producto no encontrado');
+                    response.status(404).send('Producto no encontrado');
                 }
                 else {
                     dao.addToCart(productToAdd);
-                    res.status(200).send(JSON.stringify({ productoAgregado: productToAdd }));
+                    response
+                        .status(200)
+                        .send(JSON.stringify({ productoAgregado: productToAdd }));
                 }
                 return [3 /*break*/, 6];
             case 5:
@@ -471,12 +477,12 @@ routerCarrito.post(pathAgregarPorId, function (req, res) { return __awaiter(void
         }
     });
 }); });
-routerCarrito.delete(pathDelete, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerCarrito.delete(pathDelete, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var paramId, productToDelete;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                paramId = req.params.id;
+                paramId = request.params.id;
                 productToDelete = {};
                 if (!(option === 0 || option === 5)) return [3 /*break*/, 1];
                 productToDelete = dao.getCartProductByIdSync(paramId);
@@ -488,11 +494,11 @@ routerCarrito.delete(pathDelete, function (req, res) { return __awaiter(void 0, 
             case 3:
                 if (productToDelete === undefined ||
                     Object.keys(productToDelete).length === 0) {
-                    res.status(404).send('Producto no encontrado');
+                    response.status(404).send('Producto no encontrado');
                 }
                 else {
                     dao.deleteProductCart(paramId);
-                    res
+                    response
                         .status(200)
                         .send(JSON.stringify({ productoEliminado: productToDelete }));
                 }
@@ -545,12 +551,15 @@ var initializeProducts = function () { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 // Socket IO Messages
-routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerMensajes.post(pathGuardarMensajes, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var body, date, mensaje;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                body = req.body;
+                body = request.body;
+                if (body.text.includes('administrador')) {
+                    sendSms(body.email, body.text);
+                }
                 date = new Date().toLocaleString('es-AR');
                 mensaje = {
                     author: {
@@ -567,7 +576,7 @@ routerMensajes.post(pathGuardarMensajes, function (req, res) { return __awaiter(
                 return [4 /*yield*/, dao.insertMessage(mensaje)];
             case 1:
                 _a.sent();
-                res.redirect(pathMain);
+                response.redirect(pathMain);
                 return [2 /*return*/];
         }
     });
@@ -641,12 +650,12 @@ var initializeNormalizedMessages = function () { return __awaiter(void 0, void 0
 }); };
 //////////// VISTA PRODUCTOS ////////////
 // Filtro por nombre
-routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.post(pathBuscarNombre, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var filtrar, error_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                filtrar = req.body.buscar;
+                filtrar = request.body.buscar;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, 4, 5]);
@@ -659,20 +668,20 @@ routerProductos.post(pathBuscarNombre, function (req, res) { return __awaiter(vo
                 console.log(error_10);
                 return [3 /*break*/, 5];
             case 4:
-                res.redirect('/productos/vista');
+                response.redirect('/productos/vista');
                 return [7 /*endfinally*/];
             case 5: return [2 /*return*/];
         }
     });
 }); });
 // Filtro por precio
-routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.post(pathBuscarPrecio, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var precioMin, precioMax, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                precioMin = req.body.min;
-                precioMax = req.body.max;
+                precioMin = request.body.min;
+                precioMax = request.body.max;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, 4, 5]);
@@ -685,13 +694,13 @@ routerProductos.post(pathBuscarPrecio, function (req, res) { return __awaiter(vo
                 console.log(error_11);
                 return [3 /*break*/, 5];
             case 4:
-                res.redirect('/productos/vista');
+                response.redirect('/productos/vista');
                 return [7 /*endfinally*/];
             case 5: return [2 /*return*/];
         }
     });
 }); });
-routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+routerProductos.get(pathVistaProductos, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var productsFiltered, _a, _b, _c;
     var _d;
     return __generator(this, function (_e) {
@@ -701,12 +710,12 @@ routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(v
                 productsFiltered = _e.sent();
                 if (!(productsFiltered.length < 1)) return [3 /*break*/, 5];
                 if (!(option === 0)) return [3 /*break*/, 2];
-                res.render('productos', {
+                response.render('productos', {
                     productos: dao.getProductsSync(),
                 });
                 return [3 /*break*/, 4];
             case 2:
-                _b = (_a = res).render;
+                _b = (_a = response).render;
                 _c = ['productos'];
                 _d = {};
                 return [4 /*yield*/, dao.getProducts()];
@@ -716,7 +725,7 @@ routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(v
                 _e.label = 4;
             case 4: return [3 /*break*/, 6];
             case 5:
-                res.render('productos', {
+                response.render('productos', {
                     productos: dao.getProductsFiltered(),
                 });
                 _e.label = 6;
@@ -725,9 +734,9 @@ routerProductos.get(pathVistaProductos, function (req, res) { return __awaiter(v
     });
 }); });
 //////////// VISTA TEST (Faker) ////////////
-routerProductos.get(pathVistaTest, function (req, res) {
+routerProductos.get(pathVistaTest, function (request, response) {
     var datos = [];
-    var cantidad = req.query.cant || 10;
+    var cantidad = request.query.cant || 10;
     var id = 1;
     for (var index = 0; index < cantidad; index++) {
         datos.push({
@@ -738,16 +747,16 @@ routerProductos.get(pathVistaTest, function (req, res) {
         });
     }
     if (cantidad == '0') {
-        res.send('No hay productos');
+        response.send('No hay productos');
     }
     else {
-        res.render('test', {
+        response.render('test', {
             productos: datos,
         });
     }
 });
 //////////// VISTA INFO ////////////
-app.get('/info', function (req, res) {
+app.get('/info', function (request, response) {
     var info = {
         argumentosDeEntrada: process.argv,
         nombreDeLaPlataforma: process.platform,
@@ -758,16 +767,16 @@ app.get('/info', function (req, res) {
         carpetaCorriente: process.cwd(),
         nucleosCpu: numCPUs,
     };
-    res.render('info', { info: info });
+    response.render('info', { info: info });
 });
 //////////// NUMEROS RANDOMS ////////////
-app.get('/randoms', function (req, res) {
-    var cantidad = Number(req.query.cant) || 100000000;
+app.get('/randoms', function (request, response) {
+    var cantidad = Number(request.query.cant) || 100000000;
     var fork = require('child_process').fork;
     var child = fork('./dist/child.js');
     child.send(cantidad);
     child.on('message', function (message) {
-        return res.status(200).send(JSON.stringify(message));
+        return response.status(200).send(JSON.stringify(message));
     });
 });
 //////////// PASSPORT FACEBOOK ////////////
@@ -788,10 +797,12 @@ var sessionHandler = (0, express_session_1.default)({
     secret: 'secreto',
     resave: true,
     saveUninitialized: true,
-    // store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
-    // cookie: {
-    //   maxAge: 5_000,
-    // },
+    store: connect_mongo_1.default.create({
+        mongoUrl: 'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority',
+    }),
+    cookie: {
+    // maxAge: 15_000,
+    },
     rolling: true,
 });
 app.use(sessionHandler);
@@ -799,7 +810,10 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.get(pathMain, function (request, response) {
     if (request.isAuthenticated()) {
-        return response.render('index', { userData: request.user });
+        var userData = request.user;
+        etherealTransporterInit('login', userData.displayName);
+        gmailTransporterInit(userData);
+        return response.render('index', { userData: userData });
     }
     return response.render('login');
 });
@@ -813,6 +827,97 @@ app.get('/faillogin', function (_request, response) {
 });
 app.get(pathLogout, function (request, response) {
     var userData = request.user;
-    request.logout();
-    return response.render('logout', { userData: userData });
+    if (!userData) {
+        request.logout();
+        return response.render('logout');
+    }
+    else {
+        etherealTransporterInit('logout', userData.displayName);
+        request.logout();
+        return response.render('logout', { userData: userData });
+    }
 });
+//////////// EMAILING ////////////
+// ETHEREAL
+var etherealTransporterInit = function (status, user) {
+    var etherealTransporter = nodemailer_1.default.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+            user: 'laney.yundt19@ethereal.email',
+            pass: 'fdsp2r1uzn82wRrR1k',
+        },
+    });
+    var date = new Date().toLocaleString('es-AR');
+    var message = "".concat(user, " ").concat(date);
+    var mailOptions = {
+        from: 'Prueba',
+        to: 'laney.yundt19@ethereal.email',
+        subject: status,
+        html: message,
+    };
+    etherealTransporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+            return error;
+        }
+        return;
+    });
+};
+// GMAIL
+var gmailTransporterInit = function (userData) {
+    var gmailTransporter = nodemailer_1.default.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'email2cristian@gmail.com',
+            pass: 'qykrdnypxeokzqck',
+        },
+    });
+    var mailOptions = {
+        to: 'email2cristian@gmail.com',
+        subject: 'login',
+        html: "<h1>El usuario ".concat(userData.displayName, " se ah logueado</h1>"),
+    };
+    var attachmentPath = userData.photos[0].value;
+    if (attachmentPath) {
+        mailOptions.attachments = [
+            {
+                path: attachmentPath,
+            },
+        ];
+    }
+    gmailTransporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+            return error;
+        }
+        return;
+    });
+};
+// TWILIO (SMS)
+var sendSms = function (user, text) {
+    var client = (0, twilio_1.default)('ACe46c0dc12c92f68d26bbba771f464800', '3a870fa626c46ca52904f774a12d0ca0');
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var message, error_12;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, client.messages.create({
+                            body: "El usuario ".concat(user, " envi\u00F3: \"").concat(text, "\""),
+                            from: '+12183282116',
+                            to: '+541156561359',
+                        })];
+                case 1:
+                    message = _a.sent();
+                    console.log(message.sid);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_12 = _a.sent();
+                    console.log(error_12);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); })();
+};

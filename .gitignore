@@ -3,3 +3,4 @@ node_modules/
 diagnostic.data/
 journal/
 package-lock.json
+.env

@@ -18,7 +18,6 @@ export class MongoDbDbaasDao implements IDao {
   constructor() {
     (async () => {
       const MONGODB_URI: any = process.env.MONGODB_URI;
-
       await mongoose.connect(MONGODB_URI);
     })();
 

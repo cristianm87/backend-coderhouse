@@ -1,6 +1,5 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { IDao } from './interfaces/daos/IDao';
-
 import path from 'path';
 import * as SocketIO from 'socket.io';
 import http from 'http';
@@ -8,6 +7,7 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 dotenv.config();
 import { DaoFactory } from './daoFactory';
+import twilio from 'twilio';
 import passportFacebook from 'passport-facebook';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
@@ -18,6 +18,10 @@ faker.locale = 'es';
 // IMPORT CLUSTER //
 import cluster from 'cluster';
 import { cpus } from 'os';
+
+// EMAILING
+
+import nodemailer from 'nodemailer';
 
 const numCPUs = cpus().length;
 
@@ -156,7 +160,7 @@ const dao: IDao = daoFactory.getDao(option);
 
 //////////// ENDPOINTS PRODUCTOS ////////////
 
-routerProductos.get(pathListar, async (req: Request, res: Response) => {
+routerProductos.get(pathListar, async (request, response) => {
   try {
     let productos = [];
     if (option === 0) {
@@ -165,17 +169,17 @@ routerProductos.get(pathListar, async (req: Request, res: Response) => {
       productos = await dao.getProducts();
     }
     if (productos.length < 1) {
-      res.status(404).send('No hay productos para mostrar');
+      response.status(404).send('No hay productos para mostrar');
     } else {
-      res.status(200).send(JSON.stringify(productos));
+      response.status(200).send(JSON.stringify(productos));
     }
   } catch (error) {
     console.log(error);
   }
 });
 
-routerProductos.get(pathListarPorId, async (req: Request, res: Response) => {
-  const paramId = req.params.id;
+routerProductos.get(pathListarPorId, async (request, response) => {
+  const paramId = request.params.id;
   let productById: any = {};
   try {
     if (option === 0 || option === 5) {
@@ -184,9 +188,9 @@ routerProductos.get(pathListarPorId, async (req: Request, res: Response) => {
       productById = await dao.getProductById(paramId);
     }
     if (productById === undefined || Object.keys(productById).length === 0) {
-      res.status(404).send('Producto no encontrado');
+      response.status(404).send('Producto no encontrado');
     } else {
-      res.status(200).send(JSON.stringify(productById));
+      response.status(200).send(JSON.stringify(productById));
     }
   } catch (error) {
     console.log(error);
@@ -194,9 +198,9 @@ routerProductos.get(pathListarPorId, async (req: Request, res: Response) => {
   console.log('ProductById_Server', productById);
 });
 
-routerProductos.post(pathAgregar, async (req: Request, res: Response) => {
+routerProductos.post(pathAgregar, async (request, response) => {
   if (isAdmin) {
-    const product = req.body;
+    const product = request.body;
     if (product.name && product.description && product.code) {
       try {
         await dao.insertProduct(product);
@@ -204,23 +208,23 @@ routerProductos.post(pathAgregar, async (req: Request, res: Response) => {
         console.log(error);
       } finally {
         await initializeProducts();
-        res.redirect(pathMain);
+        response.redirect(pathMain);
       }
     } else {
-      res.status(400).send({ error: 'Información incompleta' });
+      response.status(400).send({ error: 'Información incompleta' });
     }
   } else {
-    res.status(403).send({
+    response.status(403).send({
       error: -1,
       descripcion: `ruta '${pathAgregar}' método 'Guardar' no autorizada`,
     });
   }
 });
 
-routerProductos.put(pathUpdate, async (req: Request, res: Response) => {
+routerProductos.put(pathUpdate, async (request, response) => {
   if (isAdmin) {
-    const paramId = req.params.id;
-    const newValues = req.body;
+    const paramId = request.params.id;
+    const newValues = request.body;
     let productToUpdate: any = {};
     try {
       if (option === 0 || option === 5) {
@@ -232,10 +236,10 @@ routerProductos.put(pathUpdate, async (req: Request, res: Response) => {
         productToUpdate === undefined ||
         Object.keys(productToUpdate).length === 0
       ) {
-        res.status(404).send('Producto no encontrado');
+        response.status(404).send('Producto no encontrado');
       } else {
         await dao.updateProduct(newValues, paramId);
-        res.status(200).send(
+        response.status(200).send(
           JSON.stringify({
             productoAactualizar: productToUpdate,
             valoresActualizados: newValues,
@@ -249,16 +253,16 @@ routerProductos.put(pathUpdate, async (req: Request, res: Response) => {
     }
     console.log('productToUpdate', productToUpdate);
   } else {
-    res.status(403).send({
+    response.status(403).send({
       error: -1,
       descripcion: `ruta '${pathUpdate}' método 'Guardar' no autorizada`,
     });
   }
 });
 
-routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
+routerProductos.delete(pathDelete, async (request, response) => {
   if (isAdmin) {
-    const paramId = req.params.id;
+    const paramId = request.params.id;
     let productToDelete: any = {};
     try {
       if (option === 0 || option === 5) {
@@ -270,10 +274,10 @@ routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
         productToDelete === undefined ||
         Object.keys(productToDelete).length === 0
       ) {
-        res.status(404).send('Producto no encontrado');
+        response.status(404).send('Producto no encontrado');
       } else {
         await dao.deleteProduct(paramId);
-        res
+        response
           .status(200)
           .send(JSON.stringify({ productoEliminado: productToDelete }));
       }
@@ -284,7 +288,7 @@ routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
       await initializeProducts();
     }
   } else {
-    res.status(403).send({
+    response.status(403).send({
       error: -1,
       descripcion: `ruta '${pathDelete}' método 'Guardar' no autorizada`,
     });
@@ -293,7 +297,7 @@ routerProductos.delete(pathDelete, async (req: Request, res: Response) => {
 
 //////////// ENDPOINTS CARRITO ////////////
 
-routerCarrito.get(pathListar, async (req: Request, res: Response) => {
+routerCarrito.get(pathListar, async (request, response) => {
   let cartProducts: any = [];
   try {
     if (option === 0) {
@@ -302,9 +306,9 @@ routerCarrito.get(pathListar, async (req: Request, res: Response) => {
       cartProducts = await dao.getCartProducts();
     }
     if (cartProducts.length < 1) {
-      res.status(404).send('El carrito esta vacio');
+      response.status(404).send('El carrito esta vacio');
     } else {
-      res.status(200).send(
+      response.status(200).send(
         JSON.stringify({
           idCarrito: dao.getCartId(),
           timestampCarrito: dao.getCartTimestamp(),
@@ -317,8 +321,8 @@ routerCarrito.get(pathListar, async (req: Request, res: Response) => {
   }
 });
 
-routerCarrito.post(pathAgregarPorId, async (req: Request, res: Response) => {
-  const paramId = req.params.id;
+routerCarrito.post(pathAgregarPorId, async (request, response) => {
+  const paramId = request.params.id;
   let productToAdd: any = {};
   try {
     if (option === 0 || option === 5) {
@@ -328,18 +332,20 @@ routerCarrito.post(pathAgregarPorId, async (req: Request, res: Response) => {
       productToAdd = await dao.getProductById(paramId);
     }
     if (productToAdd === undefined || Object.keys(productToAdd).length === 0) {
-      res.status(404).send('Producto no encontrado');
+      response.status(404).send('Producto no encontrado');
     } else {
       dao.addToCart(productToAdd);
-      res.status(200).send(JSON.stringify({ productoAgregado: productToAdd }));
+      response
+        .status(200)
+        .send(JSON.stringify({ productoAgregado: productToAdd }));
     }
   } catch (error) {
     console.log(error);
   }
 });
 
-routerCarrito.delete(pathDelete, async (req: Request, res: Response) => {
-  const paramId = req.params.id;
+routerCarrito.delete(pathDelete, async (request, response) => {
+  const paramId = request.params.id;
   let productToDelete: any = {};
   if (option === 0 || option === 5) {
     productToDelete = dao.getCartProductByIdSync(paramId);
@@ -350,10 +356,10 @@ routerCarrito.delete(pathDelete, async (req: Request, res: Response) => {
     productToDelete === undefined ||
     Object.keys(productToDelete).length === 0
   ) {
-    res.status(404).send('Producto no encontrado');
+    response.status(404).send('Producto no encontrado');
   } else {
     dao.deleteProductCart(paramId);
-    res
+    response
       .status(200)
       .send(JSON.stringify({ productoEliminado: productToDelete }));
   }
@@ -387,27 +393,28 @@ const initializeProducts = async () => {
 
 // Socket IO Messages
 
-routerMensajes.post(
-  pathGuardarMensajes,
-  async (req: Request, res: Response) => {
-    const body = req.body;
-    const date = new Date().toLocaleString('es-AR');
-    const mensaje: any = {
-      author: {
-        email: body.email,
-        nombre: body.firstname,
-        apellido: body.lastname,
-        edad: body.age,
-        alias: body.nickname,
-        avatar: body.avatar,
-      },
-      fecha: date,
-      text: body.text,
-    };
-    await dao.insertMessage(mensaje);
-    res.redirect(pathMain);
+routerMensajes.post(pathGuardarMensajes, async (request, response) => {
+  const body = request.body;
+  if (body.text.includes('administrador')) {
+    sendSms(body.email, body.text);
   }
-);
+
+  const date = new Date().toLocaleString('es-AR');
+  const mensaje: any = {
+    author: {
+      email: body.email,
+      nombre: body.firstname,
+      apellido: body.lastname,
+      edad: body.age,
+      alias: body.nickname,
+      avatar: body.avatar,
+    },
+    fecha: date,
+    text: body.text,
+  };
+  await dao.insertMessage(mensaje);
+  response.redirect(pathMain);
+});
 
 // Socket IO Messages Normalizr
 
@@ -468,45 +475,45 @@ const initializeNormalizedMessages = async () => {
 
 // Filtro por nombre
 
-routerProductos.post(pathBuscarNombre, async (req: Request, res: Response) => {
-  const filtrar = req.body.buscar;
+routerProductos.post(pathBuscarNombre, async (request, response) => {
+  const filtrar = request.body.buscar;
   try {
     await dao.filterByName(filtrar);
   } catch (error) {
     console.log(error);
   } finally {
-    res.redirect('/productos/vista');
+    response.redirect('/productos/vista');
   }
 });
 
 // Filtro por precio
 
-routerProductos.post(pathBuscarPrecio, async (req: Request, res: Response) => {
-  const precioMin = req.body.min;
-  const precioMax = req.body.max;
+routerProductos.post(pathBuscarPrecio, async (request, response) => {
+  const precioMin = request.body.min;
+  const precioMax = request.body.max;
   try {
     await dao.filterByPrice(precioMin, precioMax);
   } catch (error) {
     console.log(error);
   } finally {
-    res.redirect('/productos/vista');
+    response.redirect('/productos/vista');
   }
 });
 
-routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
+routerProductos.get(pathVistaProductos, async (request, response) => {
   let productsFiltered: any = await dao.getProductsFiltered();
   if (productsFiltered.length < 1) {
     if (option === 0) {
-      res.render('productos', {
+      response.render('productos', {
         productos: dao.getProductsSync(),
       });
     } else {
-      res.render('productos', {
+      response.render('productos', {
         productos: await dao.getProducts(),
       });
     }
   } else {
-    res.render('productos', {
+    response.render('productos', {
       productos: dao.getProductsFiltered(),
     });
   }
@@ -514,10 +521,10 @@ routerProductos.get(pathVistaProductos, async (req: Request, res: Response) => {
 
 //////////// VISTA TEST (Faker) ////////////
 
-routerProductos.get(pathVistaTest, (req, res) => {
+routerProductos.get(pathVistaTest, (request, response) => {
   const datos = [];
 
-  const cantidad = req.query.cant || 10;
+  const cantidad = request.query.cant || 10;
   let id = 1;
   for (let index = 0; index < cantidad; index++) {
     datos.push({
@@ -528,9 +535,9 @@ routerProductos.get(pathVistaTest, (req, res) => {
     });
   }
   if (cantidad == '0') {
-    res.send('No hay productos');
+    response.send('No hay productos');
   } else {
-    res.render('test', {
+    response.render('test', {
       productos: datos,
     });
   }
@@ -538,7 +545,7 @@ routerProductos.get(pathVistaTest, (req, res) => {
 
 //////////// VISTA INFO ////////////
 
-app.get('/info', (req, res) => {
+app.get('/info', (request, response) => {
   const info = {
     argumentosDeEntrada: process.argv,
     nombreDeLaPlataforma: process.platform,
@@ -549,18 +556,18 @@ app.get('/info', (req, res) => {
     carpetaCorriente: process.cwd(),
     nucleosCpu: numCPUs,
   };
-  res.render('info', { info });
+  response.render('info', { info });
 });
 
 //////////// NUMEROS RANDOMS ////////////
 
-app.get('/randoms', (req, res) => {
-  const cantidad = Number(req.query.cant) || 100000000;
+app.get('/randoms', (request, response) => {
+  const cantidad = Number(request.query.cant) || 100000000;
   const { fork } = require('child_process');
   const child = fork('./dist/child.js');
   child.send(cantidad);
   child.on('message', (message: any) =>
-    res.status(200).send(JSON.stringify(message))
+    response.status(200).send(JSON.stringify(message))
   );
 });
 
@@ -592,10 +599,13 @@ const sessionHandler = session({
   secret: 'secreto',
   resave: true,
   saveUninitialized: true,
-  // store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/ecommerce' }),
-  // cookie: {
-  //   maxAge: 5_000,
-  // },
+  store: MongoStore.create({
+    mongoUrl:
+      'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority',
+  }),
+  cookie: {
+    // maxAge: 15_000,
+  },
   rolling: true,
 });
 
@@ -605,7 +615,10 @@ app.use(passport.session());
 
 app.get(pathMain, (request, response) => {
   if (request.isAuthenticated()) {
-    return response.render('index', { userData: request.user });
+    const userData: any = request.user;
+    etherealTransporterInit('login', userData.displayName);
+    gmailTransporterInit(userData);
+    return response.render('index', { userData });
   }
 
   return response.render('login');
@@ -626,7 +639,105 @@ app.get('/faillogin', (_request, response) =>
 );
 
 app.get(pathLogout, (request, response) => {
-  const userData = request.user;
-  request.logout();
-  return response.render('logout', { userData });
+  const userData: any = request.user;
+  if (!userData) {
+    request.logout();
+    return response.render('logout');
+  } else {
+    etherealTransporterInit('logout', userData.displayName);
+    request.logout();
+    return response.render('logout', { userData });
+  }
 });
+
+//////////// EMAILING ////////////
+
+// ETHEREAL
+const etherealTransporterInit = (status: string, user: any) => {
+  const etherealTransporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+      user: 'laney.yundt19@ethereal.email',
+      pass: 'fdsp2r1uzn82wRrR1k',
+    },
+  });
+
+  const date = new Date().toLocaleString('es-AR');
+  const message = `${user} ${date}`;
+
+  const mailOptions = {
+    from: 'Prueba',
+    to: 'laney.yundt19@ethereal.email',
+    subject: status,
+    html: message,
+  };
+
+  etherealTransporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+
+      return error;
+    }
+
+    return;
+  });
+};
+
+// GMAIL
+
+const gmailTransporterInit = (userData: any) => {
+  const gmailTransporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'email2cristian@gmail.com',
+      pass: 'qykrdnypxeokzqck',
+    },
+  });
+
+  const mailOptions: any = {
+    to: 'email2cristian@gmail.com',
+    subject: 'login',
+    html: `<h1>El usuario ${userData.displayName} se ah logueado</h1>`,
+  };
+  const attachmentPath = userData.photos[0].value;
+  if (attachmentPath) {
+    mailOptions.attachments = [
+      {
+        path: attachmentPath,
+      },
+    ];
+  }
+
+  gmailTransporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+
+      return error;
+    }
+
+    return;
+  });
+};
+
+// TWILIO (SMS)
+
+const sendSms = (user: any, text: any) => {
+  const client = twilio(
+    'ACe46c0dc12c92f68d26bbba771f464800',
+    '3a870fa626c46ca52904f774a12d0ca0'
+  );
+
+  (async () => {
+    try {
+      const message = await client.messages.create({
+        body: `El usuario ${user} envió: "${text}"`,
+        from: '+12183282116',
+        to: '+541156561359',
+      });
+      console.log(message.sid);
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+};
