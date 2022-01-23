@@ -1,0 +1,100 @@
+<h2>Buscar Producto</h2>
+
+<!-- BUSCAR POR NOMBRE -->
+<section class="d-flex justify-content-center">
+    <form
+      action="/filtrar-nombre"
+      method="POST"
+      class="bg-dark p-2 mt-3 col-5"
+    >
+      <div class="form-group">
+        <h5>
+          <b> <label for="buscar"> Ingrese nombre del producto</label></b>
+        </h5>
+        <input
+          class="form-control"
+          type="text"
+          name="buscar"
+          placeholder="Ingrese nombre de producto"
+        />
+      </div>
+      <div class="d-grid gap-2">
+        <input class="btn btn-primary mt-2" type="submit" value="Buscar" />
+      </div>
+    </form>
+  </section>
+
+<!-- BUSCAR POR PRECIO-->
+<section class="d-flex justify-content-center">
+    <form
+      action="/filtrar-precio"
+      method="POST"
+      class="bg-dark p-2 mt-3 col-5"
+    >
+      <h5><b>Ingrese rango de precio</b></h5>
+      <div class="row">
+        <div class="col">
+          <input
+            type="text"
+            class="form-control"
+            name="min"
+            placeholder="min"
+            aria-label="min"
+            required
+          />
+        </div>
+        <div class="col">
+          <input
+            type="text"
+            class="form-control"
+            name="max"
+            placeholder="max"
+            aria-label="max"
+            required
+          />
+        </div>
+      </div>
+      <div class="d-grid gap-2">
+        <input class="btn btn-primary mt-2" type="submit" value="Buscar" />
+      </div>
+    </form>
+  </section>
+  <!-- MOSTRAR TABLA DE PRODUCTOS FILTRADOS -->
+
+    <section class="mt-2">
+        <div class="container"></div>
+        <h3>Resultado de busqueda:</h3>
+        <% if(products.length === 0) {%>
+        <h3>(No hay productos para mostrar)</h3>
+        <%} else {%>
+        <table class="table table-dark table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Código</th>
+              <th scope="col">Foto</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% products.forEach(function(producto) { %>
+            <tr>
+              <td><%= producto._id %></td>
+              <td><%= producto.name %></td>
+              <td><%= producto.description %></td>
+              <td><%= producto.code %></td>
+              <td><img src="<%= producto.thumbnail %>" width="50px"</td>
+              <td><%= producto.price %></td>
+              <td><%= producto.stock %></td>
+            </tr>
+            <%})%>
+          </tbody>
+        </table>
+        <% } %>
+        </div>
+      </section>
+  
+

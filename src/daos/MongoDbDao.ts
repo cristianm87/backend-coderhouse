@@ -167,7 +167,12 @@ export class MongoDbDao implements IDao {
   }
 
   getProductsFiltered() {
-    return this.productosFiltrados;
+    const productos = this.productosFiltrados;
+    if (productos.length < 1) {
+      return this.getProducts();
+    } else {
+      return this.productosFiltrados;
+    }
   }
 
   // MENSAJES

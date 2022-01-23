@@ -52,9 +52,9 @@ const socketProductos = io();
 socketProductos.on('products-from-server', data => {
   const html = ejs.render(
     `<section class="mb-4">
-            <h1>Lista de productos</h1>
+            <h2>Inventario</h2>
             <% if(productos.length === 0) {%>
-            <h2>No hay productos</h2>
+            <h3>(Inventario vacío)</h3>
             <%} else {%>
             <table class="table table-dark">
               <thead>
@@ -80,6 +80,7 @@ socketProductos.on('products-from-server', data => {
                   <td><img src="<%= producto.thumbnail %>" width="50px"</td>
                   <td>$<%= producto.price %></td>
                   <td><%= producto.stock %></td>
+                  </td>
                 </tr>
                 <%})%>
               </tbody>

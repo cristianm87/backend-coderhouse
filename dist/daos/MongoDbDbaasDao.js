@@ -337,7 +337,13 @@ var MongoDbDbaasDao = /** @class */ (function () {
         });
     };
     MongoDbDbaasDao.prototype.getProductsFiltered = function () {
-        return this.productosFiltrados;
+        var productos = this.productosFiltrados;
+        if (productos.length < 1) {
+            return this.getProducts();
+        }
+        else {
+            return this.productosFiltrados;
+        }
     };
     // MENSAJES
     MongoDbDbaasDao.prototype.insertMessage = function (message) {

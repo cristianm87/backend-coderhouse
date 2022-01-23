@@ -112,6 +112,7 @@ export class MongoDbDbaasDao implements IDao {
 
   async addToCart(product: any) {
     // falta manejar error por si se ingresan dos productos con el mismo ID
+    // select update
     try {
       await modelCarrito.insertMany(product);
     } catch (error) {
@@ -175,7 +176,12 @@ export class MongoDbDbaasDao implements IDao {
   }
 
   getProductsFiltered() {
-    return this.productosFiltrados;
+    const productos = this.productosFiltrados;
+    if (productos.length < 1) {
+      return this.getProducts();
+    } else {
+      return this.productosFiltrados;
+    }
   }
 
   // MENSAJES

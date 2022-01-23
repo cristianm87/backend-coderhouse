@@ -11,54 +11,46 @@
       integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script src="socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
     <script src="https://unpkg.com/ejs@3.1.6/ejs.min.js"></script>
+
     <script src="main.js"></script>
   </head>
   <body>
-    <section>
-      <div class="container">
-        <div
-          class="
-            alert alert-success
-            d-flex
-            align-items-center
-            justify-content-between
-          "
-          role="alert"
-        >
-          <span style="font-size: 1.5rem"
-            >Bienvenido
-            <b
-              ><img
-                src="<%= userData.photos[0].value %>"
-                style="border-radius: 25px"
-              /><%= userData.displayName %></b
-            >
-          </span>
-
-          <form action="/logout" method="get">
-            <input
-              type="submit"
-              class="btn btn-warning"
-              name="logout"
-              value="Cerrar sesión"
-            />
-          </form>
-        </div>
-      </div>
-    </section>
+    <!-- NAV-BAR -->
+    <div class="container"><%- include('../partials/navbar.ejs') %></div>
+    <!-- -->
+    <h1>Home</h1>
     <!-- PRODUCTOS -->
     <div class="container">
       <%- include('../partials/index-form-productos.ejs') %>
     </div>
+    <div class="container">
+      <hr class="index-main-hr" />
+    </div>
     <section>
+      <!-- PRODUCTOS FILTRADOS-->
+      <div class="container">
+        <%- include('../partials/index-productos-filtrados.ejs') %>
+      </div>
+      <div class="container">
+        <hr class="index-main-hr" />
+      </div>
+      <!-- CARRITO -->
+      <div class="container">
+        <%- include('../partials/index-carrito-table.ejs') %>
+      </div>
       <div class="container">
         <hr class="index-main-hr" />
       </div>
     </section>
+
     <!-- MENSAJES -->
     <div class="container">
       <%- include('../partials/index-form-mensajes.ejs') %>

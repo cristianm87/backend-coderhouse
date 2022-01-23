@@ -44,5 +44,10 @@ var carritoSchema = new mongoose_1.default.Schema({
         require: true,
         max: 100,
     },
+    cantidad: {
+        type: Number,
+        require: true,
+        max: 100,
+    },
 });
 exports.modelCarrito = mongoose_1.default.model('carrito', carritoSchema);

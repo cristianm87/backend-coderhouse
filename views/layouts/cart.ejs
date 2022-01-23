@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce Carrito</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <script src="socket.io/socket.io.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script src="https://unpkg.com/ejs@3.1.6/ejs.min.js"></script>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <!-- NAV-BAR -->
+    <div class="container">
+      <%- include('../partials/navbar.ejs') %>
+      <h1>Carrito</h1>
+
+      <section
+        class="d-flex justify-content-center align-items-center flex-column"
+      >
+        <div class="d-flex align-items-center flex-column col-12">
+          <% if(detalleDeCompra.cartProducts.length < 1) {%>
+          <h3>(No hay productos en el carrito)</h3>
+          <%} else {%>
+          <button id="goToMain" class="btn btn-lg btn-primary m-3">
+            Confirmar compra
+          </button>
+          <table class="table table-dark table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Código</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% detalleDeCompra.cartProducts.forEach(function(product) { %>
+              <tr>
+                <td><%= product._id %></td>
+                <td><%= product.name %></td>
+                <td><%= product.description %></td>
+                <td><%= product.code %></td>
+                <td><img src="<%= product.thumbnail %>" width="50px"</td>
+                <td>$<%= product.price %></td>
+                <td><%= product.cantidad %></td>
+              </tr>
+              <%})%>
+            </tbody>
+          </table>
+          <% } %>
+        </div>
+      </section>
+      <section
+        class="d-flex justify-content-center align-items-center flex-column m-3"
+      >
+        <% if(detalleDeCompra) {%>
+        <ul class="list-group">
+          <li class="text-center list-group-item bg-dark text-light">
+            <b>Su información:</b>
+          </li>
+          <li class="list-group-item bg-dark text-light">
+            <b>Nombre:</b>
+            <%=detalleDeCompra.userInfo.nombre%>
+          </li>
+          <li class="list-group-item bg-dark text-light">
+            <b>Edad:</b> <%=detalleDeCompra.userInfo.edad%>
+          </li>
+          <li class="list-group-item bg-dark text-light">
+            <b>Email:</b>
+            <%=detalleDeCompra.userInfo.email%>
+          </li>
+          <li class="list-group-item bg-dark text-light">
+            <b>Teléfono:</b>
+            <%=detalleDeCompra.userInfo.telefono%>
+          </li>
+          <li class="list-group-item bg-dark text-light">
+            <b>Dirección:</b>
+            <%=detalleDeCompra.userInfo.direccion%>
+          </li>
+          <!-- <li class="list-group-item bg-dark text-light">
+            <b>Avatar:</b>
+            <img
+              src="<%= detalleDeCompra.userInfo.avatar %>"
+              style="border-radius: 25px; width: 50px; margin: 0 5px 0 0"
+            />
+          </li> -->
+        </ul>
+        <%}%>
+      </section>
+    </div>
+    <script type="text/javascript">
+      document.getElementById('goToMain').onclick = function () {
+        location.href = '/carrito/check-out';
+      };
+    </script>
+  </body>
+</html>

@@ -63,13 +63,16 @@ var path_1 = __importDefault(require("path"));
 var SocketIO = __importStar(require("socket.io"));
 var http_1 = __importDefault(require("http"));
 var express_session_1 = __importDefault(require("express-session"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var daoFactory_1 = require("./daoFactory");
 var twilio_1 = __importDefault(require("twilio"));
-var passport_facebook_1 = __importDefault(require("passport-facebook"));
+// import passportFacebook from 'passport-facebook';
+var passport_local_1 = __importDefault(require("passport-local"));
 var passport_1 = __importDefault(require("passport"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
+var modelLogin_1 = require("./models/modelLogin");
 var compression_1 = __importDefault(require("compression"));
 var winston_1 = __importDefault(require("winston"));
 var faker_1 = __importDefault(require("faker"));
@@ -90,6 +93,7 @@ var routerMensajes = express_1.default.Router();
 var __dirname = path_1.default.resolve();
 var server = http_1.default.createServer(app); // antes estaba como Server(app)
 var ioServer = new SocketIO.Server(server);
+var userDataGlobal = {};
 // AUTHORIZATION
 var isAdmin = true;
 // Rutas (URL) Productos
@@ -107,6 +111,32 @@ var pathGuardarMensajes = '/guardar';
 var pathLogin = '/login';
 var pathLogout = '/logout';
 var pathMain = '/';
+//////////// DAO OPTIONS ////////////
+var MEMORY = 0;
+var MONGODB = 1;
+var MONGODBDBAAS = 2;
+var MYSQL = 3;
+var MYSQLSQLITE3 = 4;
+var FILESYSTEM = 5;
+var FIREBASE = 6;
+//
+var option = MONGODBDBAAS;
+//
+var daoFactory = new daoFactory_1.DaoFactory();
+var dao = daoFactory.getDao(option);
+//////////// ADMIN INFORMATION ////////////
+var adminData = {
+    whatsappNumber: '+5491156561359',
+    smsNumber: '+541156561359',
+    emailEthereal: {
+        address: 'sydni.lang85@ethereal.email',
+        password: process.env.ETHEREAL_EMAIL_PASSWORD,
+    },
+    emailGmail: {
+        address: 'email2cristian@gmail.com',
+        password: process.env.GMAIL_APP_PASSWORD,
+    },
+};
 //////////// WINSTON LOGGER ////////////
 var consoleLogger = winston_1.default.createLogger({
     level: 'info',
@@ -179,19 +209,6 @@ app.use((0, compression_1.default)());
 // Ejs Config
 app.set('views', __dirname + '/views/layouts');
 app.set('view engine', 'ejs');
-//////////// DAO OPTIONS ////////////
-var MEMORY = 0;
-var MONGODB = 1;
-var MONGODBDBAAS = 2;
-var MYSQL = 3;
-var MYSQLSQLITE3 = 4;
-var FILESYSTEM = 5;
-var FIREBASE = 6;
-//
-var option = MONGODBDBAAS;
-//
-var daoFactory = new daoFactory_1.DaoFactory();
-var dao = daoFactory.getDao(option);
 //////////// ENDPOINTS PRODUCTOS ////////////
 routerProductos.get(pathListar, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var productos, error_1;
@@ -441,12 +458,13 @@ routerCarrito.get(pathListar, function (request, response) { return __awaiter(vo
     });
 }); });
 routerCarrito.post(pathAgregarPorId, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var paramId, productToAdd, error_7;
+    var paramId, productToAdd, productToAddUpdated, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 paramId = request.params.id;
                 productToAdd = {};
+                productToAddUpdated = {};
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
@@ -457,13 +475,25 @@ routerCarrito.post(pathAgregarPorId, function (request, response) { return __awa
             case 2: return [4 /*yield*/, dao.getProductById(paramId)];
             case 3:
                 productToAdd = _a.sent();
+                productToAddUpdated = {
+                    _id: productToAdd._id,
+                    name: productToAdd.name,
+                    description: productToAdd.description,
+                    code: productToAdd.code,
+                    thumbnail: productToAdd.thumbnail,
+                    price: productToAdd.price,
+                    // cantidad: cantidad,
+                };
+                console.log('ProductToAdd', productToAdd);
                 _a.label = 4;
             case 4:
                 if (productToAdd === undefined || Object.keys(productToAdd).length === 0) {
                     response.status(404).send('Producto no encontrado');
                 }
                 else {
-                    dao.addToCart(productToAdd);
+                    dao.addToCart(productToAddUpdated);
+                    // dao.addToCart(productToAdd);
+                    // response.redirect(pathMain);
                     response
                         .status(200)
                         .send(JSON.stringify({ productoAgregado: productToAdd }));
@@ -474,6 +504,53 @@ routerCarrito.post(pathAgregarPorId, function (request, response) { return __awa
                 console.log(error_7);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
+        }
+    });
+}); });
+routerCarrito.get('/cart', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var userData, detalleDeCompra;
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                userData = userDataGlobal;
+                _a = {
+                    userInfo: userDataGlobal
+                };
+                return [4 /*yield*/, dao.getCartProducts()];
+            case 1:
+                detalleDeCompra = (_a.cartProducts = _b.sent(),
+                    _a);
+                response.status(200).render('cart', { userData: userData, detalleDeCompra: detalleDeCompra });
+                return [2 /*return*/];
+        }
+    });
+}); });
+routerCarrito.get('/check-out', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var userData, detalleDeCompra;
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                userData = userDataGlobal;
+                _a = {
+                    userInfo: userDataGlobal
+                };
+                return [4 /*yield*/, dao.getCartProducts()];
+            case 1:
+                detalleDeCompra = (_a.cartProducts = _b.sent(),
+                    _a);
+                // etherealTransporterInit('Nueva compra!', detalleDeCompra);
+                // sendSms(
+                //   detalleDeCompra.cartProducts,
+                //   'Detalle de la compra',
+                //   userDataGlobal.telefono
+                // );
+                // sendWhatapp(detalleDeCompra);
+                response
+                    .status(200)
+                    .render('check-out', { nombre: userData.nombre, detalleDeCompra: detalleDeCompra });
+                return [2 /*return*/];
         }
     });
 }); });
@@ -558,7 +635,7 @@ routerMensajes.post(pathGuardarMensajes, function (request, response) { return _
             case 0:
                 body = request.body;
                 if (body.text.includes('administrador')) {
-                    sendSms(body.email, body.text);
+                    sendSms(body.email, body.text, adminData.smsNumber);
                 }
                 date = new Date().toLocaleString('es-AR');
                 mensaje = {
@@ -701,35 +778,17 @@ routerProductos.post(pathBuscarPrecio, function (request, response) { return __a
     });
 }); });
 routerProductos.get(pathVistaProductos, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var productsFiltered, _a, _b, _c;
+    var _a, _b, _c;
     var _d;
     return __generator(this, function (_e) {
         switch (_e.label) {
-            case 0: return [4 /*yield*/, dao.getProductsFiltered()];
-            case 1:
-                productsFiltered = _e.sent();
-                if (!(productsFiltered.length < 1)) return [3 /*break*/, 5];
-                if (!(option === 0)) return [3 /*break*/, 2];
-                response.render('productos', {
-                    productos: dao.getProductsSync(),
-                });
-                return [3 /*break*/, 4];
-            case 2:
+            case 0:
                 _b = (_a = response).render;
                 _c = ['productos'];
                 _d = {};
-                return [4 /*yield*/, dao.getProducts()];
-            case 3:
-                _b.apply(_a, _c.concat([(_d.productos = _e.sent(),
-                        _d)]));
-                _e.label = 4;
-            case 4: return [3 /*break*/, 6];
-            case 5:
-                response.render('productos', {
-                    productos: dao.getProductsFiltered(),
-                });
-                _e.label = 6;
-            case 6: return [2 /*return*/];
+                return [4 /*yield*/, dao.getProductsFiltered()];
+            case 1: return [2 /*return*/, _b.apply(_a, _c.concat([(_d.products = _e.sent(),
+                        _d)]))];
         }
     });
 }); });
@@ -779,80 +838,230 @@ app.get('/randoms', function (request, response) {
         return response.status(200).send(JSON.stringify(message));
     });
 });
-//////////// PASSPORT FACEBOOK ////////////
-var FACEBOOK_CLIENT_ID = +process.argv[3] || process.env.FACEBOOK_ID;
-var FACEBOOK_CLIENT_SECRET = +process.argv[4] || process.env.FACEBOOK_CLIENT;
-passport_1.default.use(new passport_facebook_1.default.Strategy({
-    clientID: FACEBOOK_CLIENT_ID,
-    clientSecret: FACEBOOK_CLIENT_SECRET,
-    callbackURL: '/oklogin',
-    profileFields: ['id', 'displayName', 'photos', 'emails'],
-}, function (_accessToken, _refreshToken, profile, done) {
-    // console.log(profile);
-    return done(null, profile);
+////////// PASSPORT DBAAS ////////////
+var createHash = function (password) {
+    return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10));
+};
+var isValidPassword = function (user, password) { return bcrypt_1.default.compareSync(password, user.password); };
+var loginStrategyName = 'login';
+var signUpStrategyName = 'signup';
+passport_1.default.use(loginStrategyName, new passport_local_1.default.Strategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true,
+}, function (_request, username, password, done) {
+    modelLogin_1.modelLogin.findOne({
+        email: username,
+    }, function (error, user) {
+        if (error) {
+            return done(error);
+        }
+        if (!user) {
+            console.log("User Not Found with username ".concat(username));
+            return done(null, false);
+        }
+        if (!isValidPassword(user, password)) {
+            console.log('Invalid Password');
+            return done(null, false);
+        }
+        return done(null, user);
+    });
 }));
-passport_1.default.serializeUser(function (user, done) { return done(null, user); });
-passport_1.default.deserializeUser(function (user, done) { return done(null, user); });
-var sessionHandler = (0, express_session_1.default)({
-    secret: 'secreto',
-    resave: true,
-    saveUninitialized: true,
+passport_1.default.use(signUpStrategyName, new passport_local_1.default.Strategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true,
+}, function (request, username, password, done) {
+    modelLogin_1.modelLogin.findOne({
+        email: username,
+    }, function (error, user) {
+        if (error) {
+            console.log("Error in SignUp: ".concat(error));
+            return done(error);
+        }
+        if (user) {
+            console.log('User already exists');
+            return done(null, false);
+        }
+        var newUser = new modelLogin_1.modelLogin();
+        newUser.email = username;
+        newUser.password = createHash(password);
+        newUser.nombre = request.body.nombre;
+        newUser.direccion = request.body.direccion;
+        newUser.edad = request.body.edad;
+        newUser.telefono = request.body.telefono;
+        newUser.avatar = request.body.avatar;
+        return newUser.save(function (error) {
+            if (error) {
+                console.log("Error in Saving user: ".concat(error));
+                throw error;
+            }
+            //etherealTransporterInit('New Signup', newUser);
+            console.log('User Registration succesful');
+            return done(null, newUser);
+        });
+    });
+}));
+passport_1.default.serializeUser(function (user, done) {
+    done(null, user._id);
+});
+passport_1.default.deserializeUser(function (id, done) {
+    modelLogin_1.modelLogin.findById(id, function (error, user) {
+        return done(error, user);
+    });
+});
+app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
-        mongoUrl: 'mongodb+srv://cristian:DhzAVteV3X-C.VC@cluster0.a5nrm.mongodb.net/ecommerce?retryWrites=true&w=majority',
+        mongoUrl: process.env.MONGODB_URI,
+        //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
     }),
+    secret: 'keyboard cat',
     cookie: {
-    // maxAge: 15_000,
+        httpOnly: false,
+        secure: false,
+        // maxAge: 5_000,
     },
     rolling: true,
-});
-app.use(sessionHandler);
+    resave: true,
+    saveUninitialized: false,
+}));
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
-app.get(pathMain, function (request, response) {
-    if (request.isAuthenticated()) {
-        var userData = request.user;
-        etherealTransporterInit('login', userData.displayName);
-        gmailTransporterInit(userData);
-        return response.render('index', { userData: userData });
-    }
-    return response.render('login');
+// Endpoints Passport
+//main
+// Filtro por nombre
+app.post(pathBuscarNombre, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var filtrar, error_12;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                filtrar = request.body.buscar;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, 4, 5]);
+                return [4 /*yield*/, dao.filterByName(filtrar)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 5];
+            case 3:
+                error_12 = _a.sent();
+                console.log(error_12);
+                return [3 /*break*/, 5];
+            case 4:
+                response.redirect('/');
+                return [7 /*endfinally*/];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
+// Filtrar por Precio
+app.post(pathBuscarPrecio, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var precioMin, precioMax, error_13;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                precioMin = request.body.min;
+                precioMax = request.body.max;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, 4, 5]);
+                return [4 /*yield*/, dao.filterByPrice(precioMin, precioMax)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 5];
+            case 3:
+                error_13 = _a.sent();
+                console.log(error_13);
+                return [3 /*break*/, 5];
+            case 4:
+                response.redirect('/');
+                return [7 /*endfinally*/];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
+app.get(pathMain, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var productsFiltered, userData, carrito;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, dao.getProductsFiltered()];
+            case 1:
+                productsFiltered = _a.sent();
+                userDataGlobal = request.user;
+                userData = request.user;
+                return [4 /*yield*/, dao.getCartProducts()];
+            case 2:
+                carrito = _a.sent();
+                if (userData == undefined) {
+                    return [2 /*return*/, response.redirect(pathLogin)];
+                }
+                else {
+                    // etherealTransporterInit('login', userData.email);
+                    // gmailTransporterInit(userData);
+                    response.render('index', {
+                        userData: userData,
+                        carrito: carrito,
+                        products: productsFiltered,
+                    });
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+//signup
+app.post('/signup', passport_1.default.authenticate(signUpStrategyName, { failureRedirect: '/failsignup' }), function (_request, response) {
+    response.redirect(pathMain);
 });
-app.post(pathLogin, passport_1.default.authenticate('facebook'));
-app.get('/oklogin', passport_1.default.authenticate('facebook', {
-    successRedirect: pathMain,
-    failureRedirect: '/faillogin',
-}));
-app.get('/faillogin', function (_request, response) {
-    return response.render('user-error-login');
+app.get('/signup', function (request, response) {
+    if (request.user == undefined) {
+        response.render('signup');
+    }
+    else {
+        response.redirect(pathMain);
+    }
+});
+app.get('/failsignup', function (request, response) {
+    response.render('user-error-signup');
+});
+//login
+app.get(pathLogin, function (request, response) {
+    if (request.user == undefined) {
+        response.render('login');
+    }
+    else {
+        response.redirect(pathMain);
+    }
+});
+app.post(pathLogin, passport_1.default.authenticate(loginStrategyName, { failureRedirect: '/faillogin' }), function (_request, response) {
+    return response.redirect(pathMain);
+});
+app.get('/faillogin', function (request, response) {
+    response.render('user-error-login');
 });
 app.get(pathLogout, function (request, response) {
     var userData = request.user;
-    if (!userData) {
-        request.logout();
-        return response.render('logout');
-    }
-    else {
-        etherealTransporterInit('logout', userData.displayName);
-        request.logout();
-        return response.render('logout', { userData: userData });
-    }
+    request.session.destroy(function (err) {
+        //etherealTransporterInit('logout', userData.email);
+        response.render('logout', { nombre: userData.nombre });
+    });
 });
 //////////// EMAILING ////////////
 // ETHEREAL
-var etherealTransporterInit = function (status, user) {
+var etherealTransporterInit = function (status, userInfo) {
+    var userData = JSON.stringify(userInfo);
     var etherealTransporter = nodemailer_1.default.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'laney.yundt19@ethereal.email',
-            pass: 'fdsp2r1uzn82wRrR1k',
+            user: adminData.emailEthereal.address,
+            pass: adminData.emailEthereal.password,
         },
     });
     var date = new Date().toLocaleString('es-AR');
-    var message = "".concat(user, " ").concat(date);
+    var message = "".concat(userData, " hizo ").concat(status, " el: ").concat(date);
     var mailOptions = {
         from: 'Prueba',
-        to: 'laney.yundt19@ethereal.email',
+        to: adminData.emailEthereal.address,
         subject: status,
         html: message,
     };
@@ -869,16 +1078,16 @@ var gmailTransporterInit = function (userData) {
     var gmailTransporter = nodemailer_1.default.createTransport({
         service: 'gmail',
         auth: {
-            user: 'email2cristian@gmail.com',
-            pass: 'qykrdnypxeokzqck',
+            user: adminData.emailGmail.address,
+            pass: adminData.emailGmail.password,
         },
     });
     var mailOptions = {
         to: 'email2cristian@gmail.com',
         subject: 'login',
-        html: "<h1>El usuario ".concat(userData.displayName, " se ah logueado</h1>"),
+        html: "<h1>El usuario ".concat(userData.email, " se ah logueado</h1>"),
     };
-    var attachmentPath = userData.photos[0].value;
+    var attachmentPath = userData.avatar;
     if (attachmentPath) {
         mailOptions.attachments = [
             {
@@ -895,26 +1104,55 @@ var gmailTransporterInit = function (userData) {
     });
 };
 // TWILIO (SMS)
-var sendSms = function (user, text) {
-    var client = (0, twilio_1.default)('ACe46c0dc12c92f68d26bbba771f464800', '3a870fa626c46ca52904f774a12d0ca0');
+var sendSms = function (info, text, phoneNumber) {
+    var userDatail = JSON.stringify(info);
+    var client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
     (function () { return __awaiter(void 0, void 0, void 0, function () {
-        var message, error_12;
+        var message, error_14;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, client.messages.create({
-                            body: "El usuario ".concat(user, " envi\u00F3: \"").concat(text, "\""),
+                            body: "Detalle: ".concat(userDatail, " asunto: \"").concat(text, "\""),
                             from: '+12183282116',
-                            to: '+541156561359',
+                            to: phoneNumber,
                         })];
                 case 1:
                     message = _a.sent();
                     console.log(message.sid);
                     return [3 /*break*/, 3];
                 case 2:
-                    error_12 = _a.sent();
-                    console.log(error_12);
+                    error_14 = _a.sent();
+                    console.log(error_14);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); })();
+};
+// TWILIO (WHATSAPP)
+var sendWhatapp = function (detalleDeCompra) {
+    var detalle = JSON.stringify(detalleDeCompra);
+    var client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var message, error_15;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, client.messages.create({
+                            body: detalle,
+                            from: 'whatsapp:+14155238886',
+                            to: "whatsapp:".concat(adminData.whatsappNumber),
+                        })];
+                case 1:
+                    message = _a.sent();
+                    console.log(message.sid);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_15 = _a.sent();
+                    console.log(error_15);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

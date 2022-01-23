@@ -1,3 +1,7 @@
+```
+### Esta app esta optimizada para usar con mongoDb Atlas
+```
+
 ### para transpilar con babel:
 
 ```

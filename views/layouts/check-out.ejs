@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ecommerce Random</title>
+    <title>Ecommerce check-out</title>
     <!-- CSS only -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
@@ -12,17 +12,24 @@
       integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
   </head>
   <body>
     <div class="container">
-      <section
-        class="d-flex justify-content-center align-items-center flex-column"
-        style="height: 100vh"
-      >
-        <h1>Random</h1>
-        <h2><%= message %></h2>
+      <section>
+        <div class="alert alert-success mt-3 text-center" role="alert">
+          <span style="font-size: 1.5rem">
+            La infomacion fue enviada, gracias por su compra <%if (typeof nombre
+            !== "undefined") { %>
+            <b> <%= nombre%></b>! <% } %>
+          </span>
+        </div>
       </section>
+      <script>
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 3000);
+      </script>
     </div>
   </body>
 </html>

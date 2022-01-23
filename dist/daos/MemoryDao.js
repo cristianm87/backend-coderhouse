@@ -57,7 +57,13 @@ var MemoryDao = /** @class */ (function () {
         this.productosFiltrados = this.productos.filter(function (producto) { return producto.price >= min && producto.price <= max; });
     };
     MemoryDao.prototype.getProductsFiltered = function () {
-        return this.productosFiltrados;
+        var productos = this.productosFiltrados;
+        if (productos.length < 1) {
+            return this.productos;
+        }
+        else {
+            return this.productosFiltrados;
+        }
     };
     // CARRITO
     MemoryDao.prototype.addToCart = function (product) {

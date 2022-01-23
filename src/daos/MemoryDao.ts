@@ -80,7 +80,12 @@ export class MemoryDao implements IDao {
   }
 
   getProductsFiltered() {
-    return this.productosFiltrados;
+    const productos = this.productosFiltrados;
+    if (productos.length < 1) {
+      return this.productos;
+    } else {
+      return this.productosFiltrados;
+    }
   }
 
   // CARRITO

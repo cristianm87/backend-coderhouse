@@ -39,6 +39,11 @@ const carritoSchema = new mongoose.Schema({
     require: true,
     max: 100,
   },
+  cantidad: {
+    type: Number,
+    require: true,
+    max: 100,
+  },
 });
 
 export const modelCarrito = mongoose.model('carrito', carritoSchema);
