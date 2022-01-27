@@ -2,29 +2,27 @@
   class="alert alert-success d-flex align-items-center justify-content-between"
   role="alert"
 >
-  <div style="font-size: 1.5rem">
-    Bienvenido
-    <b
-      ><img
+  <div
+    style="font-size: 1.5rem"
+    class="d-flex align-items-center justify-content-center"
+  >
+    <span> Bienvenido </span>
+
+    <span class="ms-3">
+      <img
         src="<%= userData.avatar %>"
-        style="
-          border-color: rgb(19, 81, 51);
-          border-style: solid;
-          border-width: 1px;
-          border-radius: 25px;
-          width: 50px;
-          margin: 0 5px 0 0;
-        "
-      /><%= userData.nombre %></b
-    >
+        style="width: 45px; margin-right: 5px"
+      />
+    </span>
+    <span> <%= userData.nombre %> </span>
   </div>
 
-  <div class="d-flex align-items-center">
+  <div class="d-flex align-items-center justify-content-center">
     <span class="me-4">
       <a href="/"
         ><i
           class="bi bi-house"
-          style="font-size: 2em; color: rgb(19, 81, 51)"
+          style="font-size: 1.8em; color: rgb(19, 81, 51)"
         ></i
       ></a>
     </span>
@@ -33,7 +31,7 @@
       <a href="/carrito/cart">
         <i
           class="bi bi-cart2 me-4"
-          style="font-size: 2em; color: rgb(19, 81, 51)"
+          style="font-size: 1.8em; color: rgb(19, 81, 51)"
         ></i>
       </a>
     </span>
@@ -45,7 +43,7 @@
           style="background: none; padding: 0px; border: none"
         >
           <i
-            style="font-size: 2em; color: rgb(19, 81, 51)"
+            style="font-size: 1.8em; color: rgb(19, 81, 51)"
             class="bi bi-box-arrow-right"
           >
           </i>
