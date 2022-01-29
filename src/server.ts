@@ -1,3 +1,39 @@
+// IMPORTS
+import express from 'express';
+import { IDao } from './interfaces/daos/IDao';
+import path from 'path';
+import * as SocketIO from 'socket.io';
+import http from 'http';
+import session from 'express-session';
+import dotenv from 'dotenv';
+dotenv.config();
+import { DaoFactory } from './daoFactory';
+import passport from 'passport';
+import MongoStore from 'connect-mongo';
+import compression from 'compression';
+import cluster from 'cluster';
+import { cpus } from 'os';
+import {
+  consoleLogger,
+  errorLogger,
+  warnLogger,
+} from './controllers/loggerWinstonController';
+import socketIoInit from './controllers/socketIoController';
+import carritoRouter from './router/carritoRouter';
+import productosRouter from './router/productosRouter';
+import mensajesRouter from './router/mensajesRouter';
+import viewMiscellaneousRouter from './router/viewsMiscellaneousRouter';
+import mainRouter from './router/mainRouter';
+
+const PORT = process.env.PORT || +process.argv[2] || 8080;
+const app = express();
+const __dirname = path.resolve();
+const server = http.createServer(app); // antes estaba como Server(app)
+const ioServer = new SocketIO.Server(server);
+const daoFactory = new DaoFactory();
+export { ioServer };
+export const numCPUs = cpus().length;
+
 // ADMIN INFORMATION
 export const adminData: any = {
   whatsappNumber: '+5491156561359',
@@ -27,77 +63,9 @@ const options = {
 //////////////
 export let option = options.MONGODBDBAAS;
 //////////////
-
-// IMPORTS
-import express from 'express';
-import { IDao } from './interfaces/daos/IDao';
-import path from 'path';
-import * as SocketIO from 'socket.io';
-import http from 'http';
-import session from 'express-session';
-import dotenv from 'dotenv';
-dotenv.config();
-import { DaoFactory } from './daoFactory';
-import passport from 'passport';
-import MongoStore from 'connect-mongo';
-import compression from 'compression';
-import cluster from 'cluster';
-import { cpus } from 'os';
-// IMPORT CONTROLLERS
-import vistaTest from './controllers/vistaTestController';
-import vistaInfo from './controllers/vistaInfoController';
-import vistaRandoms from './controllers/vistaRandomsController';
-import {
-  mainFilterByNameController,
-  mainFilterByPriceController,
-  vistaMain,
-} from './controllers/vistaMainController';
-import {
-  logInController,
-  logInErrorController,
-  logOutController,
-  signUpController,
-  signUpError,
-} from './controllers/userAuthenticationController';
-import {
-  consoleLogger,
-  errorLogger,
-  warnLogger,
-} from './controllers/loggerWinstonController';
-import socketIoInit from './controllers/socketIoController';
-import {
-  loginStrategyName,
-  signUpStrategyName,
-} from './controllers/passportController';
-import carritoRouter from './router/carritoRouter';
-import productosRouter from './router/productosRouter';
-import mensajesRouter from './router/mensajesRouter';
-
-const PORT = process.env.PORT || +process.argv[2] || 8080;
-const app = express();
-const __dirname = path.resolve();
-const server = http.createServer(app); // antes estaba como Server(app)
-const ioServer = new SocketIO.Server(server);
-const daoFactory = new DaoFactory();
-export { ioServer };
 export const dao: IDao = daoFactory.getDao(option);
-export const numCPUs = cpus().length;
 
-// Paths
-
-const pathVistaTest = '/vista-test';
-const pathBuscarNombre = '/filtrar-nombre';
-const pathBuscarPrecio = '/filtrar-precio';
-const pathLogin = '/login';
-const pathLogout = '/logout';
-const pathSignUp = '/signup';
-const pathSignUpError = '/failsignup';
-const pathLoginError = '/faillogin';
-const pathVistaInfo = '/info';
-const pathVistaRandom = '/randoms';
-const pathMain = '/';
-
-// Server listening
+// Server listen
 
 const ServerInit = () => {
   server.listen(PORT, () => {
@@ -142,15 +110,13 @@ if (process.argv[3] == 'CLUSTER') {
   ServerInit();
 }
 
-// Middlewares
+// MIDDLEWARES
 
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Esto es para que el request lea el body
 app.use(compression());
-
 // Session
-
 app.use(
   session({
     store: MongoStore.create({
@@ -168,7 +134,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -180,49 +145,9 @@ socketIoInit();
 app.set('views', __dirname + '/views/layouts');
 app.set('view engine', 'ejs');
 
-// ENDPOINTS USER AUTHENTICATION
+// ENDPOINT MAIN
 
-//signup
-
-app.get(pathSignUp, signUpController);
-
-app.post(
-  pathSignUp,
-  passport.authenticate(signUpStrategyName, {
-    failureRedirect: '/failsignup',
-  }),
-  (_request: any, response: any) => {
-    return response.redirect(pathMain);
-  }
-);
-
-app.get(pathSignUpError, signUpError);
-
-//login
-
-app.get(pathLogin, logInController);
-
-app.post(
-  pathLogin,
-  passport.authenticate(loginStrategyName, {
-    failureRedirect: '/faillogin',
-  }),
-  (_request: any, response: any) => {
-    return response.redirect(pathMain);
-  }
-);
-
-app.get(pathLoginError, logInErrorController);
-
-app.get(pathLogout, logOutController);
-
-// ENDPOINTS MAIN
-
-app.post(pathBuscarNombre, mainFilterByNameController);
-
-app.post(pathBuscarPrecio, mainFilterByPriceController);
-
-app.get(pathMain, vistaMain);
+app.use('/', mainRouter);
 
 // ENDPOINT PRODUCTOS
 
@@ -236,14 +161,6 @@ app.use('/carrito', carritoRouter);
 
 app.use('/mensajes', mensajesRouter);
 
-// ENDPOINT VISTA TEST (Faker)
+// ENDPOINT VISTA MISCELLANEOUS
 
-app.get(pathVistaTest, vistaTest);
-
-// ENDPOINT VISTA INFO
-
-app.get(pathVistaInfo, vistaInfo);
-
-// ENDPOINT NUMEROS RANDOM
-
-app.get(pathVistaRandom, vistaRandoms);
+app.use('/vista', viewMiscellaneousRouter);

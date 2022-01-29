@@ -40,6 +40,7 @@ exports.vistaMain = exports.mainFilterByPriceController = exports.mainFilterByNa
 var server_1 = require("../server");
 var pathLogin = '/login';
 exports.userDataGlobal = {};
+var emailingAndMessagingController_1 = require("./emailingAndMessagingController");
 var mainFilterByNameController = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var filtrar, error_1;
     return __generator(this, function (_a) {
@@ -107,8 +108,8 @@ var vistaMain = function (request, response) { return __awaiter(void 0, void 0, 
                     return [2 /*return*/, response.redirect(pathLogin)];
                 }
                 else {
-                    // etherealTransporterInit('login', userData.email);
-                    // gmailTransporterInit(userData);
+                    (0, emailingAndMessagingController_1.etherealTransporterInit)('login', userData.email);
+                    (0, emailingAndMessagingController_1.gmailTransporterInit)(userData);
                     response.render('index', {
                         userData: userData,
                         carrito: carrito,

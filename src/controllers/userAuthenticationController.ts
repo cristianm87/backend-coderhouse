@@ -29,7 +29,7 @@ export const logInErrorController = (request: any, response: any) => {
 export const logOutController = (request: any, response: any) => {
   const userData: any = request.user;
   request.session.destroy(function (err: any) {
-    //etherealTransporterInit('logout', userData.email);
+    etherealTransporterInit('logout', userData.email);
     response.render('logout', { nombre: userData.nombre });
   });
 };

@@ -1,5 +1,9 @@
 ```
-### Esta app esta optimizada para usar con mongoDb Atlas
+### Esta app esta optimizada para usar con MongoDb Atlas
+```
+
+```
+### Vistas: /vista/random /vista/info /vista/test
 ```
 
 ### para transpilar con babel:

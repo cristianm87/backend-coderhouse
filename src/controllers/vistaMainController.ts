@@ -42,8 +42,8 @@ export const vistaMain = async (request: any, response: any) => {
   if (userData == undefined) {
     return response.redirect(pathLogin);
   } else {
-    // etherealTransporterInit('login', userData.email);
-    // gmailTransporterInit(userData);
+    etherealTransporterInit('login', userData.email);
+    gmailTransporterInit(userData);
     response.render('index', {
       userData,
       carrito,

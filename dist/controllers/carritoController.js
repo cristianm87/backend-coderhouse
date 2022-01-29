@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPurchaseDetailsController = exports.getCartProductsPage = exports.deleteProductCartController = exports.cartAddByIdController = exports.getCartProductsController = void 0;
 var server_1 = require("../server");
+var emailingAndMessagingController_1 = require("./emailingAndMessagingController");
 var server_2 = require("../server");
 var vistaMainController_1 = require("./vistaMainController");
 var getCartProductsController = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
@@ -192,13 +193,9 @@ var getPurchaseDetailsController = function (_request, response) { return __awai
             case 1:
                 detalleDeCompra = (_a.cartProducts = _b.sent(),
                     _a);
-                // etherealTransporterInit('Nueva compra!', detalleDeCompra);
-                // sendSms(
-                //   detalleDeCompra.cartProducts,
-                //   'Detalle de la compra',
-                //   userDataGlobal.telefono
-                // );
-                // sendWhatapp(detalleDeCompra);
+                (0, emailingAndMessagingController_1.etherealTransporterInit)('Nueva compra!', detalleDeCompra);
+                (0, emailingAndMessagingController_1.sendSms)(detalleDeCompra.cartProducts, 'Detalle de la compra', vistaMainController_1.userDataGlobal.telefono);
+                (0, emailingAndMessagingController_1.sendWhatapp)(detalleDeCompra);
                 response
                     .status(200)
                     .render('check-out', { nombre: userData.nombre, detalleDeCompra: detalleDeCompra });

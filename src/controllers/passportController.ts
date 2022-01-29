@@ -92,7 +92,7 @@ passport.use(
 
               throw error;
             }
-            //etherealTransporterInit('New Signup', newUser);
+            etherealTransporterInit('New Signup', newUser);
             console.log('User Registration succesful');
 
             return done(null, newUser);

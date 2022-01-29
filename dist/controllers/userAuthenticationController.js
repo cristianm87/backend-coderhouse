@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logOutController = exports.logInErrorController = exports.logInController = exports.signUpError = exports.signUpController = void 0;
+var emailingAndMessagingController_1 = require("./emailingAndMessagingController");
 var pathMain = '/';
 var signUpController = function (request, response) {
     if (request.user == undefined) {
@@ -31,7 +32,7 @@ exports.logInErrorController = logInErrorController;
 var logOutController = function (request, response) {
     var userData = request.user;
     request.session.destroy(function (err) {
-        //etherealTransporterInit('logout', userData.email);
+        (0, emailingAndMessagingController_1.etherealTransporterInit)('logout', userData.email);
         response.render('logout', { nombre: userData.nombre });
     });
 };

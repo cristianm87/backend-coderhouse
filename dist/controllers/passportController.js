@@ -8,6 +8,7 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var passport_local_1 = __importDefault(require("passport-local"));
 var passport_1 = __importDefault(require("passport"));
 var modelLogin_1 = require("../models/modelLogin");
+var emailingAndMessagingController_1 = require("./emailingAndMessagingController");
 ////////// PASSPORT DBAAS ////////////
 var createHash = function (password) {
     return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10));
@@ -66,7 +67,7 @@ passport_1.default.use(exports.signUpStrategyName, new passport_local_1.default.
                 console.log("Error in Saving user: ".concat(error));
                 throw error;
             }
-            //etherealTransporterInit('New Signup', newUser);
+            (0, emailingAndMessagingController_1.etherealTransporterInit)('New Signup', newUser);
             console.log('User Registration succesful');
             return done(null, newUser);
         });

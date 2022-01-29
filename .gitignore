@@ -4,3 +4,4 @@ diagnostic.data/
 journal/
 package-lock.json
 .env
+.dist

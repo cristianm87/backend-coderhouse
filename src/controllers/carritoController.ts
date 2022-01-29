@@ -115,13 +115,13 @@ export const getPurchaseDetailsController = async (
     cartProducts: await dao.getCartProducts(),
   };
 
-  // etherealTransporterInit('Nueva compra!', detalleDeCompra);
-  // sendSms(
-  //   detalleDeCompra.cartProducts,
-  //   'Detalle de la compra',
-  //   userDataGlobal.telefono
-  // );
-  // sendWhatapp(detalleDeCompra);
+  etherealTransporterInit('Nueva compra!', detalleDeCompra);
+  sendSms(
+    detalleDeCompra.cartProducts,
+    'Detalle de la compra',
+    userDataGlobal.telefono
+  );
+  sendWhatapp(detalleDeCompra);
   response
     .status(200)
     .render('check-out', { nombre: userData.nombre, detalleDeCompra });
